@@ -92,7 +92,7 @@ elif function_name == "3":
                 
                 print "�û�%s��ɾ����" % name_userlist
                 continue   #执行成功后跳出当次循环，后则后面的内容不保！
-            new_f.write(line)    #д���ļ�
+            new_f.write(line)    #写入文件
             
         f.close()
         new_f.close()
