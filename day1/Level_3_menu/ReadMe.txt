@@ -1,5 +1,11 @@
-#!/usr/bin/env python
-#-*- coding:utf-8 -*-
+博客地址
+http://shuainotebook.blog.51cto.com/1271282/1706126
+GitHbu地址
+https://github.com/Tim-luo/homework
+
+#程序请在linux下运行
+
+
 一、程序介绍
 
 此程序是一个3级菜单！

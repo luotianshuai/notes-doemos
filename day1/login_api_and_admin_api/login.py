@@ -54,7 +54,7 @@ for i in range(3):
                     print "您输入的密码有误请重新输入："
                 if count == 2:  #连续输入错误3次密码后锁定
                     tolock = open('lockuser','a')
-                    tolock.write(input_user)   #写入只锁定文件，程序启动时讲读取
+                    tolock.write(input_user)   #写入锁定文件，程序启动时讲读取
                     tolock.write("\n")                          
                     tolock.close
                     print "%s 用户联系输入错误3次密码已被锁定，请联系管理员解锁" % input_user
