@@ -1,6 +1,5 @@
-#!/usr/bin/env python
-#-*- coding:utf-8 -*-
-#
+#!/usr/bin/env python 
+#-*- coding:utf-8 -*_-
 #I have Readme ,if you have any question you can check it !
 #
 import getpass
