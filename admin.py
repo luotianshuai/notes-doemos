@@ -69,7 +69,7 @@ elif function_name == "2":
         open_userlist.write(';')
         open_userlist.write('\n')
         open_userlist.close
-        print "�û�%s�����"  % add_username             
+        print "用户%s已添加"  % add_username             
 elif function_name == "3":
     print '''目前有效用户为：'''
     print "-------------------------------------------"
@@ -90,7 +90,7 @@ elif function_name == "3":
             if name_userlist in line:
                 line = line.replace(line,'\n')  #替换输入的用户为空白行！
                 
-                print "�û�%s��ɾ����" % name_userlist
+                print "用户%s已删除！" % name_userlist
                 continue   #执行成功后跳出当次循环，后则后面的内容不保！
             new_f.write(line)    #写入文件
             
