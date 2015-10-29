@@ -43,7 +43,7 @@ for i in range(3):
             if shi_pl not in shi_nl:
                 print "你输入的信息无效，请重新输入！"
                 continue
-            jump_shi = raw_input("请问是否退出：1 退出、2 返回最上层,任意键返回上一层：")
+            jump_shi = raw_input("请问是否退出：1 退出、2 返回最上层,任意输入返回上一层：")
             if jump_shi == "1":
                 jump_up_flag = True
                 break
