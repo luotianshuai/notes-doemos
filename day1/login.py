@@ -6,16 +6,16 @@ import getpass
 count = 0
 
 for i in range(3):
-    input_user = raw_input("ÇëÊäÈëÓÃ»§Ãû: ")
-    input_pwd = getpass.getpass("ÇëÊäÈëÃÜÂë: ")
-    check_lock = file('lockuser','r') #´ò¿ª±»ËøÓÃ»§ÎÄ¼ş£¬²é¿´ÓÃ»§ÊÇ·ñ±»Ëø
-    lock_user = check_lock.readlines() #Ã¿ĞĞ¶ÁÈ¡
+    input_user = raw_input("è¯·è¾“å…¥ç”¨æˆ·å: ")
+    input_pwd = getpass.getpass("è¯·è¾“å…¥å¯†ç : ")
+    check_lock = file('lockuser','r') #æ‰“å¼€è¢«é”ç”¨æˆ·æ–‡ä»¶ï¼ŒæŸ¥çœ‹ç”¨æˆ·æ˜¯å¦è¢«é”
+    lock_user = check_lock.readlines() #æ¯è¡Œè¯»å–
     user_login_flag = False
     
     for line in lock_user:
-        line = line.strip('\n')  #È¡Ïû»Ø³µ·û
-        if input_user == line:       #¼ì²éÓÃ»§ÊÇ·ñ±»Ëø
-            print "%s ÓÃ»§ÊÇ±»Ëø¶¨µÄ£¬ÇëÁªÏµ¹ÜÀíÔ±½âËø£¡"  % input_user
+        line = line.strip('\n')  #å–æ¶ˆå›è½¦ç¬¦
+        if input_user == line:       #æ£€æŸ¥ç”¨æˆ·æ˜¯å¦è¢«é”
+            print "%s ç”¨æˆ·æ˜¯è¢«é”å®šçš„ï¼Œè¯·è”ç³»ç®¡ç†å‘˜è§£é”ï¼"  % input_user
             user_login_flag = True
             break        
     if user_login_flag:
@@ -23,41 +23,41 @@ for i in range(3):
         break
     
     user_list = file('userlist','r')
-    user_line = user_list.readlines()   #Ã¿ĞĞ¶ÁÈ¡
+    user_line = user_list.readlines()  #æ¯è¡Œè¯»å–
     
     for userline in user_line:
         value_name = userline.strip()
         user_list = value_name.split(';')
-        user_name = user_list[0]    #»ñÈ¡ÓÃ»§Ãû
-        user_pwd = user_list[1]     #»ñÈ¡ÃÜÂë
+        user_name = user_list[0]    #è·å–ç”¨æˆ·å
+        user_pwd = user_list[1]     #è·å–å¯†ç 
         
         if input_user == "guest":
-            print "»¶Ó­%s"  % input_user
+            print "æ¬¢è¿%s"  % input_user
             user_login_flag = True
             break
-        elif input_user == user_name and input_pwd == user_pwd:  #ÅĞ¶ÏÊÇ¿ÉÓÃÓÃ»§²¢ÇÒÃÜÂëÕıÈ·£¬µÇÂ¼
-            print "»¶Ó­%s µÇÂ¼ÏµÍ³" % input_user
+        elif input_user == user_name and input_pwd == user_pwd:  #åˆ¤æ–­æ˜¯å¯ç”¨ç”¨æˆ·å¹¶ä¸”å¯†ç æ­£ç¡®ï¼Œç™»å½•
+            print "æ¬¢è¿%s ç™»å½•ç³»ç»Ÿ" % input_user
             user_login_flag = True
             break
-        elif input_user == user_name and input_pwd != user_pwd:  #ÅĞ¶ÏÊÇ¿ÉÓÃÓÃ»§£¬Èç¹ûÃÜÂë´íÎó£¡³¢ÊÔ3´Î£¬Ëø¶¨
-            print "ÄúÊäÈëµÄÃÜÂëÓĞÎó£¬ÇëÖØĞÂÊäÈë£º"
+        elif input_user == user_name and input_pwd != user_pwd:  #åˆ¤æ–­æ˜¯å¯ç”¨ç”¨æˆ·ï¼Œå¦‚æœå¯†ç é”™è¯¯ï¼å°è¯•3æ¬¡ï¼Œé”å®š
+            print "æ‚¨è¾“å…¥çš„å¯†ç æœ‰è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š"
             while True:
                 count += 1
-                input_pwd = getpass.getpass("ÇëÊäÈëÃÜÂë: ")
+                input_pwd = getpass.getpass("è¯·è¾“å…¥å¯†ç : ")
                 user_login_flag = False
                 
                 if  input_pwd == user_pwd:
-                    print "»¶Ó­%s µÇÂ¼ÏµÍ³" % input_user
+                    print "æ¬¢è¿%s ç™»å½•ç³»ç»Ÿ" % input_user
                     user_login_flag = True
                     break
                 else:
-                    print "ÄúÊäÈëµÄÃÜÂëÓĞÎóÇëÖØĞÂÊäÈë£º"
-                if count == 2:  #Á¬ĞøÊäÈë´íÎó3´ÎÃÜÂëºóËø¶¨
+                    print "æ‚¨è¾“å…¥çš„å¯†ç æœ‰è¯¯è¯·é‡æ–°è¾“å…¥ï¼š"
+                if count == 2:  #è¿ç»­è¾“å…¥é”™è¯¯3æ¬¡å¯†ç åé”å®š
                     tolock = open('lockuser','a')
-                    tolock.write(input_user)   #Ğ´ÈëÖ»Ëø¶¨ÎÄ¼ş£¬³ÌĞòÆô¶¯Ê±½²¶ÁÈ¡
+                    tolock.write(input_user)   #å†™å…¥åªé”å®šæ–‡ä»¶ï¼Œç¨‹åºå¯åŠ¨æ—¶è®²è¯»å–
                     tolock.write("\n")                          
                     tolock.close
-                    print "%s ÓÃ»§ÁªÏµÊäÈë´íÎó3´ÎÃÜÂëÒÑ±»Ëø¶¨£¬ÇëÁªÏµ¹ÜÀíÔ±½âËø" % input_user
+                    print "%s ç”¨æˆ·è”ç³»è¾“å…¥é”™è¯¯3æ¬¡å¯†ç å·²è¢«é”å®šï¼Œè¯·è”ç³»ç®¡ç†å‘˜è§£é”" % input_user
                     user_login_flag = True
                     break
             if user_login_flag:
@@ -67,6 +67,6 @@ for i in range(3):
     if user_login_flag:
         break
     else:
-        print "ÄúÊäÈëµÄ%sÓÃ»§ÃûÎŞĞ§£¬ÇëÖØĞÂÊäÈë" % input_user
+        print "æ‚¨è¾“å…¥çš„%sç”¨æˆ·åæ— æ•ˆï¼Œè¯·é‡æ–°è¾“å…¥" % input_user
 else:
-    print "ÄãÊäÈë´íÎóÁË3´ÎÓÃ»§Ãû»òÃÜÂëÏµÍ³½²ÍË³ö£¡"
+    print "ä½ è¾“å…¥é”™è¯¯äº†3æ¬¡ç”¨æˆ·åæˆ–å¯†ç ç³»ç»Ÿè®²é€€å‡ºï¼"
