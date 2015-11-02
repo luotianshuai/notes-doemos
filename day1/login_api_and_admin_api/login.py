@@ -9,10 +9,9 @@ for i in range(3):
     input_user = raw_input("请输入用户名: ")
     input_pwd = getpass.getpass("请输入密码: ")
     check_lock = file('lockuser','r') #打开被锁用户文件，查看用户是否被锁
-    lock_user = check_lock.readlines() #每行读取
     user_login_flag = False
     
-    for line in lock_user:
+    for line in check_lock.readlines():
         line = line.strip('\n')  #取消回车符
         if input_user == line:       #检查用户是否被锁
             print "%s 用户是被锁定的，请联系管理员解锁！"  % input_user
@@ -23,9 +22,8 @@ for i in range(3):
         break
     
     user_list = file('userlist','r')
-    user_line = user_list.readlines()  #每行读取
     
-    for userline in user_line:
+    for userline in user_list.readlines():
         value_name = userline.strip()
         user_list = value_name.split(';')
         user_name = user_list[0]    #获取用户名
