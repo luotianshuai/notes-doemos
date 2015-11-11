@@ -8,7 +8,7 @@ import json
 import time
 
 def get_info(info):
-    with open('some.conf','r') as f:
+    with open('haproxy.conf','r') as f:
         for i in f.readlines():
             i = i.strip('\n')
             if info in i and i[0:6] == 'backen':
@@ -29,4 +29,4 @@ if __name__ == '__main__':
     num = raw_input('\033[32;1m请输入序列号：\033[0m')
     if num == '1':
         read = raw_input('\033[033;1m请输入backend：\033[0m')
-        print get_info(read)
+        get_info(read)
