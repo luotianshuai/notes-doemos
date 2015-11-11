@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
-__author__ = 'SothisHowie'
-
-
-import json
 import time
+import json
 
 def get_info(info):
     with open('haproxy.conf','r') as f:
@@ -29,4 +26,4 @@ if __name__ == '__main__':
     num = raw_input('\033[32;1m请输入序列号：\033[0m')
     if num == '1':
         read = raw_input('\033[033;1m请输入backend：\033[0m')
-        get_info(read)
+        print get_info(read)
