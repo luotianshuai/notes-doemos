@@ -9,11 +9,7 @@ def get_info(info):
         for i in f.readlines():
             i = i.strip('\n')
             if info in i and i[0:6] == 'backen':
-                return 'hello'
-                '''
-                if next()[0:8] == '        ':
-                    print next()
-                '''
+                return i 
             else:
                 return "\033[31;1m对不起，无法找到您输入的backen\033[0m"
 
