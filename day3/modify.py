@@ -9,10 +9,10 @@ def get_info(info):
         for i in f.readlines():
             i = i.strip('\n')
             if info in i and i[0:6] == 'backen':
-                return i 
-            else:
-                return "\033[31;1m对不起，无法找到您输入的backen\033[0m"
 
+
+        else:
+            return "\033[31;1m对不起，无法找到您输入的backen\033[0m"
 
 if __name__ == '__main__':
     print '''\033[34;1m\
@@ -23,3 +23,4 @@ if __name__ == '__main__':
     if num == '1':
         read = raw_input('\033[033;1m请输入backend：\033[0m')
         print get_info(read)
+#www.oldboy.org
