@@ -17,42 +17,7 @@ with open('haproxy.conf','r') as f:  #打开文件
             #print k
             break
     new_li = li[k-1:]
-    for m in new_li:
-        #print m
-        if info in m :
-
-
-
-'''
-    new_li.append(li[k-1:])
     print new_li
-    for m in new_li:
-        print m
-'''
-
-
-
-
-'''
-            if info in v :
-                print k,v
-'''
-
-
-
-'''
-        if info in v and v[0:6] == 'backen':
-            print li[k-1:-3]
-'''
-
-'''
-            print shuai.sort()
-            for o in shuai:
-                print o
-'''
-'''
-            for m,n in enumerate(li[k+1:-1],1):
-                print m,n
-
-    print new_li
-'''
+    for m,n in enumerate(new_li):
+        if info in n :
+            print m,n
