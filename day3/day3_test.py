@@ -19,5 +19,7 @@ with open('haproxy.conf','r') as f:  #打开文件
     new_li = li[k-1:]
     print new_li
     for m,n in enumerate(new_li):
-        if info in n :
-            print m,n
+        if info in n and 'backend' in n :
+
+
+
