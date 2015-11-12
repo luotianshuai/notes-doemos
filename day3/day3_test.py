@@ -3,8 +3,9 @@
 #info = raw_input('\033[33;1mplease input your backen\033[0m')\
 
 #info = 'buy.oldboy.org'
-info = 'www.oldboy.org'
-
+#info = 'www.oldboy.org'
+info = 'test.shuaige.org'
+tim = []
 with open('haproxy.conf','r') as f:  #打开文件
     li = []   #创建一个新列表，后续加入
     for i in f.readlines(): #循环列表
@@ -17,9 +18,16 @@ with open('haproxy.conf','r') as f:  #打开文件
             #print k
             break
     new_li = li[k-1:]
-    print new_li
+    #print new_li
+
+
+    '''
     for m,n in enumerate(new_li):
-        if info in n and 'backend' in n :
-
-
-
+        if 'backend' in n :
+            tim.append(m)
+            print tim
+        if info in n :
+            a = m
+            print a
+    print new_li[a:tim[a]]
+'''
