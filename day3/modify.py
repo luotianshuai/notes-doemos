@@ -46,7 +46,23 @@ def add_backend(add_infos):
             f2.write(s)
             f2.write('\n')
         for i in backend_index:  #循环backend的下标
-
+            if backend_title not in li[i] and i == backend_index[-1]: #判断如果最后一行找到用户输入的backend就直接添加到备份文件
+                for w in li[i:]:
+                    f2.write(w)
+                    f2.write('\n')
+                f2.write('\n')
+                f2.write(a)
+                print '\033[31;1mbackend不存在，已添加！\033[0m'
+            if backend_title not in li[i] and i != backend_index[-1]: #如果没有找到用户输入的backend并且不是最后一个backend那么就添加backend的下标到下一个backend的下标的信息到备份文件！
+                for q in  li[i:backend_index[backend_index.index(i)+1]]:
+                    f2.write(q)
+                    f2.write('\n')
+            if backend_title in li[i]   #如果添加的backend在原配置文件中存在，那么在找到这个backend下标下面的server中添加server信息
+                for u in li[i:backend_index[backend_index.index(i)+1]]:
+                    f2.write(u)
+                    f2.write('\n')
+                f2.write(b)
+                print '\033[32;1mbackend已存在存在，并且不在第一行，仅添加backend内的信息\033[0m'
 
 
 
