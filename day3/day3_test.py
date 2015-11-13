@@ -1,42 +1,34 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
-#info = raw_input('\033[33;1mplease input your backen\033[0m')\
+import json
+input_info = '{"backend": "test.shuaige.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 30}}'
+add_info = json.loads(input_info)
 
-#info = 'buy.oldboy.org'
-info = 'www.oldboy.org'
-#info = 'test.shuaige.org'
-tim = []
-with open('haproxy.conf','r') as f:  #打开文件
-    li = []   #创建一个新列表，后续加入
-    for i in f.readlines(): #循环列表
+
+backend_title = add_info['backend']
+backend_index = []
+li = []   #创建一个新列表，后续加入
+with open('haproxy.conf','r') as f1,open('haproxy.conf.new','w') as f2: #打开文件
+    for i in f1.readlines(): #循环列表
         i = i.strip('\n') #取消回车符
         li.append(i) #把读取的文件加入列表中
-    #print li
-    for k,v in enumerate(li,1):#循环列表并指定下标
-        #print k,v
-        if v[0:7] == 'backend': #判断bakend所在行的下标
-            #print k
-            break
-    new_li = li[k-1:]
-    #print new_li
-    for m,n in enumerate(new_li):
-        if 'backend' in n :
-            tim.append(m)
-        if info in n :
-            start_backend = m
-            print start_backend
-    print tim
-    start_index =  tim.index(start_backend)
-    print start_index
-    if start_backend == tim[-1]:  #判断是否是最后一个backend
-        print '\033[32;1m这是最后一行\033[0m'
-        print new_li[m-1:]
-    else:
-        print '\033[32;1m这不是最后一行\033[0m'
-        backend_info =  new_li[tim[start_index]:tim[start_index+1]]
-    for l in backend_info:
-        print l
-    '''
-    for s in range(len(tim)):
-        print s
-'''
+    print li
+    for k,v in enumerate(li):#循环列表并指定下标
+        if 'backend' in v and 'backend' == v[0:7]:
+            backend_index.append(k) #把backend的所在的下标加入到列表中
+    #print backend_index
+    #print backend_index[0]
+    write_start = li[0:backend_index[0]-1]  #取出backend开头之前的数据并写入文件！
+    for s in write_start:
+        f2.write(s)
+        f2.write('\n')
+    for i in backend_index:  #循环backend的下标
+        if backend_title in li[i] and i != backend_index[-1]: #如果发现info在li列表中的i=循环的下标中并且不是最后一个
+            for q in  li[i:backend_index[backend_index.index(i)+1]]:#打印li中i下标所在行和backend_index中的i后面元素所在行
+                f2.write(q)
+                f2.write('\n')
+        elif backend_title in li[i] and i == backend_index[-1]:  #如果是最后一个打印所有
+            for w in li[i:]:
+                f2.write(w)
+                f2.write('\n')
+        else:

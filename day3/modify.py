@@ -41,7 +41,9 @@ def add_backend(add_info):
                 return ''
                 #return [for i in li[i:backend_index[backend_index.index(i)+1]]:print i ]
             elif add_info in li[i] and i == backend_index[-1]:  #如果是最后一个打印所有
-                return li[i:]  #打印行
+                for i in li[i]:
+                    print i
+                    return ''
         else:
             return '\033[32;1m对比起无法找到您输入的\033[31;1m%s\033[0m\033[32;1m的backend信息\033[0m' % add_info
 
