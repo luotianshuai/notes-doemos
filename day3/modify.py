@@ -2,39 +2,26 @@
 #-*- coding:utf-8 -*-
 
 import time
-import json
 
 def get_info(info):
-
+    backend_index = []
     with open('haproxy.conf','r') as f:  #打开文件
-        li = []   #创建一个新列表，后续加入
-        tim = []
+        li  = []   #创建一个新列表，后续加入
         for i in f.readlines(): #循环列表
             i = i.strip('\n') #取消回车符
             li.append(i) #把读取的文件加入列表中
-        for k,v in enumerate(li,1):#循环列表并指定下标
-            if v[0:7] == 'backend': #判断bakend所在行的下标
-                break
-        new_li = li[k-1:]   #取出backend的范围，并整合成一个列表
-        #print new_li
-        for m,n in enumerate(new_li):  #循环backend的列表
-            if 'backend' in n :
-                tim.append(m)  #把所有append的小标加入到列表中用来做判断
-            if info in n :
-                start_backend = m  #取出开始的backend！
-        #print tim
-        start_index =  tim.index(start_backend)
-        print start_index
-        if start_backend == tim[-1]:  #判断是否是最后一个backend
-            print '\033[32;1m这是最后一行\033[0m'
-            last_info = new_li[m-1:]
-            for p in last_info:
-                print p
+        for k,v in enumerate(li):#循环列表并指定下标
+            if 'backend' in v and 'backend' == v[0:7]:
+                backend_index.append(k) #把backend的所在的下标加入到列表中
+        for i in backend_index:  #循环backend的下标
+            if info in li[i] and i != backend_index[-1]: #如果发现info在li列表中的i=循环的下标中并且不是最后一个
+                return li[i:backend_index[backend_index.index(i)+1]]#打印li中i下标所在行和backend_index中的i后面元素所在行
+                #return [for i in li[i:backend_index[backend_index.index(i)+1]]:print i ]
+            elif info in li[i] and i == backend_index[-1]:  #如果是最后一个打印所有
+                return li[i:]  #打印行
         else:
-            print '\033[32;1m这不是最后一行\033[0m'
-            backend_info =  new_li[tim[start_index]:tim[start_index+1]] #取出正确的范围
-            for s in backend_info:
-                print s
+            return '\033[33;1m对比起无法找到%s的backend' % info
+
 
 if __name__ == '__main__':
     print '''\033[34;1m\
