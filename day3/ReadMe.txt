@@ -1,16 +1,20 @@
-#²©¿ÍµØÖ·£ºhttp://www.cnblogs.com/luotianshuai/p/4949497.html
-#GithubµØÖ·£ºhttps://github.com/Tim-luo/homework/tree/master/day3
+#!/usr/bin/env python
+#-*- coding:utf-8 -*-
+#ï¿½ï¿½ï¿½Íµï¿½Ö·ï¿½ï¿½http://www.cnblogs.com/luotianshuai/p/4949497.html
+#Githubï¿½ï¿½Ö·ï¿½ï¿½https://github.com/Tim-luo/homework/tree/master/day3
 
-ÔËĞĞ³ÌĞò
-ÊäÈë1»ñÈ¡ha¼ÇÂ¼
-ÊäÈë2Ôö¼Óha¼ÇÂ¼
-ÊäÈë3É¾³ıha¼ÇÂ¼
-ÊäÈë0½«ÍË³ö³ÌĞò
-ÇëÊäÈëĞòÁĞºÅ£º
+#ï¿½ï¿½ï¿½ï¿½Ö®Ç°ï¿½ï¿½ï¿½ÈºË²ï¿½haï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-ÊäÈë1½øĞĞ²éÕÒha¼ÇÂ¼£º
-ÇëÊäÈëĞòÁĞºÅ£º1
-ÇëÊäÈëÄúÒª²éÕÒµÄbackend£ºaaa.oldboy.org
+ï¿½ï¿½ï¿½Ğ³ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½È¡haï¿½ï¿½Â¼
+ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½haï¿½ï¿½Â¼
+ï¿½ï¿½ï¿½ï¿½3É¾ï¿½ï¿½haï¿½ï¿½Â¼
+ï¿½ï¿½ï¿½ï¿½0ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ĞºÅ£ï¿½
+
+ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½Ğ²ï¿½ï¿½ï¿½haï¿½ï¿½Â¼ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ĞºÅ£ï¿½1
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Òµï¿½backendï¿½ï¿½aaa.oldboy.org
 backend aaa.oldboy.org
         server 100.1.7.80 weight 20 maxconn 3000
 
@@ -18,8 +22,8 @@ backend aaa.oldboy.org
 
 
 
-ÊäÈë2½øĞĞÔö¼Óha¼ÇÂ¼£º
-Ô­ÓĞ¼ÇÂ¼Îª£º£¨½ö½ØÈ¡ÁË²¿·ÖÄÚÈİ£¬ÏêÏ¸Çë¿´ÅäÖÃÎÄ¼ş£©
+ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½haï¿½ï¿½Â¼ï¿½ï¿½
+Ô­ï¿½Ğ¼ï¿½Â¼Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½Ë²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ£ï¿½ï¿½ï¿½Ï¸ï¿½ë¿´ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
 -------------------------------------------------
 backend aaa.oldboy.org
         server 100.1.7.80 weight 20 maxconn 3000
@@ -30,12 +34,12 @@ backend bbb.oldboy.org
 backend ccc.oldboy.org
         server 100.1.7.100 weight 20 maxconn 3000
 -------------------------------------------------
-Èç¹ûÊäÈëÃ»ÓĞbackendÄÇÃ´½«»áĞÂÔö£ºÈçÏÂ£º
-ÇëÊäÈëĞòÁĞºÅ£º2
-ÇëÊäÈëÄúÒªÔö¼ÓµÄbackend£º{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 30}}
-soory you add backend we not have £¬will create new backend
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½backendï¿½ï¿½Ã´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â£ï¿½
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ĞºÅ£ï¿½2
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Óµï¿½backendï¿½ï¿½{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 30}}
+soory you add backend we not have ï¿½ï¿½will create new backend
 
-#±ä¸üºóµÄ½á¹ûÈçÏÂ£¨½ö½ØÈ¡ÁË²¿·ÖÄÚÈİ£¬ÏêÏ¸Çë¿´ÅäÖÃÎÄ¼ş£©
+#ï¿½ï¿½ï¿½ï¿½ï¿½Ä½ï¿½ï¿½ï¿½ï¿½ï¿½Â£ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½Ë²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ£ï¿½ï¿½ï¿½Ï¸ï¿½ë¿´ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
 ==================================================
 backend aaa.oldboy.org
         server 100.1.7.80 weight 20 maxconn 3000
@@ -49,10 +53,10 @@ backend ccc.oldboy.org
 backend test.oldboy.org
 		server 100.1.7.9 weight 20 maxconn 30
 =====================================================
-Èç¹ûÊäÈëµÄbackend´æÔÚÄÇÃ´×·¼Ó£º
-ÇëÊäÈëĞòÁĞºÅ£º2
-ÇëÊäÈëÄúÒªÔö¼ÓµÄbackend£º{"backend": "bbb.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 30}}
-you add backend has bin£¬will add server info
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½backendï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã´×·ï¿½Ó£ï¿½
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ĞºÅ£ï¿½2
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Óµï¿½backendï¿½ï¿½{"backend": "bbb.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 30}}
+you add backend has binï¿½ï¿½will add server info
 
 ==================================================
 backend aaa.oldboy.org
@@ -70,15 +74,15 @@ backend ccc.oldboy.org
 
 
 
-ÊäÈë3½øĞĞÉ¾³ıha¼ÇÂ¼£º
-Ê×ÏÈµ÷ÓÃÒÔÇ°Ğ´µÄ²é¿´²ÎÊı£¨~ ~£©£¬ÅĞ¶ÏÓÃ»§ÊäÈëµÄbackendÊÇ·ñ´æÔÚ²»´æÔÚÍË³ö²¢ÌáÊ¾£º
-ÇëÊäÈëĞòÁĞºÅ£º3
-ÇëÊäÈëÄãÒªÉ¾³ıµÄbackend£º {"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 30}}
+ï¿½ï¿½ï¿½ï¿½3ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½haï¿½ï¿½Â¼ï¿½ï¿½
+ï¿½ï¿½ï¿½Èµï¿½ï¿½ï¿½ï¿½ï¿½Ç°Ğ´ï¿½Ä²é¿´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½~ ~ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¶ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½backendï¿½Ç·ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ĞºÅ£ï¿½3
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÒªÉ¾ï¿½ï¿½ï¿½ï¿½backendï¿½ï¿½ {"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 30}}
 sorry we cant find test.oldboy.org backend info
 
-Èç¹û´æÔÚ£ºÉ¾³ı
-ÇëÊäÈëĞòÁĞºÅ£º3
-ÇëÊäÈëÄãÒªÉ¾³ıµÄbackend£º{"backend": "ccc.oldboy.org","record":{"server": "100.1.7.100","weight": 20,"maxconn": 3000}}
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú£ï¿½É¾ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ĞºÅ£ï¿½3
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÒªÉ¾ï¿½ï¿½ï¿½ï¿½backendï¿½ï¿½{"backend": "ccc.oldboy.org","record":{"server": "100.1.7.100","weight": 20,"maxconn": 3000}}
 you server info is del and is last line
 work done please check !
 
