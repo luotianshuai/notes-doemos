@@ -89,10 +89,10 @@ def del_backend(del_infos):
                         print '\033[31;1myou server info is del and not last line\033[0m'
                         break
             if backend_title in li[i] and i == backend_index[-1]: #如果添加的backend在原配置文件中存在，那么在找到这个backend下标下面的server中删除server信息！
-                for r,t in enumerate(li[i:backend_index[backend_index.index(i)+1]],i+1):
+                for r,t in enumerate(li[i:],i+1):
                     if del_server in t:
                         del li[r-1]
-                        print '\033[31;1m you server info is del and is last line\033[0m'
+                        print '\033[31;1myou server info is del and is last line\033[0m'
                         break
         for h in li:
             f2.write(h)
