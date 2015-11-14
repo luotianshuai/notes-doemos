@@ -22,7 +22,7 @@ def get_backend(check_info):
             elif check_info in li[i] and i == backend_index[-1]:  #如果是最后一个打印所有
                 return li[i:]  #打印行
         else:
-            return '\033[32;1msorrt we cant find \033[31;1m%s\033[0m\033[32;1mbackendinfo\033[0m' % check_info
+            return '\033[32;1msorry we cant find \033[31;1m%s\033[0m\033[32;1m backend info\033[0m' % check_info
 
 def add_backend(add_infos):
     add_info = json.loads(add_infos)
@@ -82,31 +82,30 @@ def del_backend(del_infos):
             if 'backend' in v and 'backend' == v[0:7]:
                 backend_index.append(k) #把backend的所在的下标加入到列表中
         for i in backend_index:  #循环backend的下标
-
             if backend_title in li[i] and i != backend_index[-1]: #如果添加的backend在原配置文件中存在，那么在找到这个backend下标下面的server中删除server信息！
-                #print i
                 for r,t in enumerate(li[i:backend_index[backend_index.index(i)+1]],i+1): #循环列表并定义下标名称为当前back的下标+1
                     if del_server in t:
                         del li[r-1]
+                        print '\033[31;1myou server info is del and not last line\033[0m'
                         break
             if backend_title in li[i] and i == backend_index[-1]: #如果添加的backend在原配置文件中存在，那么在找到这个backend下标下面的server中删除server信息！
-                #print i
                 for r,t in enumerate(li[i:backend_index[backend_index.index(i)+1]],i+1):
                     if del_server in t:
                         del li[r-1]
+                        print '\033[31;1m you server info is del and is last line\033[0m'
                         break
         for h in li:
             f2.write(h)
             f2.write('\n')
-
+        print '\033[31;1mwork done please check !\033[0m'
 if __name__ == '__main__':
-    print '''\033[34;1m\
+
+    while True:
+        print '''\033[34;1m\
 输入1获取ha记录
 输入2增加ha记录
 输入3删除ha记录
 输入0将退出程序\033[0m'''
-
-    while True:
         num = raw_input('\033[32;1m请输入序列号：\033[0m')
         if num == '1':
             read = raw_input('\033[033;1m请输入您要查找的backend：\033[0m')
