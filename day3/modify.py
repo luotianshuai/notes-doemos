@@ -53,7 +53,7 @@ def add_backend(add_infos):
                 if i  == li_backend[-1]: #判断如果是最后一行backend信息都没有用户输入的backend信息那么添加新的backend
                     f2.write('\n')
                     f2.write(a)
-                    return '\033[31;1msoor you add backend we not have ，will create new backend\033[0m'
+                    return '\033[31;1msoory you add backend we not have ，will create new backend\033[0m'
             if backend_title in i: #判断如果有backend那么追加文件
                 f2.write(i)
                 f2.write('\n')
