@@ -45,17 +45,29 @@ def add_backend(add_infos):
             f2.write(s)
             f2.write('\n')
         li_backend = li[backend_index[0]:]
+        #print li_backend[-1]
+
         for i in li_backend:
             if backend_title not in i:
                 f2.write(i)
                 f2.write('\n')
+                #print i
+                if i  == li_backend[-1]:
+                    f2.write('\n')
+                    f2.write(a)
+                    return '\033[31;1m您添加的backend不存在，以为您创建新的backend\033[0m'
             if backend_title in i:
-                for m in li_backend[li_backend.index(i):]:
+                f2.write(i)
+                f2.write('\n')
+                f2.write(b)
+                f2.write('\n')
+                for m in li_backend[li_backend.index(i)+1:]:
                     f2.write(m)
                     f2.write('\n')
-                f2.write(b)
-                #f2.write('\n')
-                return  '\033[32;1m你添加的backend已存在，追加完成\033[0m'
+                return '\033[32;1m您添加的backend已存在，为您追加信息server信息\033[0m'
+
+def del_backend(del_info):
+
 
 
 if __name__ == '__main__':
@@ -72,5 +84,9 @@ if __name__ == '__main__':
         if num == '2':
             read = raw_input('\033[033;1m请输入您要增加的backend：\033[0m')
             print add_backend(read)
+        if num == '3':
+            read = raw_input('\033[033;1m请输入你要删除的backend：\033[0m')
+            print del_backend(read)
+
 
 #www.oldboy.org
