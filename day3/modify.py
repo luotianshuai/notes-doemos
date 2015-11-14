@@ -33,11 +33,10 @@ def add_backend(add_infos):
     backend_title = add_info['backend']
     backend_index = []
     li = []   #创建一个新列表，后续加入
-    with open('haproxy.conf','r') as f1,open('haproxy.conf.new','w') as f2: #打开文件
+    with open('haproxy.conf','r') as f1,open('haproxy.conf.add','w') as f2: #打开文件
         for i in f1.readlines(): #循环列表
             i = i.strip('\n') #取消回车符
             li.append(i) #把读取的文件加入列表中
-        print li
         for k,v in enumerate(li):#循环列表并指定下标
             if 'backend' in v and 'backend' == v[0:7]:
                 backend_index.append(k) #把backend的所在的下标加入到列表中
@@ -45,25 +44,18 @@ def add_backend(add_infos):
         for s in write_start:
             f2.write(s)
             f2.write('\n')
-        for i in backend_index:  #循环backend的下标
-            if backend_title not in li[i] and i == backend_index[-1]: #判断如果最后一行找到用户输入的backend就直接添加到备份文件
-                for w in li[i:]:
-                    f2.write(w)
-                    f2.write('\n')
+        li_backend = li[backend_index[0]:]
+        for i in li_backend:
+            if backend_title not in i:
+                f2.write(i)
                 f2.write('\n')
-                f2.write(a)
-                print '\033[31;1mbackend不存在，已添加！\033[0m'
-            if backend_title not in li[i] and i != backend_index[-1]: #如果没有找到用户输入的backend并且不是最后一个backend那么就添加backend的下标到下一个backend的下标的信息到备份文件！
-                for q in  li[i:backend_index[backend_index.index(i)+1]]:
-                    f2.write(q)
-                    f2.write('\n')
-            if backend_title in li[i]   #如果添加的backend在原配置文件中存在，那么在找到这个backend下标下面的server中添加server信息
-                for u in li[i:backend_index[backend_index.index(i)+1]]:
-                    f2.write(u)
+            if backend_title in i:
+                for m in li_backend[li_backend.index(i):]:
+                    f2.write(m)
                     f2.write('\n')
                 f2.write(b)
-                print '\033[32;1mbackend已存在存在，并且不在第一行，仅添加backend内的信息\033[0m'
-
+                #f2.write('\n')
+                return  '\033[32;1m你添加的backend已存在，追加完成\033[0m'
 
 
 if __name__ == '__main__':
