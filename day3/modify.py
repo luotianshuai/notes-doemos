@@ -118,6 +118,3 @@ if __name__ == '__main__':
             print del_backend(read)
         if num == '0':
             break
-
-
-#www.oldboy.org
