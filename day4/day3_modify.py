@@ -6,12 +6,15 @@ def fetch(backend):
         backend_list = []
         flag = False
         for line in obj:
-            if line.strip() == 'backend %s' % backend
+            if line.strip() == 'backend %s' % backend:
                 flag = True
                 continue
             if flag and line.strip() == line.strip().startswith('backend'):
                 break
             if flag and line.strip():
                 backend_list.append(line)
+        return backend_list
 
-fetch('aaa.oldboy.org')
+
+if __name__ == '__main__':
+    print fetch('aaa.oldboy.org')
