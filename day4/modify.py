@@ -46,22 +46,24 @@ def get_backend(backend):
 
 '''
 定义添加函数：
-1、判断backend是否存在
-   不存在直接添加backend 和 record 信息
-2、backend存在
-   2.1、backend存在记录不存在，添加记录
-   2.2、backend存在记录也存在，推出并提示记录存在
+首先判断backend是否存在：
+1、backend存在，只需添加记录
+   1.1、记录是否存在，存在不添加推出
+   2.2、不存在，添加记录
+2、backend不存在，直接在后面添加backend和server记录
 
 '''
 def add_backend(backend):
     backend_title = backend.get('backend')
     current_title = 'backend %s' % backend_title
-    crrent_record = backend
+    temp = "%s" %(" "*8)
+    crrent_record = '%s server %s %s weight %s maxconn %s' % (temp,backend['record']['server'],backend['record']['server'],backend['record']['weight'],backend['record']['maxconn'])
+
     check_backend = get_backend(backend)
     if check_backend:
         pass
     else:
-        '''backend如果不存直接添加'''
+        '''backend如果不存直接添加backend和server记录'''
         with open('haproxy.conf','r') as old_ha,open('haproxy.conf.new','w') as new_ha:
             for line in old_ha:
                 new_ha.write(line)
@@ -90,7 +92,7 @@ if __name__ == '__main__':
                 print "\033[31;1m无法找到您输入的backend请检查：%s是否正确\033[0m" % read
         if num == '2':
             read = raw_input('\033[33;1m请输入您要添加的信息：\033[0m')
-            '''{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 30}}'''
+            '''{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}'''
             read_new = json.loads(read)
             add_backend(read_new)
 
