@@ -137,7 +137,7 @@ def del_backend(backend):
                 if del_flag:
                     if not has_write:
                         if current_record in check_backend:
-                            del check_backend[current_record]
+                            check_backend.remove(current_record)
                         else:
                             new_ha_del.write(current_title)
                             for line_new in check_backend:
@@ -147,9 +147,10 @@ def del_backend(backend):
                             continue
 
                         if check_backend:
-                            new_ha_del.write(current_title)
+                            new_ha_del.write(current_title+'\n')
                             for line_new in check_backend:
                                 new_ha_del.write("%s%s\n" % (" "*8,line_new))
+                            new_ha_del.write('\n')
                             has_write = True
                             print "\033[32;1m您好backend下的record已经删除并且backend下还有记录\033[0m"
                         else:
@@ -191,8 +192,8 @@ if __name__ == '__main__':
             print add_backend(read_new)
         if num == '3':
             print '\033[32;1m输入删除测试：backend不存在：\033[33;1m{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
-            print '\033[32;1m输入删除测试：backend存在record存在一条：\033[33;1m{"backend": "www.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
-            print '\033[32;1m输入删除测试：backend存在record存在多条：\033[33;1m{"backend": "buy.oldboy.org","record":{"server": "100.1.7.10","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入删除测试：backend存在record存在,且仅有一条record记录：\033[33;1m{"backend": "www.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入删除测试：backend存在record存在,且有其他record记录：：\033[33;1m{"backend": "buy.oldboy.org","record":{"server": "100.1.7.10","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
             print '\033[32;1m输入删除测试：backend存在record不存在：\033[33;1m{"backend": "buy.oldboy.org","record":{"server": "100.1.7.99","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
             read = raw_input('\033[33;1m请输入您要删除的信息：\033[0m')
             read_new = json.loads(read)
