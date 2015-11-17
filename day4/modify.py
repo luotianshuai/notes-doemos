@@ -107,8 +107,27 @@ def add_backend(backend):
             new_ha.write(current_record)
         return "\033[31;1m您添加的backend是新的已为您新增backend和记录！\033[0m"
 
-def del_backend(backend):
+'''
+定义删除函数：
+删除函数和添加函数基本上相同：
+首先查找backend是否存在
+1、backend不存在，直接退出并提示用户信息
 
+2、backend存在
+2.1、backned存在，record不存在提示用户信息record不存在（删除backend）
+2.2、backend存在，record存在删除，然后判断backend下是否还存在信息（删除backend）
+'''
+
+def del_backend(backend):
+    backend_title = backend.get('backend')
+    current_title = 'backend %s' % backend_title
+    current_record = 'server %s %s weight %s maxconn %s' % (backend['record']['server'],backend['record']['server'],backend['record']['weight'],backend['record']['maxconn'])
+    check_backend = get_backend(backend_title)
+    if check_backend:
+        '''如果backend存在'''
+        pass
+    else:
+        return "\033[31;1m您输入的backend不存在\033[0m"
 
 
 
@@ -141,4 +160,6 @@ if __name__ == '__main__':
             print '\033[32;1m输入添加测试：backend不存在：\033[33;1m{"backend": "shuaige.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
             print '\033[32;1m输入添加测试：backend存在record存在：\033[33;1m{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
             print '\033[32;1m输入添加测试：backend存在record不存在：\033[33;1m{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
-
+            read = raw_input('\033[33;1m请输入您要删除的信息：\033[0m')
+            read_new = json.loads(read)
+            print del_backend(read_new)
