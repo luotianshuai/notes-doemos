@@ -40,7 +40,7 @@ def get_backend(backend):
             if backend_flag and line.strip().startswith('backend'):
                 break
             if backend_flag and line.strip():
-                fetch_list.append(line)
+                fetch_list.append(line.strip())
     return fetch_list
 
 
@@ -48,20 +48,54 @@ def get_backend(backend):
 定义添加函数：
 首先判断backend是否存在：
 1、backend存在，只需添加记录
-   1.1、记录存在，存在不添加退出
-   2.2、不存在不存在，不存在添加记录
+   1.1、记录存在，存在不添加提示退出
+   2.2、记录不存在，记录不存在，在backend下添加记录
 2、backend不存在，直接在后面添加backend和server记录
+
+思路：
+    如果backend存在
+
+把文件分割为3部分：上、中、下   中 = 找到的backend和record信息
+打开两个文件：第一个是原文件、第二个是新文件。
+循环读第一个文件中的数据写到第二个文件中，当匹配到backend那里之后把backend写入到第二个文件中，并且循环写入找到backend中的
+record信息写入到第二个文件中，然后在第二个文件中匹配的record的信息下面追加一个添加的record信息。为了防止他写入多次设置一个
+标志位has_write = False当：上面的操作完成之后给他设置为True！之后if not has_write:这个就不匹配了。就只写了一遍，然后把下半部分
+写入即可！
+
 
 '''
 def add_backend(backend):
     backend_title = backend.get('backend')
     current_title = 'backend %s' % backend_title
-    current_record = '%sserver %s %s weight %s maxconn %s' % (" "*8,backend['record']['server'],backend['record']['server'],backend['record']['weight'],backend['record']['maxconn'])
+    current_record = 'server %s %s weight %s maxconn %s' % (backend['record']['server'],backend['record']['server'],backend['record']['weight'],backend['record']['maxconn'])
 
-    check_backend = get_backend(backend)
+    check_backend = get_backend(backend_title)
     if check_backend:
+        '''如果backend存在'''
         if current_record in check_backend:
+            '''backend存在并且记录存在直接提示推出'''
             return '\033[32;1m您添加的backend和record信息已存在！\033[0m'
+        else:
+            with open('haproxy.conf','r') as old_ha,open('haproxy.conf.new','w') as new_ha:
+                add_flag = False
+                has_write = False
+                for line in old_ha:
+                    if line.strip() == current_title:
+                        new_ha.write(line)
+                        add_flag = True
+                        continue
+                    if add_flag and line.strip().startswith('backend'):
+                        add_flag = False
+                    if add_flag:
+                        if not has_write:
+                            for line_new in check_backend:
+                                new_ha.write("%s%s\n" % (" "*8,line_new))
+                            new_ha.write("%s%s\n\n" % (" "*8,current_record))
+                            has_write = True
+                    else:
+                        new_ha.write(line)
+                return "\033[32;1mbackend存在并且record信息不存在，已添加record信息！\033[0m"
+
     else:
         '''backend如果不存直接添加backend和server记录'''
         with open('haproxy.conf','r') as old_ha,open('haproxy.conf.new','w') as new_ha:
@@ -72,6 +106,9 @@ def add_backend(backend):
             new_ha.write('\n')
             new_ha.write(current_record)
         return "\033[31;1m您添加的backend是新的已为您新增backend和记录！\033[0m"
+
+def del_backend(backend):
+
 
 
 
@@ -84,9 +121,8 @@ if __name__ == '__main__':
 输入0将退出程序\033[0m'''
         num = raw_input('\033[33;1m请输入您需要的功能：\033[0m')
         if num == '1':
-            print '''
-            查询功能测试：
-            存在：www.oldboy.org 不存在：none.oldboy.org'''
+            print '''查询功能测试：
+存在：www.oldboy.org buy.oldboy.org nb.oldboy.org  不存在：none.oldboy.org'''
             read = raw_input('\033[33;1m请输入您要查看的backend名称：\033[0m')
             get_info = get_backend(read)
             if get_info:
@@ -95,16 +131,14 @@ if __name__ == '__main__':
             else:
                 print "\033[31;1m无法找到您输入的backend请检查：%s是否正确\033[0m" % read
         if num == '2':
-            print '\033[32;1m输入添加测试：不存在：\033[33;1m{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入添加测试：backend不存在：\033[33;1m{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
             print '\033[32;1m输入添加测试：backend存在record存在：\033[33;1m{"backend": "buy.oldboy.org","record":{"server": "100.1.7.10","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
             print '\033[32;1m输入添加测试：backend存在record不存在：\033[33;1m{"backend": "buy.oldboy.org","record":{"server": "100.1.7.101","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
             read = raw_input('\033[33;1m请输入您要添加的信息：\033[0m')
             read_new = json.loads(read)
             print add_backend(read_new)
-
-
-
-
-
-
+        if num == '3':
+            print '\033[32;1m输入添加测试：backend不存在：\033[33;1m{"backend": "shuaige.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入添加测试：backend存在record存在：\033[33;1m{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入添加测试：backend存在record不存在：\033[33;1m{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
 
