@@ -115,7 +115,7 @@ def add_backend(backend):
 
 2、backend存在
 2.1、backned存在，record不存在提示用户信息record不存在
-2.2、backend存在，record存在删除record，然后判断backend下是否还存在信息,如果不存在删除backend（删除backend）
+2.2、backend存在，record存在删除record，然后判断backend下是否还存在信息,如果不存在删除backend
 '''
 
 def del_backend(backend):
@@ -197,4 +197,4 @@ if __name__ == '__main__':
             print '\033[32;1m输入删除测试：backend存在record不存在：\033[33;1m{"backend": "buy.oldboy.org","record":{"server": "100.1.7.99","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
             read = raw_input('\033[33;1m请输入您要删除的信息：\033[0m')
             read_new = json.loads(read)
-            print del_backend(read_new)
+            del_backend(read_new)
