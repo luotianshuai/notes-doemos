@@ -48,26 +48,30 @@ def get_backend(backend):
 定义添加函数：
 首先判断backend是否存在：
 1、backend存在，只需添加记录
-   1.1、记录是否存在，存在不添加推出
-   2.2、不存在，添加记录
+   1.1、记录存在，存在不添加退出
+   2.2、不存在不存在，不存在添加记录
 2、backend不存在，直接在后面添加backend和server记录
 
 '''
 def add_backend(backend):
     backend_title = backend.get('backend')
     current_title = 'backend %s' % backend_title
-    temp = "%s" %(" "*8)
-    crrent_record = '%s server %s %s weight %s maxconn %s' % (temp,backend['record']['server'],backend['record']['server'],backend['record']['weight'],backend['record']['maxconn'])
+    current_record = '%sserver %s %s weight %s maxconn %s' % (" "*8,backend['record']['server'],backend['record']['server'],backend['record']['weight'],backend['record']['maxconn'])
 
     check_backend = get_backend(backend)
     if check_backend:
-        pass
+        if current_record in check_backend:
+            return '\033[32;1m您添加的backend和record信息已存在！\033[0m'
     else:
         '''backend如果不存直接添加backend和server记录'''
         with open('haproxy.conf','r') as old_ha,open('haproxy.conf.new','w') as new_ha:
             for line in old_ha:
                 new_ha.write(line)
-            new_ha.write()
+            new_ha.write('\n'*2)
+            new_ha.write(current_title)
+            new_ha.write('\n')
+            new_ha.write(current_record)
+        return "\033[31;1m您添加的backend是新的已为您新增backend和记录！\033[0m"
 
 
 
@@ -91,10 +95,12 @@ if __name__ == '__main__':
             else:
                 print "\033[31;1m无法找到您输入的backend请检查：%s是否正确\033[0m" % read
         if num == '2':
+            print '\033[32;1m输入添加测试：不存在：\033[33;1m{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入添加测试：backend存在record存在：\033[33;1m{"backend": "buy.oldboy.org","record":{"server": "100.1.7.10","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入添加测试：backend存在record不存在：\033[33;1m{"backend": "buy.oldboy.org","record":{"server": "100.1.7.101","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
             read = raw_input('\033[33;1m请输入您要添加的信息：\033[0m')
-            '''{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}'''
             read_new = json.loads(read)
-            add_backend(read_new)
+            print add_backend(read_new)
 
 
 
