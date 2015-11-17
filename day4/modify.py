@@ -114,8 +114,8 @@ def add_backend(backend):
 1、backend不存在，直接退出并提示用户信息
 
 2、backend存在
-2.1、backned存在，record不存在提示用户信息record不存在（删除backend）
-2.2、backend存在，record存在删除，然后判断backend下是否还存在信息（删除backend）
+2.1、backned存在，record不存在提示用户信息record不存在
+2.2、backend存在，record存在删除record，然后判断backend下是否还存在信息,如果不存在删除backend（删除backend）
 '''
 
 def del_backend(backend):
@@ -125,9 +125,42 @@ def del_backend(backend):
     check_backend = get_backend(backend_title)
     if check_backend:
         '''如果backend存在'''
-        pass
+        with open('haproxy.conf','r') as old_ha_del,open('haproxy.conf.new','w') as new_ha_del:
+            del_flag = False
+            has_write = False
+            for line in old_ha_del:
+                if line.strip() == current_title:
+                    del_flag = True
+                    continue
+                if del_flag and line.strip().startswith('backend'):
+                    del_flag = False
+                if del_flag:
+                    if not has_write:
+                        if current_record in check_backend:
+                            del check_backend[current_record]
+                        else:
+                            new_ha_del.write(current_title)
+                            for line_new in check_backend:
+                                new_ha_del.write("%s%s\n" % (" "*8,line_new))
+                            has_write = True
+                            print "\033[31;1m您好backend下无法找到record信息！"
+                            continue
+
+                        if check_backend:
+                            new_ha_del.write(current_title)
+                            for line_new in check_backend:
+                                new_ha_del.write("%s%s\n" % (" "*8,line_new))
+                            has_write = True
+                            print "\033[32;1m您好backend下的record已经删除并且backend下还有记录\033[0m"
+                        else:
+                            print "\033[32;1m您好backend下的record已经删除并且backend下没有记录，删除记录\033[0m"
+                            has_write = True
+                            continue
+                else:
+                    new_ha_del.write(line)
     else:
         return "\033[31;1m您输入的backend不存在\033[0m"
+
 
 
 
@@ -157,9 +190,10 @@ if __name__ == '__main__':
             read_new = json.loads(read)
             print add_backend(read_new)
         if num == '3':
-            print '\033[32;1m输入添加测试：backend不存在：\033[33;1m{"backend": "shuaige.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
-            print '\033[32;1m输入添加测试：backend存在record存在：\033[33;1m{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
-            print '\033[32;1m输入添加测试：backend存在record不存在：\033[33;1m{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入删除测试：backend不存在：\033[33;1m{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入删除测试：backend存在record存在一条：\033[33;1m{"backend": "www.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入删除测试：backend存在record存在多条：\033[33;1m{"backend": "buy.oldboy.org","record":{"server": "100.1.7.10","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入删除测试：backend存在record不存在：\033[33;1m{"backend": "buy.oldboy.org","record":{"server": "100.1.7.99","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
             read = raw_input('\033[33;1m请输入您要删除的信息：\033[0m')
             read_new = json.loads(read)
             print del_backend(read_new)
