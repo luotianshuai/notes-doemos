@@ -49,7 +49,7 @@ def get_backend(backend):
 首先判断backend是否存在：
 1、backend存在，只需添加记录
    1.1、记录存在，存在不添加提示退出
-   2.2、记录不存在，记录不存在，在backend下添加记录
+   2.2、记录不存在，在backend下添加记录
 2、backend不存在，直接在后面添加backend和server记录
 
 思路：
@@ -152,9 +152,9 @@ def del_backend(backend):
                                 new_ha_del.write("%s%s\n" % (" "*8,line_new))
                             new_ha_del.write('\n')
                             has_write = True
-                            print "\033[32;1m您好backend下的record已经删除并且backend下还有记录\033[0m"
+                            print "\033[32;1m您好backend下的record已经删除，并且backend还有记录！\033[0m"
                         else:
-                            print "\033[32;1m您好backend下的record已经删除并且backend下没有记录，删除记录\033[0m"
+                            print "\033[32;1m您好backend下的record已经删除并且backend下没有记录，将要删除backend！\033[0m"
                             has_write = True
                             continue
                 else:
@@ -197,4 +197,4 @@ if __name__ == '__main__':
             print '\033[32;1m输入删除测试：backend存在record不存在：\033[33;1m{"backend": "buy.oldboy.org","record":{"server": "100.1.7.99","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
             read = raw_input('\033[33;1m请输入您要删除的信息：\033[0m')
             read_new = json.loads(read)
-            del_backend(read_new)
+            print del_backend(read_new)
