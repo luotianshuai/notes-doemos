@@ -94,7 +94,7 @@ def add_backend(backend):
                             has_write = True
                     else:
                         new_ha.write(line)
-                return "\033[32;1mbackend存在并且record信息不存在，已添加record信息！\033[0m"
+                return "\033[33;1mbackend存在并且record信息不存在，已添加record信息！\033[0m"
 
     else:
         '''backend如果不存直接添加backend和server记录'''
@@ -152,17 +152,15 @@ def del_backend(backend):
                                 new_ha_del.write("%s%s\n" % (" "*8,line_new))
                             new_ha_del.write('\n')
                             has_write = True
-                            print "\033[32;1m您好backend下的record已经删除，并且backend还有记录！\033[0m"
+                            print "\033[33;1m您好backend下的record已经删除，并且backend还有记录！\033[0m"
                         else:
-                            print "\033[32;1m您好backend下的record已经删除并且backend下没有记录，将要删除backend！\033[0m"
+                            print "\033[31;1m您好backend下的record已经删除并且backend下没有记录，将要删除backend！\033[0m"
                             has_write = True
                             continue
                 else:
                     new_ha_del.write(line)
     else:
         return "\033[31;1m您输入的backend不存在\033[0m"
-
-
 
 
 if __name__ == '__main__':
