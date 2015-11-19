@@ -74,7 +74,7 @@ def add_backend(backend):
         '''如果backend存在'''
         if current_record in check_backend:
             '''backend存在并且记录存在直接提示推出'''
-            return '\033[32;1m您添加的backend和record信息已存在！\033[0m'
+            return '\033[31;1m您添加的backend和record信息已存在！\033[0m'
         else:
             with open('haproxy.conf','r') as old_ha,open('haproxy.conf.new','w') as new_ha:
                 add_flag = False
@@ -104,7 +104,7 @@ def add_backend(backend):
             new_ha.write('\n'*2)
             new_ha.write(current_title)
             new_ha.write('\n')
-            new_ha.write(current_record)
+            new_ha.write("%s%s"% (" "*8,current_record))
         return "\033[31;1m您添加的backend是新的已为您新增backend和记录！\033[0m"
 
 '''
