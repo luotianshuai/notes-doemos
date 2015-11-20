@@ -2,6 +2,15 @@
 #-*- coding:utf-8 -*-
 import json
 
+
+def splist_backend(*args,**kargs):
+    pass
+
+
+
+
+
+
 '''
 定义查看函数：
 1、打开文件 循环文件
@@ -76,25 +85,7 @@ def add_backend(backend):
             '''backend存在并且记录存在直接提示推出'''
             return '\033[31;1m您添加的backend和record信息已存在！\033[0m'
         else:
-            with open('haproxy.conf','r') as old_ha,open('haproxy.conf.new','w') as new_ha:
-                add_flag = False
-                has_write = False
-                for line in old_ha:
-                    if line.strip() == current_title:
-                        new_ha.write(line)
-                        add_flag = True
-                        continue
-                    if add_flag and line.strip().startswith('backend'):
-                        add_flag = False
-                    if add_flag:
-                        if not has_write:
-                            for line_new in check_backend:
-                                new_ha.write("%s%s\n" % (" "*8,line_new))
-                            new_ha.write("%s%s\n\n" % (" "*8,current_record))
-                            has_write = True
-                    else:
-                        new_ha.write(line)
-                return "\033[33;1mbackend存在并且record信息不存在，已添加record信息！\033[0m"
+            pass
 
     else:
         '''backend如果不存直接添加backend和server记录'''

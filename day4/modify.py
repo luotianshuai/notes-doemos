@@ -196,3 +196,6 @@ if __name__ == '__main__':
             read = raw_input('\033[33;1m请输入您要删除的信息：\033[0m')
             read_new = json.loads(read)
             print del_backend(read_new)
+        if num == '0':
+            print "\033[32;1m欢迎下次使用\033[0m"
+            break
