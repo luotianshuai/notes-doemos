@@ -1,6 +1,26 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 import json
+import os
+import time
+
+'''
+添加装饰器：
+    去备份修改后的文件！
+    判断是否生成了haproxy.conf.new,如果生成了，就进行备份！并提示用户！
+'''
+
+def file_back(func):
+    def wrapper(*args,**kargs):
+        outp_info = func(*args,**kargs)
+        file_rename = 'haproxy.conf' + time.strftime("%Y%d%M%S")
+        file = 'haproxy.conf.new'
+        if os.path.exists(file):
+            os.rename('haproxy.conf',file_rename)
+            os.rename('haproxy.conf.new','haproxy.conf')
+            print "\033[32;1m备份成功！您好原始文件已备份为：\033[0m\033[34;1m%s\033[0m" % file_rename
+        return outp_info
+    return wrapper
 
 '''
 定义查看函数：
@@ -64,6 +84,7 @@ record信息写入到第二个文件中，然后在第二个文件中匹配的re
 
 
 '''
+@file_back
 def add_backend(backend):
     backend_title = backend.get('backend')
     current_title = 'backend %s' % backend_title
@@ -101,7 +122,7 @@ def add_backend(backend):
         with open('haproxy.conf','r') as old_ha,open('haproxy.conf.new','w') as new_ha:
             for line in old_ha:
                 new_ha.write(line)
-            new_ha.write('\n'*2)
+            new_ha.write('\n')
             new_ha.write(current_title)
             new_ha.write('\n')
             new_ha.write("%s%s"% (" "*8,current_record))
@@ -117,7 +138,7 @@ def add_backend(backend):
 2.1、backned存在，record不存在提示用户信息record不存在
 2.2、backend存在，record存在删除record，然后判断backend下是否还存在信息,如果不存在删除backend
 '''
-
+@file_back
 def del_backend(backend):
     backend_title = backend.get('backend')
     current_title = 'backend %s' % backend_title
@@ -143,7 +164,7 @@ def del_backend(backend):
                             for line_new in check_backend:
                                 new_ha_del.write("%s%s\n" % (" "*8,line_new))
                             has_write = True
-                            print "\033[31;1m您好backend下无法找到record信息！"
+                            #print "\033[31;1m您好backend下无法找到record信息！"
                             continue
 
                         if check_backend:
@@ -152,13 +173,14 @@ def del_backend(backend):
                                 new_ha_del.write("%s%s\n" % (" "*8,line_new))
                             new_ha_del.write('\n')
                             has_write = True
-                            print "\033[33;1m您好backend下的record已经删除，并且backend还有记录！\033[0m"
+                            #print "\033[33;1m您好backend下的record已经删除，并且backend还有记录！\033[0m"
                         else:
-                            print "\033[31;1m您好backend下的record已经删除并且backend下没有记录，将要删除backend！\033[0m"
+                            #print "\033[31;1m您好backend下的record已经删除并且backend下没有记录，将要删除backend！\033[0m"
                             has_write = True
                             continue
                 else:
                     new_ha_del.write(line)
+            return "\033[32;1m删除完成\033[0m"
     else:
         return "\033[31;1m您输入的backend不存在\033[0m"
 
