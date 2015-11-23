@@ -1,6 +1,21 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
+import pickle
+import login
 
+#print login.login_api()
+
+with open('user_info','rb') as f:
+    usernew_info = pickle.load(f)
+def wrapper(func):
+    def inner():
+
+###################################增加判断############################
+
+        func()
+    return inner
+
+@wrapper
 def buy():
     salary = 15000
     print "\033[32;1m欢迎光临本商场，下面是本商场所包含的商品，请输入左侧的商品号购买:\033[0m"
