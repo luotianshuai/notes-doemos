@@ -34,7 +34,8 @@ def login_api(username,password):
         user_info = pickle.load(f)
     user_get = user_info.get(username)
     if user_get and user_info[username]['password'] == password:
-        return "OK"
+        return True
     else:
-        return 'NO'
+        return False
+
 print login_api('lskdjf','21232f297a57a5a743894a0e4a801fc3')

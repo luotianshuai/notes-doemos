@@ -2,13 +2,22 @@
 #-*- coding:utf-8 -*-
 import pickle
 
-def buy():
-    salary = 15000
-'''
+def login_api(username,password):
     with open('user_info','rb') as f:
         user_info = pickle.load(f)
-    user_info[]
-'''
+    user_get = user_info.get(username)
+    if user_get and user_info[username]['password'] == password:
+        return True
+    else:
+        return False
+
+
+
+
+
+
+def buy(arg,arg1):
+    salary = 15000
     print "\033[32;1m欢迎光临本商场，下面是本商场所包含的商品，请输入左侧的商品号购买:\033[0m"
     product_list = [
         ('Iphon',5800),
