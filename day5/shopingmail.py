@@ -1,14 +1,8 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
-import pickle
 
 def buy():
     salary = 15000
-'''
-    with open('user_info','rb') as f:
-        user_info = pickle.load(f)
-    user_info[]
-'''
     print "\033[32;1m欢迎光临本商场，下面是本商场所包含的商品，请输入左侧的商品号购买:\033[0m"
     product_list = [
         ('Iphon',5800),
@@ -26,7 +20,7 @@ def buy():
             index += 1
 
         user_choice = int(raw_input("\033[33;1m温馨提示:输入0推出购物\033[0m|\033[34;1m输入数列号购买物品，请问您需要购买什么物品：\033[0m ").strip()) #.strip()把空格取消
-        if user_choice == 0:  #定义退出接口
+        if user_choice == 0:  #定义推出接口
             ask_exit = raw_input("\033[33;1m为了防止您的误操作如果退出请输入yes/YES,输入其他任意键返回购物列表:\033[0m")
             if ask_exit == "yes" or ask_exit == "YES":
                 print "\033[34;1m下面是您本次的购物清单：\033[0m"
