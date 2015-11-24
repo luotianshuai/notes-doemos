@@ -3,7 +3,9 @@
 import pickle
 import login
 
-
+'''
+商城接口
+'''
 #print login.login_api()
 
 with open('user_info','rb') as f:
