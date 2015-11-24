@@ -3,16 +3,20 @@
 import pickle
 import login
 
+'''
+商城接口
+'''
 #print login.login_api()
 
 with open('user_info','rb') as f:
     usernew_info = pickle.load(f)
 def wrapper(func):
     def inner():
-
-###################################增加判断############################
-
-        func()
+        check_user = login.login_api()
+        if check_user == "登录成功":
+            func()
+        else:
+            return check_user
     return inner
 
 @wrapper
@@ -66,8 +70,3 @@ def buy():
             print "\033[33;1m您现在剩余金额为： %s \033[0m" %salary #打打印，剩余余额
         else:
             print "\033[31;1m不好意思您剩余金额不能购买 %s ，您现在剩余%s,请您查看本商城其他物品!\033[0m " % (product_list[user_choice][0],salary) #剩余钱不足提示！
-
-
-
-if __name__ == '__main__':
-    buy()
