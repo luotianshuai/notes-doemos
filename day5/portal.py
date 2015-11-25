@@ -2,7 +2,8 @@
 #-*- coding:utf-8 -*-
 import pickle
 import login
-
+import ConfigParser
+import time
 '''
 商城接口
 '''
@@ -50,14 +51,26 @@ def buy():
                 print "\033[32;1m本次您总共消费金额为：%d \033[0m" % sum_money #打印总共消费了多少钱
                 lock_card = 0
                 for i in range(3):
-                    card_user = raw_input("\033[32;1m请输入您的银行卡号：")
-                    card_pass = raw_input("\033[32;1m请输入您的银行卡密码：")
-                    if usernew_info.get(card_user):
-                        if usernew_info[card_user]['login_num'] == '3':
+                    card_user = raw_input("\033[32;1m请输入您的银行卡号：") #获取用户的银行卡号
+                    card_pass = raw_input("\033[32;1m请输入您的银行卡密码：")#获取用户的银行卡号密码
+                    if usernew_info.get(card_user):  #判断用户输入的卡号是否存在
+                        if usernew_info[card_user]['login_num'] == '3':  #判断用户是否被锁
                             return "\033[31;1m您好您的账号已被锁定\033[0m"
-                        if usernew_info[card_user]['credit_card_password'] == card_pass:
-                            print  "登录成功"
-                            return
+                        if usernew_info[card_user]['credit_card_password'] == card_pass:  #用户账号通过之后判断密码是否正确
+                            user_money = int(usernew_info[card_user]['credit_money'])  #获取与用户卡内的金额
+                            if user_money > sum_money:  #判断用户钱是否大于消费额度
+                                usernew_money = user_money - sum_money
+                                usernew_info[card_user]['credit_money'] = usernew_money #剩余金额写入至原用户信息
+                                with open('user_info','wb') as f:
+                                    pickle.dump(usernew_info,f)
+                                print "\033[32;1m扣款成功欢迎下次光临\033[0m"
+                                config = ConfigParser.ConfigParser()  #打开消费列表
+                                config.read('201511') #读取消费列表
+                                mothe_now = time.strftime("%Y%m") #获取当前月份
+
+
+                            else:
+                                print
                         else:
                             print "\033[31;1m您好您输入的密码错误请重新输入\033[0m"
                             lock_card += 1
