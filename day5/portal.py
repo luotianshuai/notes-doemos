@@ -2,8 +2,9 @@
 #-*- coding:utf-8 -*-
 import pickle
 import login
-import ConfigParser
 import time
+import os
+import hashlib
 '''
 商城接口
 '''
@@ -53,6 +54,9 @@ def buy():
                 for i in range(3):
                     card_user = raw_input("\033[32;1m请输入您的银行卡号：") #获取用户的银行卡号
                     card_pass = raw_input("\033[32;1m请输入您的银行卡密码：")#获取用户的银行卡号密码
+                    hash = hashlib.md5()
+                    hash.update(card_pass)
+                    card_pass = hash.hexdigest()
                     if usernew_info.get(card_user):  #判断用户输入的卡号是否存在
                         if usernew_info[card_user]['login_num'] == '3':  #判断用户是否被锁
                             return "\033[31;1m您好您的账号已被锁定\033[0m"
@@ -64,13 +68,21 @@ def buy():
                                 with open('user_info','wb') as f:
                                     pickle.dump(usernew_info,f)
                                 print "\033[32;1m扣款成功欢迎下次光临\033[0m"
-                                config = ConfigParser.ConfigParser()  #打开消费列表
-                                config.read('201511') #读取消费列表
                                 mothe_now = time.strftime("%Y%m") #获取当前月份
-
-
+                                if os.path.exists(mothe_now):  #判断用户消费记录是否存在
+                                    with open(mothe_now,'ab') as f: #存在追加
+                                        cost_list = pickle.load(f)
+                                        new_cost_list = cost_list.extend(shoping_list) #把两个列表进行扩展
+                                    pickle.dump(new_cost_list) #写入文件
+                                    return
+                                else:
+                                    with open(mothe_now,'wb') as f: #不存在直接创建新的
+                                        pickle.dump(shoping_list,f) #写入文件
+                                    return
                             else:
-                                print
+                                print "\033[31;1m您卡内的余额不足\033[0m"
+                                print "\033[33;1m您现在剩余：%d 您必须去银行充值才能购买" % user_money
+                                return
                         else:
                             print "\033[31;1m您好您输入的密码错误请重新输入\033[0m"
                             lock_card += 1
@@ -82,10 +94,6 @@ def buy():
 
                     else:
                         print "\033[31;1m您输入的用户名不存在\033[0m"
-
-
-
-                break
             else:
                 continue
         user_choice -= 1 #这里因为是从1开始的了所以需要-1 要不然下面输入索引的时候会有问题！
@@ -97,13 +105,9 @@ def buy():
         print "\033[34;1m物品 %s 已购买并加入购物车\033[0m" % product_list[user_choice][0]  #打印添加值购物列表
 
 
-'''
 @wrapper
-def card_login(card_id,card_password):
-    while True:
-        print  银行系统欢迎您:
-输入1：取现
-输入2：还款
-输入3：显示未出账单详情
-        raw_input()
+def bank():
+    print '''欢迎登录帅哥银行，请输入您能想要的功能：
+1、显示余额
+2、还款
 '''

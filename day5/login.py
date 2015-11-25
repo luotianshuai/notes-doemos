@@ -3,12 +3,13 @@
 import pickle
 import hashlib
 
+
 '''
 hash = hashlib.md5()
 hash.update('admin')
 print hash.hexdigest()
 
-
+例子：
 user_info = {'tianshuai':{'username':'tianshuai',
              'password':'21232f297a57a5a743894a0e4a801fc3',
              'login_num':0},
@@ -35,6 +36,9 @@ def login_api():
     for i in range(3):
         username = raw_input("\033[32;1m请输入您的用户名：")
         password = raw_input("\033[32;1m请输入您的密码：")
+        hash = hashlib.md5()
+        hash.update(password)
+        password = hash.hexdigest()
         if usernew_info.get(username):
             if usernew_info[username]['login_num'] == '3':
                 return "\033[31;1m您好您的账号已被锁定\033[0m"
