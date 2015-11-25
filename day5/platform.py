@@ -20,6 +20,7 @@ if __name__ == '__main__':
     if user_chus == '1':
         portal.buy()
     elif user_chus == '2':
+        print "\033[32;1m欢迎登录银行系统\033[0m"
         portal.bank()
     elif user_chus == '3':
         pass

@@ -9,7 +9,8 @@ import hashlib
 商城接口
 '''
 #print login.login_api()
-
+with open('card_info','rb') as d:
+    cardnew_info = pickle.load(d)
 with open('user_info','rb') as f:
     usernew_info = pickle.load(f)
 def wrapper(func):
@@ -57,27 +58,30 @@ def buy():
                     hash = hashlib.md5()
                     hash.update(card_pass)
                     card_pass = hash.hexdigest()
-                    if usernew_info.get(card_user):  #判断用户输入的卡号是否存在
-                        if usernew_info[card_user]['login_num'] == '3':  #判断用户是否被锁
+                    if cardnew_info.get(card_user):  #判断用户输入的卡号是否存在
+                        if cardnew_info[card_user]['login_num'] == '3':  #判断用户是否被锁
                             return "\033[31;1m您好您的账号已被锁定\033[0m"
-                        if usernew_info[card_user]['credit_card_password'] == card_pass:  #用户账号通过之后判断密码是否正确
-                            user_money = int(usernew_info[card_user]['credit_money'])  #获取与用户卡内的金额
+                        if cardnew_info[card_user]['password'] == card_pass:  #用户账号通过之后判断密码是否正确
+                            user_money = int(cardnew_info[card_user]['credit_money'])  #获取与用户卡内的金额
                             if user_money > sum_money:  #判断用户钱是否大于消费额度
                                 usernew_money = user_money - sum_money
-                                usernew_info[card_user]['credit_money'] = usernew_money #剩余金额写入至原用户信息
-                                with open('user_info','wb') as f:
-                                    pickle.dump(usernew_info,f)
+                                cardnew_info[card_user]['credit_money'] = usernew_money #剩余金额写入至原用户信息
+                                with open('card_info','wb') as d:
+                                    pickle.dump(cardnew_info,d)
                                 print "\033[32;1m扣款成功欢迎下次光临\033[0m"
+
+
+
                                 mothe_now = time.strftime("%Y%m") #获取当前月份
                                 if os.path.exists(mothe_now):  #判断用户消费记录是否存在
-                                    with open(mothe_now,'ab') as f: #存在追加
-                                        cost_list = pickle.load(f)
+                                    with open(mothe_now,'w') as d: #存在追加
+                                        cost_list = pickle.load(d)
                                         new_cost_list = cost_list.extend(shoping_list) #把两个列表进行扩展
-                                    pickle.dump(new_cost_list) #写入文件
+                                        pickle.dump(new_cost_list,d) #写入文件
                                     return
                                 else:
-                                    with open(mothe_now,'wb') as f: #不存在直接创建新的
-                                        pickle.dump(shoping_list,f) #写入文件
+                                    with open(mothe_now,'wb') as d: #不存在直接创建新的
+                                        pickle.dump(shoping_list,d) #写入文件
                                     return
                             else:
                                 print "\033[31;1m您卡内的余额不足\033[0m"

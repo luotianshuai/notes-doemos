@@ -1,33 +1,23 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
-'''
+import pickle
 import time
-import ConfigParser
-import os
-mothe_now = time.strftime("%Y%m") #获取当前月份
-day_now = time.strftime("%d") #获取当天日期
-day_second = time.strftime("%H%M%S")
-print day_second
-'''
-'''
-if os.path.exists(mothe_now):  #判断当前月份的文件是否存在
-    config = ConfigParser.ConfigParser()  #打开消费列表
-    config.read(mothe_now) #读取消费列表
-    sec = config.has_section(day_now)  #判断当天是否有过消费
-    if sec:
-        print "日期存在"
-    else:
-        print "日期不存在"
-else:
-    with open(mothe_now,'wb') as f:
-        pass
-    config = ConfigParser.ConfigParser()  #打开消费列表
-    config.read(mothe_now) #读取消费列表
-    config.add_section(day_now) #创建section
+mothe_now = time.strftime("%Y%m")
+shoping_list = [1,2,3,4,5]
+shuai = [100,101,102]
 
-    config.write(open(mothe_now,'w')) #修改后的数据写入配置文件
+print shuai.extend(shoping_list)
+print shoping_list
+
 '''
-li = [1,2,3,4,5]
-li1 = [2,3,4,5]
-li.extend(li1)
-print li
+with open(mothe_now,'r') as d: #存在追加
+    cost_list = pickle.load(d)
+print cost_list
+new_cost_list = shoping_list.extend(cost_list)
+for i in new_cost_list:
+    print i
+'''
+'''
+    new_cost_list = cost_list.extend(shoping_list) #把两个列表进行扩展
+print new_cost_list
+'''
