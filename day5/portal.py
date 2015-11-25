@@ -61,28 +61,26 @@ def buy():
                     if cardnew_info.get(card_user):  #判断用户输入的卡号是否存在
                         if cardnew_info[card_user]['login_num'] == '3':  #判断用户是否被锁
                             return "\033[31;1m您好您的账号已被锁定\033[0m"
-                        if cardnew_info[card_user]['password'] == card_pass:  #用户账号通过之后判断密码是否正确
+                        if cardnew_info[card_user]['password'] == card_pass:
                             user_money = int(cardnew_info[card_user]['credit_money'])  #获取与用户卡内的金额
                             if user_money > sum_money:  #判断用户钱是否大于消费额度
                                 usernew_money = user_money - sum_money
                                 cardnew_info[card_user]['credit_money'] = usernew_money #剩余金额写入至原用户信息
-                                with open('card_info','wb') as d:
-                                    pickle.dump(cardnew_info,d)
-                                print "\033[32;1m扣款成功欢迎下次光临\033[0m"
-
-
-
-                                mothe_now = time.strftime("%Y%m") #获取当前月份
-                                if os.path.exists(mothe_now):  #判断用户消费记录是否存在
-                                    with open(mothe_now,'w') as d: #存在追加
-                                        cost_list = pickle.load(d)
-                                        new_cost_list = cost_list.extend(shoping_list) #把两个列表进行扩展
-                                        pickle.dump(new_cost_list,d) #写入文件
+                                with open('card_info','wb') as e:
+                                    pickle.dump(cardnew_info,e)
+                                    print "\033[32;1m扣款成功欢迎下次光临\033[0m"
+                                file_name = time.strftime("%Y%m") #获取当前月份
+                                if os.path.exists(file_name):
+                                    with open(file_name,'rb') as d:
+                                        li = pickle.load(d)
+                                    li.extend(shoping_list)
+                                    with open(file_name,'wb') as q:
+                                        pickle.dump(li,q)
                                     return
                                 else:
-                                    with open(mothe_now,'wb') as d: #不存在直接创建新的
-                                        pickle.dump(shoping_list,d) #写入文件
-                                    return
+                                    with open(file_name,'wb') as d:
+                                        pickle.dump(shoping_list,d)
+                                        return
                             else:
                                 print "\033[31;1m您卡内的余额不足\033[0m"
                                 print "\033[33;1m您现在剩余：%d 您必须去银行充值才能购买" % user_money
@@ -95,11 +93,10 @@ def buy():
                                 with open('user_info','wb') as f:
                                     pickle.dump(usernew_info,f)
                                 return "\033[31;1m您的账户输入错误了3次密码账号已被锁定\033[0m"
-
                     else:
                         print "\033[31;1m您输入的用户名不存在\033[0m"
-            else:
-                continue
+                        continue
+
         user_choice -= 1 #这里因为是从1开始的了所以需要-1 要不然下面输入索引的时候会有问题！
         if user_choice >= index:  #判断用户输入是否超出下标范围
             print "\033[33;1m您输入的序列号超出了范围,请重新输入\033[0m "
