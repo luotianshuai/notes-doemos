@@ -48,7 +48,30 @@ def buy():
                 for buy_money in shoping_list:
                     sum_money += buy_money[1]  #计算消费总额
                 print "\033[32;1m本次您总共消费金额为：%d \033[0m" % sum_money #打印总共消费了多少钱
-                #print  "\033[32;1m欢迎下次光临\033[0m"
+                lock_card = 0
+                for i in range(3):
+                    card_user = raw_input("\033[32;1m请输入您的银行卡号：")
+                    card_pass = raw_input("\033[32;1m请输入您的银行卡密码：")
+                    if usernew_info.get(card_user):
+                        if usernew_info[card_user]['login_num'] == '3':
+                            return "\033[31;1m您好您的账号已被锁定\033[0m"
+                        if usernew_info[card_user]['credit_card_password'] == card_pass:
+                            print  "登录成功"
+                            return
+                        else:
+                            print "\033[31;1m您好您输入的密码错误请重新输入\033[0m"
+                            lock_card += 1
+                            if lock_card == 3:
+                                usernew_info[card_user]['login_num'] = '3'
+                                with open('user_info','wb') as f:
+                                    pickle.dump(usernew_info,f)
+                                return "\033[31;1m您的账户输入错误了3次密码账号已被锁定\033[0m"
+
+                    else:
+                        print "\033[31;1m您输入的用户名不存在\033[0m"
+
+
+
                 break
             else:
                 continue
@@ -59,6 +82,7 @@ def buy():
         user_add = product_list[user_choice]  #匹配用户选择商品
         shoping_list.append(product_list[user_choice]) #把用户输入的的商品加入到购物车
         print "\033[34;1m物品 %s 已购买并加入购物车\033[0m" % product_list[user_choice][0]  #打印添加值购物列表
+
 
 '''
 @wrapper

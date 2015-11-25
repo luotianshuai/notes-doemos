@@ -12,13 +12,13 @@ print hash.hexdigest()
 user_info = {'tianshuai':{'username':'tianshuai',
              'password':'21232f297a57a5a743894a0e4a801fc3',
              'login_num':0},
-             666666:{'credit_card_password':'21232f297a57a5a743894a0e4a801fc3',
-             'credit_money':15000,'mail':'451161316@qq.com'},
+             '666666':{'credit_card_password':'21232f297a57a5a743894a0e4a801fc3',
+             'credit_money':15000,'mail':'451161316@qq.com', 'login_num':0},
              'shuaige':{'username':'shuaige',
              'password':'21232f297a57a5a743894a0e4a801fc3',
              'login_num':0},
-             88888888:{'credit_card_password':'21232f297a57a5a743894a0e4a801fc3',
-             'credit_money':15000,'mail':'451161316@qq.com'}
+             '88888888':{'credit_card_password':'21232f297a57a5a743894a0e4a801fc3',
+             'credit_money':15000,'mail':'451161316@qq.com', 'login_num':0}
              }
 with open('user_info','wb') as f:
     pickle.dump(user_info,f)
@@ -50,3 +50,4 @@ def login_api():
                     return "\033[31;1m您的账户输入错误了3次密码账号已被锁定\033[0m"
         else:
             print "\033[31;1m您输入的用户名不存在\033[0m"
+
