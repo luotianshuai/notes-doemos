@@ -2,6 +2,7 @@
 #-*- coding:utf-8 -*-
 import portal
 import bank
+import manage
 
 
 
@@ -19,5 +20,7 @@ if __name__ == '__main__':
             portal.buy()
         elif num == '2':
             bank.bank()
+        elif num == '3':
+            manage.manage_api()
         else:
             continue

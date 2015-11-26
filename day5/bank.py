@@ -4,6 +4,7 @@ import json
 import portal
 import datetime
 import os
+import time
 
 def bank():
     with open('card_info','rb') as f:  #打开文件并用json把字符串转换数据类型
@@ -56,7 +57,7 @@ def bank():
                 print "\033[32;1m您现在卡里剩余的金额为：%s" % card_moneyold
                 get_money = raw_input("\033[32;1m请您输入您要取的金额\033[0m")
                 get_money = int(get_money)
-                get_moneyfc = get_money * 0.05
+                get_moneyfc = get_money * 0.005
                 get_money += get_moneyfc
                 card_moneyold = int(card_moneyold)
                 if get_money <= card_moneyold:
@@ -64,6 +65,21 @@ def bank():
                     card_infocard[cardid]['credit_money'] = moneynow
                     card_getnow = card_infocard[cardid]['credit_money']
                     print "\033[32;1m支取完成，您现在的金额为：%s感谢您使用帅哥银行，嘿嘿...\033[0m" % card_getnow
+                    get_cache = [('getcache',get_money)]  #定义消费记录把取现的记录加入到消费记录中
+                    mothe_now = time.strftime("%Y%m")  #获取本月日期
+                    file_cost = mothe_now + card_user #获取消费记录
+                    if os.path.exists(file_cost):
+                        with open(file_cost,'rb') as d:
+                            cach_list = json.load(d)
+                        cach_list.extend(get_cache)
+                        with open(file_cost,'wb') as e:
+                            json.dump(cach_list,e)
+                    else:
+                        with open(file_cost,'wb') as f:
+                            json.dump(get_cache,f)
+                else:
+                    print "\033[31;1m您好您剩余的金额不足，现在的金额为：%s\033[0m" % card_moneyold
+
             if num == '3':
                 card_moneyold = card_infocard[cardid]['credit_money']  #取出现有余额
                 print "\033[32;1m您现在卡里剩余的金额为：%s" % card_moneyold
@@ -83,6 +99,8 @@ def bank():
                         with open('card_info','wb') as o:
                             json.dump(card_infocard,o)
                         print "\033[32;1m转账成功\033[0m"
+                    else:
+                        print "\033[31;1m您好您剩余的金额不足，请仔细确认后重新输入\033[0m"
 
                 else:
                     print "\033[31;1m用户不存在，请仔细确认后重新输入\033[0m"
