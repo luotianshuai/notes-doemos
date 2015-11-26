@@ -67,6 +67,14 @@ def manage_api():
         elif num == '2':
             user_add = raw_input('\033[34;1m请选择您要添加的账户类型1、添加商城用户 2、信用卡用户：\033[0m')
             if user_add == '1':
-                raw_input()
+                with open('user_info','rb') as d:
+                    user_infos = json.load(f)
+                add_name = raw_input('\033[32;1m请输入你要添加的用户：\033[0m')
+                if not user_infos.get(add_name):
+                    add_pass = raw_input("\033[32;1m请输入您添加用户的密码：\033[0m")
+                    add_mail = raw_input("\033[32;1m请输入您添加用户的邮箱：\033[0m")
+
+                else:
+                    print "\033[31;1m用户已存在\033[0m"
         else:
             print "\033[31;1m请输入正确的功能项目\033[0m"
