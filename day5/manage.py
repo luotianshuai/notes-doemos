@@ -82,7 +82,7 @@ def manage_api():
                     hash.update(add_pass)
                     add_pass = hash.hexdigest()
 
-                    user_infos[add_name] = {'username':add_name,'mail':add_mail,'login_num': 0,'password':add_pass}  #添加用户信息
+                    user_infos[add_name] = {'username':add_name,'mail':add_mail,'login_num': 0,'password':add_pass,'credit_money':15000}  #添加用户信息
                     with open('user_info','wb') as e:
                         json.dump(user_infos,e)
                     print "\033[32;1m%s用户添加完成\033[0m" % add_name
@@ -117,12 +117,12 @@ def manage_api():
                 else:
                     print "\033[31;1m用户已存在\033[0m"
         elif num == '3':
-            print '''\033[32;1m20号为账单日发送本月的消费记录通过邮件发送，月底为最后还款日期，1号为计息日如有为还款按未还款的万分之五计算。
+            print '''\033[32;1m30号为账单日发送本月的消费记录通过邮件发送，月底为最后还款日期，10号为计息日如有为还款按未还款的万分之五计算。
 输入1发送消费记录、输入2计算利息\033[0m'''
             func = raw_input("\033[32;1m请输入选择的功能：\033[0m")
             '''d = datetime.datetime.now()
                d.day = daynow  获取天的日期
-               if daynow = 20: 如果为20号就发送邮件  (为了方便测试就没有使用自动的操作，请手动执行)
+               if daynow = 30: 如果为20号就发送邮件  (为了方便测试就没有使用自动的操作，请手动执行输入，1发送消费记录)
             '''
             if func == '1':
                 print "\033[32;1m请确保用户这个月有消费记录\033[0m"
@@ -146,14 +146,14 @@ def manage_api():
                             cost_all += m[1]   #计算消费额度
                             cost_info.append(cost_liebiao) #把消费列表中的商品加入到列表中
 
-                        neirong = "您本月的消费列表为：%s您本月的消费总额为：%d，请在月底前还款" % (cost_info,cost_all)
+                        neirong = "您本月的消费列表为：%s您本月的消费总额为：%d，请在下个月10号前还款" % (cost_info,cost_all)
                         yonghu = i
                         youxiang = user_get[i]['mail']
                         zhuti = '消费记录'
                         mail.email(neirong,yonghu,youxiang,zhuti)  #调用邮件函数发送邮件
 
             if func == '2':
-                print "\033[32;1m请把系统时调为每个月的1号即可\033[0m"
+                print "\033[32;1m请把系统时调为每个月的10号即可\033[0m"
                 d = datetime.datetime.now()
                 if d.day == 1:
 
