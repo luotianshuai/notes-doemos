@@ -84,3 +84,17 @@ def test(*arg):
 
 test(1,2,3,4,5)
 '''
+
+import datetime
+
+d = datetime.datetime.now()
+year = d.year
+month = d.month
+if month == 1 :
+    month = 12
+    year -= 1
+else :
+    month -= 1
+last_month = str(year)+ str(month)
+print last_month
+print d.day
