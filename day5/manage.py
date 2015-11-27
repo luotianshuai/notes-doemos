@@ -11,7 +11,8 @@ def manage_api():
         print '''\033[34;1m管理接口提供的功能有：
 1 解锁商城用户或信用卡用户
 2 添加商城用户或信用卡用户
-3 信用卡账单邮件
+3 删除商城用户或信用卡用户
+4 信用卡账单邮件
 0 输入0返回上级菜单\033[0m
 '''
         num = raw_input("\033[32;1m请输入您需要的功能：\033[0m")
@@ -41,7 +42,6 @@ def manage_api():
 
                     else:
                         print "\033[31;1m\033[32;1m%s\033[0m\033[31;1m用户不存在\033[0m" % user_unlock  #不能存在提示用户不存在！
-
                 else:
                     print "\033[31;1m没有账户被锁定\033[0m"
             if ulocak_user == '2':
@@ -116,51 +116,74 @@ def manage_api():
                     mail.email(neirong,yonghu,youxiang,zhuti)  #调用邮件函数发送邮件
                 else:
                     print "\033[31;1m用户已存在\033[0m"
-        elif num == '3':
-            print '''\033[32;1m30号为账单日发送本月的消费记录通过邮件发送，月底为最后还款日期，10号为计息日如有为还款按未还款的万分之五计算。
-输入1发送消费记录、输入2计算利息\033[0m'''
-            func = raw_input("\033[32;1m请输入选择的功能：\033[0m")
-            '''d = datetime.datetime.now()
-               d.day = daynow  获取天的日期
-               if daynow = 30: 如果为20号就发送邮件  (为了方便测试就没有使用自动的操作，请手动执行输入，1发送消费记录)
-            '''
-            if func == '1':
-                print "\033[32;1m请确保用户这个月有消费记录\033[0m"
-                #循环查找用户，然后匹配用户的信息判断用户消费记录是否存在
-                user_list = [] #添加空列表把用户信息加入到列表中然后获取列表使用发送邮件！
-                mothe_now = time.strftime("%Y%m")  #获取本月日期
-                with open('user_info','rb') as f:  #加载用户信息
-                    user_get = json.load(f)
-                for k,v in user_get.items():
-                    user_list.append(k)  #获取用户列表
-                for i in user_list:
-                    file_name = mothe_now+i  #取出消费记录的文件名称
-                    print file_name
-                    if os.path.exists(file_name): #如果消费列表文件存在打开，然后发送账单！
-                        with open(file_name,'rb') as f: #打开消费列表
-                            cost_list = json.load(f)
-                        cost_all = 0
-                        cost_info = []
-                        for m in cost_list:
-                            cost_liebiao = m[0]
-                            cost_all += m[1]   #计算消费额度
-                            cost_info.append(cost_liebiao) #把消费列表中的商品加入到列表中
-
-                        neirong = "您本月的消费列表为：%s您本月的消费总额为：%d，请在下个月10号前还款" % (cost_info,cost_all)
-                        yonghu = i
-                        youxiang = user_get[i]['mail']
-                        zhuti = '消费记录'
-                        mail.email(neirong,yonghu,youxiang,zhuti)  #调用邮件函数发送邮件
-
-            if func == '2':
-                print "\033[32;1m请把系统时调为每个月的10号即可\033[0m"
-                d = datetime.datetime.now()
-                if d.day == 1:
-
-
-
             else:
-                print "\033[32;1m请把系统时调为每个月的1号即可\033[0m"
+                print "\033[31;1m请输入正确的功能项目\033[0m"
+        elif num == '3':
+            delete_user = raw_input("\033[34;1m请输入您要删除的类型：1、删除商城用户   2、删除用卡用户：\033[0m")
+            if delete_user == '1':
+                with open('user_info','rb') as d:  #打开文件并用json把字符串转换为数据类型
+                    user_info = json.load(d)
+                for k,v in user_info.items():
+                    print k
+                user_del = raw_input("\033[32;1m请输入您要删除的用户名：\033[0m") #获取用户输入
+                if user_info.get(user_del):#判断用户输入的用户是否存在，存在删除
+                    user_info.pop(user_del)
+                    with open('user_info','wb') as e:  #删除后保存至信息文件中
+                        json.dump(user_info,e)
+                    print "\033[32;1m您好用户%s删除成功\033[0m" % user_del  #打印用户提示用户已删除
+                else:
+                    print "\033[31;1m您好您输入的用户不存在\033[0m"
+            if delete_user == '2':
+                with open('card_info','rb') as d:  #打开文件并用json把字符串转换为数据类型
+                    card_info = json.load(d)
+                for k,v in card_info.items():
+                    print k
+                user_del = raw_input("\033[32;1m请输入您要删除的用户名：\033[0m")#获取用户输入
+                if card_info.get(user_del):
+                    card_info.pop(user_del)
+                    with open('card_info','wb') as e:#删除后保存至信息文件中
+                        json.dump(card_info,e)
+                    print "\033[32;1m您好用户%s删除成功\033[0m" % user_del  #打印用户提示用户已删除
+                else:
+                    print "\033[31;1m您好您输入的用户不存在\033[0m"
+
+
+        elif num == '4':
+            print '''\033[32;1m30号为账单日发送本月的消费记录通过邮件发送
+1 发送账单：请把日期调到30号，并且本月有消费记录！\033[0m'''
+            func = raw_input("\033[32;1m请输入选择的功能：\033[0m")
+            if func == '1':
+                d = datetime.datetime.now()
+                daynow = d.day   #获取天的日期
+                if daynow == 30: #如果为30号就发送邮件
+                    print "\033[32;1m请确保用户这个月有消费记录\033[0m"
+                    #循环查找用户，然后匹配用户的信息判断用户消费记录是否存在
+                    user_list = [] #添加空列表把用户信息加入到列表中然后获取列表使用发送邮件！
+                    mothe_now = time.strftime("%Y%m")  #获取本月日期
+                    with open('user_info','rb') as f:  #加载用户信息
+                        user_get = json.load(f)
+                    for k,v in user_get.items():
+                        user_list.append(k)  #获取用户列表
+                    for i in user_list:
+                        file_name = mothe_now+i  #取出消费记录的文件名称
+                        print file_name
+                        if os.path.exists(file_name): #如果消费列表文件存在打开，然后发送账单！
+                            with open(file_name,'rb') as f: #打开消费列表
+                                cost_list = json.load(f)
+                            cost_all = 0
+                            cost_info = []
+                            for m in cost_list:
+                                cost_liebiao = m[0]
+                                cost_all += m[1]   #计算消费额度
+                                cost_info.append(cost_liebiao) #把消费列表中的商品加入到列表中
+
+                            neirong = "您本月的消费列表为：%s您本月的消费总额为：%d，请在下个月10号前还款" % (cost_info,cost_all)
+                            yonghu = i
+                            youxiang = user_get[i]['mail']
+                            zhuti = '消费记录'
+                            mail.email(neirong,yonghu,youxiang,zhuti)  #调用邮件函数发送邮件
+                else:
+                    print "\033[31;1m请把日期设置为本月的30号并且有消费记录\033[0m"
         elif num == '0':
             break
         else:

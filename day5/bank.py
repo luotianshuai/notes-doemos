@@ -94,7 +94,6 @@ def bank():
                         other_moeny = card_infocard[other_user]['credit_money']
                         other_moeny = int(other_moeny)
                         other_moeny = other_moeny + not_money
-                        print other_moeny
                         card_infocard[other_user]['credit_money'] = other_moeny
                         with open('card_info','wb') as o:
                             json.dump(card_infocard,o)
