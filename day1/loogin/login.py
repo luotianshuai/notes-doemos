@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
-
+'''
+本程序是登录认证的程序，3次错误密码锁定
+'''
 with open('db','rb') as user_info: #打开文件
     user_infos = user_info.readlines() #读取用户信息按行存储到列表中
 
