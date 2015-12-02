@@ -15,19 +15,17 @@ city_map = {"河北省":{"石家庄市":['平山县','无极县','灵寿县'],
 
 
 
-for i in range(3):
+for i in range(3):  #循环3次
     print "---------------------地图---------------------------"
-    sheng_list = city_map.keys()
-    for sheng_listname in sheng_list:
-        print sheng_listname
+    sheng_list = city_map.keys()  #获取省的列表
+    for sheng_listname in sheng_list: #循环省的列表
+        print sheng_listname #打印省的列表
     print "----------------------------------------------------"
-    city_name = raw_input("请输如您要查看的省名: ")
+    city_name = raw_input("请输如您要查看的省名: ")  #获取市的名称
     jump_up_flag = False
     if city_name in city_map:           #检查输入是否为正确的省名
         sheng_name = city_map[city_name]  #使用输入的信息作为下标,（省名）
         shi_nl = sheng_name.keys()
-
-#        for i in range(3):
         while True:
             print"-----------------%s包含的市为--------------------" % city_name
             for  shi_list in shi_nl:
