@@ -7,8 +7,8 @@ import pickle
 import hashlib
 import getpass
 '''
-userlist = {"shuaige":{'password':'37d2b9990df5a6843caf19352fee42a6','login_num':0},
-            "tianshuai":{'password':'37d2b9990df5a6843caf19352fee42a6','login_num':0}
+userlist = {"shuaige":{'password':'21232f297a57a5a743894a0e4a801fc3','login_num':0},
+            "tianshuai":{'password':'21232f297a57a5a743894a0e4a801fc3','login_num':0}
 
 }
 with open('user_info','wb') as f:
@@ -53,4 +53,3 @@ def wrapper(func):
             return check_user #如果登录失败返回登录函数所提示的信息
     return inner #返回调用装饰器的函数
 
-login_api()
