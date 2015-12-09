@@ -28,9 +28,29 @@ def login_api():
         if user_infos.get(username): #判断用户输入的用户是否存在，通过字典的get方法判断key是否存在
             if user_infos[username]['login_num'] >= 3:
                 print "\033[31;1m您好你输入的账户已被锁定\033[0m"
-            print "用户存在"
+                return False
+            if user_infos[username]['password'] == password:
+                return "succeed"
+            else:
+                print "\033[31;1m您好您输入的密码错误请重新输入\033[0m"
+                lock_user += 1  #累加错误密码的次数
+                if lock_user == 3:
+                    user_infos[username]['login_num'] = 3
+                    with open('user_info','wb') as f:
+                        pickle.dump(user_infos,f)
+                    print "\033[31;1m您的账户输入错误了3次密码账号已被锁定\033[0m"
+                    return False
         else:
             print "\033[31;1m您好您输入的用户信息不存在\033[0m"
 
+
+def wrapper(func):
+    def inner(): #封装调用装饰器的函数
+        check_user = login_api()  #在装饰器内新增的功能
+        if check_user == "succeed": #判断，登录函数的登录是否成功
+            func()
+        else:
+            return check_user #如果登录失败返回登录函数所提示的信息
+    return inner #返回调用装饰器的函数
 
 login_api()
