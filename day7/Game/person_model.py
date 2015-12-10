@@ -29,5 +29,3 @@ class Game_pmodel(object):
         temp = "角色:%s ; 职业:%s ; 战斗力:%s ; 血量:%s"  % (self.name, self.profession, self.attack, self.blood)
         print temp
 
-
-
