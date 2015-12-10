@@ -65,7 +65,7 @@ o【$▅▆▇◤
                                 if obj2.blood <= 0:
                                     print "\033[32;1m怪物已死亡,角色升级\033[0m"
                                     obj1.attack = obj1.attack + 10
-                                    obj1.blood = obj1.blood + cishu*
+                                    obj1.blood = obj1.blood + cishu*obj2.attack
                                 print "\033[34;1m------------回合结束--------------\033[0m"
                                 obj1.detail()
                                 obj2.detail()
