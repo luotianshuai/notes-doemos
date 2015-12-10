@@ -30,7 +30,7 @@ def login_api():
                 print "\033[31;1m您好你输入的账户已被锁定\033[0m"
                 return False
             if user_infos[username]['password'] == password:
-                return "succeed"
+                return username
             else:
                 print "\033[31;1m您好您输入的密码错误请重新输入\033[0m"
                 lock_user += 1  #累加错误密码的次数
@@ -45,10 +45,10 @@ def login_api():
 
 
 def wrapper(func):
-    def inner(): #封装调用装饰器的函数
+    def inner(arg): #封装调用装饰器的函数
         check_user = login_api()  #在装饰器内新增的功能
-        if check_user == "succeed": #判断，登录函数的登录是否成功
-            func()
+        if check_user: #判断，登录函数的登录是否成功
+            func(check_user)
         else:
             return check_user #如果登录失败返回登录函数所提示的信息
     return inner #返回调用装饰器的函数

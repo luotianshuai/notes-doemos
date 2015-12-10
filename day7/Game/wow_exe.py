@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
-import login_model
-
-@login_model.wrapper
-def run_game():
-    print "1"
+import run_game
+run_game.run_game
 
 
 if __name__ == '__main__':
@@ -20,4 +17,4 @@ if __name__ == '__main__':
 
 ------------------------魔兽世界-----------------------------------------
 ######################################################################### '''
-    run_game()
+    run_game.run_game('test')
