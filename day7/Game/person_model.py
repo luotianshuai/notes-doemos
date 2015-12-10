@@ -14,14 +14,20 @@ class Game_pmodel(object):
         self.attack = attack
         self.blood = blood
 
+    def supershuai(self):
+        self.blood = self.blood + 1000
+        self.attack = self.attack + 1000
+        print "\033[32;1m呼叫及时当前血量：%s 当前攻击为：%s，" % (self.blood,self.attack)
+    def add_attack(self):
+        self.attack = self.attack +100
+        print "\033[32;1m您当前的攻击力为%s\033[0m" % self.attack
     def aspirine(self):
-        bloodnow = self.blood + 100
-        print "\033[32;1m您当前的血量为%s\033[0m" % bloodnow
+        self.blood = self.blood + 100
+        print "\033[32;1m您当前的血量为%s\033[0m" % self.blood
     def detail(self):
         """注释：当前对象的详细情况"""
         temp = "角色:%s ; 职业:%s ; 战斗力:%s ; 血量:%s"  % (self.name, self.profession, self.attack, self.blood)
         print temp
 
 
-#obj1 = Game_pmodel('superman','战士',1000,2000,3000)
-#obj1.detail()
+

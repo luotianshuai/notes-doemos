@@ -13,8 +13,8 @@ userlist = {"shuaige":{'password':'21232f297a57a5a743894a0e4a801fc3','login_num'
 }
 with open('user_info','wb') as f:
     pickle.dump(userlist,f)
-'''
 
+'''
 def login_api():
     with open('user_info','rb') as f:
         user_infos = pickle.load(f)  #通过pickle把文件内容字符串转换成数据类型
