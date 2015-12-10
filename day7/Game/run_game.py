@@ -53,9 +53,10 @@ o【$▅▆▇◤
                         obj2.detail()
                         action = raw_input("\033[31;1m请问是否攻击yes/no其他为no:\033[0m")
                         if action == 'yes':
+                            cishu = 0
                             while True:
+                                cishu += 1
                                 print "\033[31;1m战斗开始\033[0m"
-                                print type(obj1.blood)
                                 obj1.blood = obj1.blood - obj2.attack
                                 obj2.blood = obj2.blood - obj1.attack
                                 if obj1.blood <= 0:
@@ -63,11 +64,12 @@ o【$▅▆▇◤
                                     return
                                 if obj2.blood <= 0:
                                     print "\033[32;1m怪物已死亡,角色升级\033[0m"
-                                    obj1.attack + 10
-                                    obj1.blood +20
+                                    obj1.attack = obj1.attack + 10
+                                    obj1.blood = obj1.blood + cishu*
+                                print "\033[34;1m------------回合结束--------------\033[0m"
                                 obj1.detail()
                                 obj2.detail()
-                                skill = raw_input("\033[32;1m请问是否使用技能\033[0m")
+                                skill = raw_input("\033[32;1m请问是否使用技能{1}加血｛2｝加攻击力｛3｝大吼帅哥无敌，怪物直接秒杀\033[0m")
 
                     else:
                         pass
