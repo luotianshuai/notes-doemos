@@ -2,7 +2,7 @@
 #-*- coding:utf-8 -*-
 
 import run_game
-run_game.run_game
+#run_game.run_game
 
 
 if __name__ == '__main__':

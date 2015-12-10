@@ -30,6 +30,9 @@ def login_api():
                 print "\033[31;1m您好你输入的账户已被锁定\033[0m"
                 return False
             if user_infos[username]['password'] == password:
+                user_infos[username]['login_num'] = 0
+                with open('user_info','wb') as f:
+                    pickle.dump(user_infos,f)
                 return username
             else:
                 print "\033[31;1m您好您输入的密码错误请重新输入\033[0m"

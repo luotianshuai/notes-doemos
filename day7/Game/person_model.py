@@ -8,31 +8,20 @@ import random
 
 
 class Game_pmodel(object):
-    equipment = {"head":0,"bosom":0,"shoe":0,"weapon":0}  #定义静态字段包含角色的装备
-
-    def __init__(self,name,profession,gold=0,attack=0,blood=0,defense=0): #初始化函数，名字和职业
+    def __init__(self,name,profession,attack=0,blood=0,): #构造函数，名字和职业等信息
         self.name = name   #定义普通字段
         self.profession = profession #定义普通字段
-        self.gold = gold
         self.attack = attack
         self.blood = blood
-        self.defense = defense
 
-    def simpleness(self):
-        pass
+    def aspirine(self):
+        bloodnow = self.blood + 100
+        print "\033[32;1m您当前的血量为%s\033[0m" % bloodnow
+    def detail(self):
+        """注释：当前对象的详细情况"""
+        temp = "角色:%s ; 职业:%s ; 战斗力:%s ; 血量:%s"  % (self.name, self.profession, self.attack, self.blood)
+        print temp
 
 
-class Warrior(Game_pmodel):
-    def __init__(self,name,profession,gold=0,attack=500,blood=1000,defense=2000):
-        self.name = name   #定义普通字段
-        self.profession = profession #定义普通字段
-        self.gold = gold
-        self.attack = attack
-        self.blood = blood
-        self.defense = defense
-
-class Hunter(Game_pmodel):
-    def __init__(self,attack=2000,blood=700,defense=950):
-        self.attack = attack
-        self.blood = blood
-        self.defense = defense
+#obj1 = Game_pmodel('superman','战士',1000,2000,3000)
+#obj1.detail()
