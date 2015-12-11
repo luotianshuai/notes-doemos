@@ -10,6 +10,13 @@ import pickle
 def run_game(arg):
     if os.path.exists(arg):  #判断角色是否有存档
         print "\033[31;1m角色已存在，如果要新建立角色请删除旧的角色\033[0m"
+        del_game_user = raw_input("\033[34;1m你是否想删除角色yes/no or 任意键跳过：\033[0m")
+        if del_game_user == 'yes':
+            os.remove(arg)  #删除角色
+            print "\033[32;1m您好角色已删除，请重新登录！\033[0m"
+            return
+        else:
+            pass
         with open(arg,'rb') as f: #打开存储游戏角色的文件
             obj1 = pickle.load(f) #加载文件
         zhandou = raw_input("\033[32;1m请问是否进入副本，[1]进入、任意键退出程序！：\033[0m") #获取用户输入是否进入副本
