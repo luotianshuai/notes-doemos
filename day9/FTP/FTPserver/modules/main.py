@@ -10,7 +10,6 @@ class ArgvHandler(object):
     def __init__(self,args):
         self.args = args #定义普通字段
         self.argv_parser()  #调用判断参数的方法
-        self.auth() #有待更新
     def argv_parser(self):
         if len(self.args) == 1: #sys.argv程序本身就是一个参数
             self.help_msg() #如后后面没有跟参数执行help方法
@@ -38,5 +37,4 @@ class ArgvHandler(object):
             print (e)
     def help(self):
         self.help_msg()
-    def auth(self):
-        pass
+        sys.exit()
