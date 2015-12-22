@@ -43,8 +43,7 @@ class FtpServer(SocketServer.BaseRequestHandler):
                 response_code = '401'
         else:
             response_code = '404'
-        response_str = "response|%s|%s" %(response_code,self.response_code_list[response_code])
-        #这里self.response_code_list 是为了以后扩展使用
-        self.request.send(response_str)
+        response_str = "response|%s" % response_code
+        self.request.sendall(response_str)
         return response_code
 

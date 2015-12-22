@@ -57,11 +57,9 @@ class Client_Handler(object):
             hash = hashlib.md5()  #md5加密
             hash.update(userpass) #md5加密
             userpass = hash.hexdigest()#md5加密
-            print userpass
             acount_info = json.dumps({
                 'username':username,
-                'password':userpass
-            }) #把用户的输入转换成josn模式
+                'password':userpass}) #把用户的输入转换成josn模式
             auth_string = "user_auth|%s" % (acount_info) #把动作和信息一起发送过去！
             self.sock.send(auth_string) #发送登录信息
             server_response = self.sock.recv(1024) #接收server端返回的状态信息
@@ -74,6 +72,8 @@ class Client_Handler(object):
                 return True
             else:
                 retry_count += 1
+        else:
+            sys.exit('\033[31;1mToo many attempt\033[0m')
     def get_response_code(self,code): #获取状态码函数
         response_info = code.split('|') #分割server端返回的状态信息
         codenow = response_info[1] #获取状态码所在字段
