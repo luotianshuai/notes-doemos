@@ -3,7 +3,7 @@
 import sys
 import socket
 import json
-
+import hashlib
 
 class Client_Handler(object):
     response_code = {
@@ -23,9 +23,9 @@ class Client_Handler(object):
             self.help_msg()
         else:
             try:
-                self.ftp_host = self.args[self.args.index('-s')+1] #获取程序后面-s 后的参数
-                self.ftp_port = int(self.args[self.args.index('-p')+1]) #获取程序后面-p 后的参数
-            except (IndexError,ValueError) as e:
+                self.ftp_host = self.args[self.args.index('-s') +1] #获取程序后面-s 后的参数
+                self.ftp_port = int(self.args[self.args.index('-p') +1]) #获取程序后面-p 后的参数
+            except (IndexError,ValueError):
                 self.help_msg()
                 sys.exit()
 
@@ -40,10 +40,12 @@ class Client_Handler(object):
 
     def connection(self,host,port): #定义连接函数
         try:
+            print host,port
             self.sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM) #实例化socket
             self.sock.connect((host,port)) #连接socket服务器
         except socket.error as e:
             sys.exit("\033[31;1m%s\033[0m"%e)
+
 
     def auth(self): #定义认证函数
         retry_count = 0
@@ -52,14 +54,25 @@ class Client_Handler(object):
             if len(username) == 0: continue #如果用户没有输入重新输入
             userpass = raw_input("\033[32;1mPlease input  password:\033[0m")
             if len(userpass) == 0: continue #如果用户密码没有输入重新输入
+            hash = hashlib.md5()  #md5加密
+            hash.update(userpass) #md5加密
+            userpass = hash.hexdigest()#md5加密
             acount_info = json.dumps({
                 'username':username,
                 'password':userpass
             }) #把用户的输入转换成josn模式
             auth_string = "user_auth|%s" % (acount_info) #把动作和信息一起发送过去！
-            self.sock.send(auth_string)
+            self.sock.send(auth_string) #发送登录信息
+            server_response = self.sock.recv(1024) #接收server端返回的状态信息
+            server_response = self.get_response_code(server_response)
+            print (self.response_code[server_response]) #获取上面定义的code状态
 
-    def client_handel(self):
+    def get_response_code(self,server_response): #获取状态码函数
+        response_code = server_response.split('|') #分割server端返回的状态信息
+        code = response_code[1] #获取状态码所在字段
+        return code #返回状态码
+
+    def client_handel(self): #客户端行为参数
         self.connection(self.ftp_host,self.ftp_port)
         if self.auth():
             print "\033[32;1m login succese\033[0m"
