@@ -34,6 +34,7 @@ class FtpServer(SocketServer.BaseRequestHandler):
             print ("\033[31;1mReceived invalid instruction [%s] from client!\033[0m" %(instructions))
     def user_auth(self,data):#认证函数
         auth_info = json.loads(data[1])
+        print auth_info
         if auth_info['username'] in settings.USER_ACCOUNT:
             if auth_info['password'] == settings.USER_ACCOUNT[auth_info['username']]:
                 response_code = '200'
@@ -45,4 +46,5 @@ class FtpServer(SocketServer.BaseRequestHandler):
         response_str = "response|%s|%s" %(response_code,self.response_code_list[response_code])
         #这里self.response_code_list 是为了以后扩展使用
         self.request.send(response_str)
+        return response_code
 
