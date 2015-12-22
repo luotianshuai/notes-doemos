@@ -36,7 +36,7 @@ class FtpServer(SocketServer.BaseRequestHandler):
         auth_info = json.loads(data[1])
         print auth_info
         if auth_info['username'] in settings.USER_ACCOUNT:
-            if auth_info['password'] == settings.USER_ACCOUNT[auth_info['username']]:
+            if auth_info['password'] == settings.USER_ACCOUNT[auth_info['username']['password']]:
                 response_code = '200'
                 self.loging_user = auth_info['user_name'] #定义全局变量，方便获取
             else:
