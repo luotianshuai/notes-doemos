@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
-import os
+
 import sys
 import socket_server
 from conf import settings
@@ -10,7 +10,8 @@ class ArgvHandler(object):
     def __init__(self,args):
         self.args = args #定义普通字段
         self.argv_parser()  #调用判断参数的方法
-    def argv_parser(self):
+
+    def argv_parser(self): #判断参数方法！
         if len(self.args) == 1: #sys.argv程序本身就是一个参数
             self.help_msg() #如后后面没有跟参数执行help方法
         else:
@@ -19,6 +20,8 @@ class ArgvHandler(object):
                 func() #执行方法
             else:
                 self.help_msg()
+
+
     def help_msg(self):
         msg = '''\033[31;1m
         start       :will to start ftp server
@@ -26,6 +29,7 @@ class ArgvHandler(object):
         help        :will to show  ftp helpmsg\033[0m
         '''
         sys.exit(msg) #打印并退出
+
     def start(self):
         try: #调用异常处理模块捕捉错误！
             server = socket_server.SocketServer.ThreadingTCPServer((settings.BIND_HOST,settings.BIND_PORT),socket_server.FtpServer)
