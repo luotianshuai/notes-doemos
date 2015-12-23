@@ -3,6 +3,7 @@
 
 import SocketServer
 import json
+import os
 from conf import settings
 class FtpServer(SocketServer.BaseRequestHandler):
     #继承BaseRequestHandler基类，然后必须重写handle方法，并且在handle方法里实现与客户端的所有交互
@@ -10,6 +11,7 @@ class FtpServer(SocketServer.BaseRequestHandler):
             '200': "pass user authentication",
             '401': "wrong username or password",
             '404': "invalid username or password",
+            '300': "Ready to send file",
             '301': "Ready to get file from server",
             '302': "Ready to send to  server",
             '403': "File doesn't exist on ftp server",
@@ -44,7 +46,16 @@ class FtpServer(SocketServer.BaseRequestHandler):
                 response_code = '401'
         else:
             response_code = '404'
-        response_str = "response|%s|%s" % (response_code,self.response_code_list[response_code])
+        response_str = "response|%s|%s" % (response_code,self.response_code_list[response_code]) #拼接server发送信息
         self.request.send(response_str)
         return response_code
-
+    def file_get(self,user_data):
+        print("\033[32;1m---client will get  file----\033[0m")
+        if self.login_user : #判断用户是否登录
+            filename_with_path = json.loads(user_data[1])#获取文件名
+            file_abs_path = "%s/%s/%s" %(settings.USER_HOME,self.login_user, filename_with_path) #获取文件的路径
+            print file_abs_path
+            if os.path.isfile(file_abs_path): #判断文件是否存在
+                file_size = os.path.getsize(file_abs_path) #获取文件大小
+                response_msg = "response|300|%s|n/a" %(file_size)
+                self.request.send(response_msg) #接收用户返回的信息

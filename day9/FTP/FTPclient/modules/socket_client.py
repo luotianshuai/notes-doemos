@@ -10,6 +10,7 @@ class Client_Handler(object):
             '200': "pass user authentication",
             '401': "wrong username or password",
             '404': "invalid username or password",
+            '300': "Ready to send file",
             '301': "Ready to get file from server",
             '302': "Ready to send to  server",
             '403': "File doesn't exist on ftp server",
@@ -106,7 +107,14 @@ class Client_Handler(object):
                 func(user_input_instructions)
             else:
                 print("\033[31;1mInvalid instruction!\033[0m")
-    def instruction__get(self):
+    def instruction__get(self,instructions): #下载函数
+        if len(instructions) == 1: #如果后面没有跟文件名退出
+            print("Input the remote filename which you want to be downloaded!")
+            return
+        else:
+            file_name = instructions[1]
+            raw_str = "file_get|%s"% (json.dumps(file_name))
+            self.sock.send(raw_str)
 
     def client_handel(self): #
         self.connection(self.ftp_host,self.ftp_port) #调用连接方法
