@@ -5,6 +5,7 @@ import SocketServer
 import json
 import os
 import hashlib
+import subprocess
 import time
 from conf import settings
 class FtpServer(SocketServer.BaseRequestHandler):
@@ -34,15 +35,15 @@ class FtpServer(SocketServer.BaseRequestHandler):
         '''功能分发器,负责按照客户端的指令分配给相应的方法处理'''
         instructions = instructions.split("|")
         function_str = instructions[0]# 客户端发过来的指令中,第一个参加都必须在服务器端有相应的方法处理
-        if hasattr(self,function_str): #判断是否能找到相应的方法处理
+        if hasattr(self,function_str): #判断是否能找到相应的方法处理通过反射
             func = getattr(self,function_str)
             func(instructions)
         else:
             print ("\033[31;1mReceived invalid instruction [%s] from client!\033[0m" %(instructions))
     def user_auth(self,data):#认证函数
         auth_info = json.loads(data[1])
-        if auth_info['username'] in settings.USER_ACCOUNT:
-            if auth_info['password'] == settings.USER_ACCOUNT[auth_info['username']]['password']:
+        if auth_info['username'] in settings.USER_ACCOUNT: #判断是否是有效用户
+            if auth_info['password'] == settings.USER_ACCOUNT[auth_info['username']]['password']: #判断密码是否相同
                 response_code = '200'
                 self.login_user = auth_info['username'] #定义全局变量，方便获取
             else:
@@ -59,8 +60,10 @@ class FtpServer(SocketServer.BaseRequestHandler):
             file_abs_path = "%s/%s/%s" %(settings.USER_HOME,self.login_user, filename_with_path) #获取文件的路径
             print file_abs_path
             if os.path.isfile(file_abs_path): #判断文件是否存在
+                file_md5 = self.hashfile(file_abs_path)
+                print file_md5
                 file_size = os.path.getsize(file_abs_path) #获取文件大小
-                response_msg = "response|300|%s|n/a" %(file_size)
+                response_msg = "response|300|%s|%s" %(file_size,file_md5)
                 self.request.send(response_msg) #发送确认信息
                 client_response = self.request.recv(1024).split("|")
                 print "\033[34;1m%s\033[0m" % client_response
@@ -72,7 +75,7 @@ class FtpServer(SocketServer.BaseRequestHandler):
                         data = f.read(4096)
                         self.request.send(data)
                         sent_size += len(data)
-                        print ("send:",file_size,sent_size)
+                        #print ("send:",file_size,sent_size)
                     else:
                         t_cost = time.time() - t_start
                         print "----file transfer time:---",t_cost
@@ -102,3 +105,19 @@ class FtpServer(SocketServer.BaseRequestHandler):
             else:
                 print("\033[32;1m----file update finished-----\033[0m")
                 local_file_obj.close()
+    def file_show(self,show):
+        print ("\033[32;1m---client will show file list---\033[32;1m")
+        if self.login_user:
+            file_abs_path = "%s/%s" %(settings.USER_HOME,self.login_user)
+            file_list = json.dumps(os.listdir(file_abs_path))
+            self.request.send(file_list)
+    def hashfile(self,filename):  #定义md5认证函数
+        md5 = hashlib.md5()
+        with open(filename,'rb') as f: #打开文件
+            while True:
+                data = f.read(1024) #循环读取文件内容
+                if not data:
+                    break
+                md5.update(data) #更新md5值
+            return md5.hexdigest() #返回md5值
+
