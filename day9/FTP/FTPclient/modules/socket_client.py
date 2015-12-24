@@ -4,6 +4,7 @@ import sys
 import socket
 import json
 import hashlib
+from progressbar import *
 
 class Client_Handler(object):
     response_code = {
@@ -13,6 +14,7 @@ class Client_Handler(object):
             '300': "Ready to send file",
             '301': "Ready to get file from server",
             '302': "Ready to send to  server",
+            '303': "Ready to recv file from client",
             '403': "File doesn't exist on ftp server",
     }
     def __init__(self,args):
@@ -92,21 +94,24 @@ class Client_Handler(object):
         else:
             return False,user_input_to_list #如果没有返回False，并返回输入
     def interactive(self):
-        self.logout_flag = False
-        while  self.logout_flag is not True:
-            print """\033[34;1mget filename    :will to download file from server
-push    :filename    will to update file to server
-show    :will list server file and Directory list
-change  :will change Directory and list Directory\033[0m
-            """
-            user_input = raw_input("[%s]:[%s]:" %(self.login_user,self.cwd)).strip() #获取用户输入
-            if len(user_input) == 0:continue
-            status,user_input_instructions = self.parse_instruction(user_input) #parse_instruction 防止和python自定义命令冲突，把命令进行自定义拼接
-            if status is True:
-                func = getattr(self,"instruction__" + user_input_instructions[0]) #通过反射查找相应的方法
-                func(user_input_instructions)
-            else:
-                print("\033[31;1mInvalid instruction!\033[0m")
+        try:
+            self.logout_flag = False
+            while  self.logout_flag is not True:
+                print """\033[34;1mget filename    :will to download file from server
+push filename   :filename    will to update file to server
+show dirname   :will list server file and Directory list
+change dirname  :will change Directory and list Directory\033[0m
+                """
+                user_input = raw_input("[%s]:[%s]:" %(self.login_user,self.cwd)).strip() #获取用户输入
+                if len(user_input) == 0:continue
+                status,user_input_instructions = self.parse_instruction(user_input) #parse_instruction 防止和python自定义命令冲突，把命令进行自定义拼接
+                if status is True:
+                    func = getattr(self,"instruction__" + user_input_instructions[0]) #通过反射查找相应的方法
+                    func(user_input_instructions)
+                else:
+                    print("\033[31;1mInvalid instruction!\033[0m")
+        except KeyboardInterrupt as e:
+            print "\033[31;1mThe Client will be exit!\033[0m"
     def instruction__get(self,instructions): #下载函数
         if len(instructions) == 1: #如果后面没有跟文件名退出
             print("Input the remote filename which you want to be downloaded!")
@@ -115,7 +120,7 @@ change  :will change Directory and list Directory\033[0m
             file_name = instructions[1]  #获取文件名
             raw_str = "file_get|%s" % (json.dumps(file_name))  #拼接用户指令
             self.sock.send(raw_str) #发送指令至服务器
-            response_str,code,file_size,file_md5 = self.sock.recv(1024).split('|')
+            response_str,code,file_size,file_md5 = self.sock.recv(1024)
             if code == '300':
                 self.sock.send("response|301")
                 total_file_size = int(file_size) #取出文件大小
@@ -126,12 +131,40 @@ change  :will change Directory and list Directory\033[0m
                     received_size += len(data)
                     local_file_obj.write(data)
                     print("recv size:", total_file_size,received_size)
+
                 else:
                     print("\033[32;1m----file download finished-----\033[0m")
                     local_file_obj.close()
             elif code == '403' : #文件不存在
                 print(self.response_code[code])
-
+    def instruction__push(self,instructions): #下载函数
+        if len(instructions) == 1: #如果后面没有跟文件名退出
+            print("Input the  filename which you want to be update to server!")
+            return
+        else:
+            file_name = instructions[1]  #获取文件名
+            if os.path.exists(file_name):
+                raw_str = "file_push|%s" % (json.dumps(file_name))
+                self.sock.send(raw_str)
+                if self.sock.recv(1024) == '303':
+                    print "\033[34;1mwill to send file to server\033[0m"
+                    file_size = os.path.getsize(file_name)
+                    self.sock.send(str(file_size))
+                    self.sock.recv(1024)
+                    f = open(file_name,'rb')
+                    t_start = time.time()
+                    sent_size = 0
+                    while file_size != sent_size:
+                        data = f.read(4096)
+                        self.sock.send(data)
+                        sent_size += len(data)
+                        print ("send:",file_size,sent_size)
+                    else:
+                        t_cost = time.time() - t_start
+                        print "----file transfer time:---",t_cost
+                        print("\033[32;1m----successfully sent file to server----\033[0m")
+            else:
+                print "\033[31;1mPlese input right file name !\033[0m"
     def client_handel(self): #
         self.connection(self.ftp_host,self.ftp_port) #调用连接方法
         if self.auth():#调用认证方法

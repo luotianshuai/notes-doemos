@@ -16,6 +16,7 @@ class FtpServer(SocketServer.BaseRequestHandler):
             '300': "Ready to send file",
             '301': "Ready to get file from server",
             '302': "Ready to send to  server",
+            '303': "Ready to recv file from client",
             '403': "File doesn't exist on ftp server",
     }
 
@@ -60,8 +61,6 @@ class FtpServer(SocketServer.BaseRequestHandler):
             if os.path.isfile(file_abs_path): #判断文件是否存在
                 file_size = os.path.getsize(file_abs_path) #获取文件大小
                 response_msg = "response|300|%s|n/a" %(file_size)
-                print '111111111111111111111111111111111111111111111111111111111'
-                print response_msg
                 self.request.send(response_msg) #发送确认信息
                 client_response = self.request.recv(1024).split("|")
                 print "\033[34;1m%s\033[0m" % client_response
@@ -81,3 +80,25 @@ class FtpServer(SocketServer.BaseRequestHandler):
             else:
                 response_msg = "response|403|n/a|n/a"
                 self.request.send(response_msg)
+    def file_push(self,user_data):#上传方法
+        print("\033[32;1m---client will push  file----\033[0m")
+        if self.login_user:#判断用户是否登录
+            file_name = json.loads(user_data[1])#获取文件名
+            print file_name
+            file_abs_path = "%s/%s/%s" %(settings.USER_HOME,self.login_user, file_name) #获取文件的路径
+            self.request.send('303')
+            file_size = self.request.recv(1024)
+            print file_size
+            total_file_size = int(file_size) #取出文件大小
+            self.request.send('do it')
+            received_size = 0
+            local_file_obj = open(file_abs_path,"wb") #打开文件
+            while total_file_size != received_size: #循环接收文件
+                data = self.request.recv(4096)
+                received_size += len(data)
+                local_file_obj.write(data)
+                print("recv size:", total_file_size,received_size)
+
+            else:
+                print("\033[32;1m----file update finished-----\033[0m")
+                local_file_obj.close()

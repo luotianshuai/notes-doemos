@@ -6,16 +6,18 @@ from progressbar import *
 total = 1000
  
 #基本用法
+
 progress = ProgressBar()
 for i in progress(range(total)):
  time.sleep(0.01)
- 
+
+'''
 pbar = ProgressBar().start()
 for i in range(1,1000):
   pbar.update(int((i/(total-1))*100))
   time.sleep(0.01)
 pbar.finish()
-
+'''
 '''
 this function must install :progressbar
 
