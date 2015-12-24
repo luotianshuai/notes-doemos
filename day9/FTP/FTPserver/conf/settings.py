@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
+import os
+BASE_DIR  = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BIND_HOST = '127.0.0.1'
 BIND_PORT = 9999
 
@@ -14,3 +16,7 @@ USER_ACCOUNT = {
         'expire': '2016-01-22'
         },
 }
+
+
+USER_HOME = USER_HOME = '%s/var/' %BASE_DIR
+

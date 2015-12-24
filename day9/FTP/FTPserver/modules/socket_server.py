@@ -4,6 +4,8 @@
 import SocketServer
 import json
 import os
+import hashlib
+import time
 from conf import settings
 class FtpServer(SocketServer.BaseRequestHandler):
     #继承BaseRequestHandler基类，然后必须重写handle方法，并且在handle方法里实现与客户端的所有交互
@@ -41,7 +43,7 @@ class FtpServer(SocketServer.BaseRequestHandler):
         if auth_info['username'] in settings.USER_ACCOUNT:
             if auth_info['password'] == settings.USER_ACCOUNT[auth_info['username']]['password']:
                 response_code = '200'
-                self.loging_user = auth_info['username'] #定义全局变量，方便获取
+                self.login_user = auth_info['username'] #定义全局变量，方便获取
             else:
                 response_code = '401'
         else:
@@ -58,4 +60,24 @@ class FtpServer(SocketServer.BaseRequestHandler):
             if os.path.isfile(file_abs_path): #判断文件是否存在
                 file_size = os.path.getsize(file_abs_path) #获取文件大小
                 response_msg = "response|300|%s|n/a" %(file_size)
-                self.request.send(response_msg) #接收用户返回的信息
+                print '111111111111111111111111111111111111111111111111111111111'
+                print response_msg
+                self.request.send(response_msg) #发送确认信息
+                client_response = self.request.recv(1024).split("|")
+                print "\033[34;1m%s\033[0m" % client_response
+                if client_response[1] == "301": #客户端已经准备接收文件
+                    sent_size = 0
+                    f = open(file_abs_path,"rb")
+                    t_start = time.time()
+                    while file_size != sent_size:
+                        data = f.read(4096)
+                        self.request.send(data)
+                        sent_size += len(data)
+                        print ("send:",file_size,sent_size)
+                    else:
+                        t_cost = time.time() - t_start
+                        print "----file transfer time:---",t_cost
+                        print("\033[32;1m----successfully sent file to client----\033[0m")
+            else:
+                response_msg = "response|403|n/a|n/a"
+                self.request.send(response_msg)
