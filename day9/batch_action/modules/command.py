@@ -71,7 +71,7 @@ class Cmd(object):
             sftp.put(self.source_filepath,self.destination_filepath) #传输源文件、目的文件
         except Exception as e:
             print "\033[31;1m destination file path has some question please check\033[0m "
-            self.lock.release()
+            self.lock.release() #释放线程锁，并退出
             return
         print "\033[34;1mFile is put done Source:%s Destination:%s\033[0m" % (self.source_filepath,self.destination_filepath)
         t.close()#关闭连接
