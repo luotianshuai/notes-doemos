@@ -67,8 +67,13 @@ class Cmd(object):
         t = paramiko.Transport((host_ip,host_port)) #调用paramiko传输连接端口和服务器
         t.connect(username=host_username,password=host_userpass) #传入用户认证信息
         sftp = paramiko.SFTPClient.from_transport(t) #调用paramiko传输，实例化对象
+        try:
+            sftp.put(self.source_filepath,self.destination_filepath) #传输源文件、目的文件
+        except Exception as e:
+            print "\033[31;1m destination file path has some question please check\033[0m "
+            self.lock.release()
+            return
         print "\033[34;1mFile is put done Source:%s Destination:%s\033[0m" % (self.source_filepath,self.destination_filepath)
-        sftp.put(self.source_filepath,self.destination_filepath) #传输源文件、目的文件
         t.close()#关闭连接
         self.lock.release() #释放线程锁
     def send_file(self):#定义发送文件方法
