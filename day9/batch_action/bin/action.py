@@ -7,7 +7,10 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) #获取文件所在的顶级目录，方便加载其他的模块
 sys.path.append(BASE_DIR) #把路径加入到环境变量
 
-from  modules import socket_client
+
+from  modules import command
 
 if __name__ == '__main__':
-    entry_point = socket_client.Client_Handler(sys.argv);
+    works = command.Cmd(sys.argv)
+
+
