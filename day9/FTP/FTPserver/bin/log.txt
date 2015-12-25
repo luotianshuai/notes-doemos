@@ -1,0 +1,54 @@
+2015-12-25 10:33:55,505 - shuaige - DEBUG - User is Login.....
+2015-12-25 10:34:09,776 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:34:09,776 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:34:57,697 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:34:57,697 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:34:57,697 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:34:58,944 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:34:58,944 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:34:58,944 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:34:58,944 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:35:01,944 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:35:01,944 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:35:01,944 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:35:01,944 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:35:01,944 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:35:04,575 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:35:04,575 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:35:04,575 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:35:04,575 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:35:04,575 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:35:04,575 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:38:35,217 - shuaige - DEBUG - User is Login.....
+2015-12-25 10:38:38,615 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:38:38,615 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:38:38,651 - shuaige - DEBUG - ----successfully sent file to client file transfer time:0.0280001163483 ---
+2015-12-25 10:38:38,651 - shuaige - DEBUG - ----successfully sent file to client file transfer time:0.0280001163483 ---
+2015-12-25 10:38:38,651 - shuaige - DEBUG - ----successfully sent file to client file transfer time:0.0280001163483 ---
+2015-12-25 10:41:20,096 - shuaige - DEBUG - User is Login.....
+2015-12-25 10:41:25,055 - shuaige - DEBUG - [32;1m---client will push  file----[0m
+2015-12-25 10:41:25,055 - shuaige - DEBUG - [32;1m---client will push  file----[0m
+2015-12-25 10:41:25,286 - shuaige - DEBUG - [32;1m----file update finished-----[0m
+2015-12-25 10:41:25,286 - shuaige - DEBUG - [32;1m----file update finished-----[0m
+2015-12-25 10:41:25,286 - shuaige - DEBUG - [32;1m----file update finished-----[0m
+2015-12-25 10:46:34,424 - shuaige - DEBUG - User is Login.....
+2015-12-25 10:47:11,352 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:47:11,352 - shuaige - DEBUG - C:\Github\homework\day9\FTP\FTPserver/var//shuaige/nihao.rar
+2015-12-25 10:47:11,384 - shuaige - DEBUG - ----successfully sent file to client file transfer time:0.0250000953674 ---
+2015-12-25 10:47:11,384 - shuaige - DEBUG - ----successfully sent file to client file transfer time:0.0250000953674 ---
+2015-12-25 10:47:11,384 - shuaige - DEBUG - ----successfully sent file to client file transfer time:0.0250000953674 ---
+2015-12-25 10:48:07,697 - shuaige - DEBUG - [32;1m---client will push  file----[0m
+2015-12-25 10:48:07,697 - shuaige - DEBUG - [32;1m---client will push  file----[0m
+2015-12-25 10:48:07,697 - shuaige - DEBUG - [32;1m---client will push  file----[0m
+2015-12-25 10:48:07,697 - shuaige - DEBUG - [32;1m---client will push  file----[0m
+2015-12-25 10:48:07,953 - shuaige - DEBUG - [32;1m----file update finished-----[0m
+2015-12-25 10:48:07,953 - shuaige - DEBUG - [32;1m----file update finished-----[0m
+2015-12-25 10:48:07,953 - shuaige - DEBUG - [32;1m----file update finished-----[0m
+2015-12-25 10:48:07,953 - shuaige - DEBUG - [32;1m----file update finished-----[0m
+2015-12-25 10:48:07,953 - shuaige - DEBUG - [32;1m----file update finished-----[0m
+2015-12-25 10:49:02,000 - shuaige - DEBUG - [32;1m---client will show file list---[32;1m
+2015-12-25 10:49:02,000 - shuaige - DEBUG - [32;1m---client will show file list---[32;1m
+2015-12-25 10:49:02,000 - shuaige - DEBUG - [32;1m---client will show file list---[32;1m
+2015-12-25 10:49:02,000 - shuaige - DEBUG - [32;1m---client will show file list---[32;1m
+2015-12-25 10:49:02,000 - shuaige - DEBUG - [32;1m---client will show file list---[32;1m
+2015-12-25 10:49:02,000 - shuaige - DEBUG - [32;1m---client will show file list---[32;1m
