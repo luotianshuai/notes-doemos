@@ -99,8 +99,7 @@ class Client_Handler(object):
             while  self.logout_flag is not True:
                 print """\033[34;1mget filename    :will to download file from server
 push filename   :filename    will to update file to server
-show    :will list server file and Directory list
-change dirname  :will change Directory and list Directory\033[0m
+show    :will list server file and Directory list\033[0m
                 """
                 user_input = raw_input("[%s]:[%s]:" %(self.login_user,self.cwd)).strip() #获取用户输入
                 if len(user_input) == 0:continue

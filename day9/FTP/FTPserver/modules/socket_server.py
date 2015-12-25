@@ -5,9 +5,9 @@ import SocketServer
 import json
 import os
 import hashlib
-import subprocess
 import time
 from conf import settings
+from log_model import log_models
 class FtpServer(SocketServer.BaseRequestHandler):
     #继承BaseRequestHandler基类，然后必须重写handle方法，并且在handle方法里实现与客户端的所有交互
     response_code_list  = {
@@ -46,6 +46,7 @@ class FtpServer(SocketServer.BaseRequestHandler):
             if auth_info['password'] == settings.USER_ACCOUNT[auth_info['username']]['password']: #判断密码是否相同
                 response_code = '200'
                 self.login_user = auth_info['username'] #定义全局变量，方便获取
+                log_models(self.login_user,'User is Login.....')
             else:
                 response_code = '401'
         else:
@@ -58,6 +59,7 @@ class FtpServer(SocketServer.BaseRequestHandler):
         if self.login_user : #判断用户是否登录
             filename_with_path = json.loads(user_data[1])#获取文件名
             file_abs_path = "%s/%s/%s" %(settings.USER_HOME,self.login_user, filename_with_path) #获取文件的路径
+            log_models(self.login_user,file_abs_path)
             print file_abs_path
             if os.path.isfile(file_abs_path): #判断文件是否存在
                 file_md5 = self.hashfile(file_abs_path)
@@ -78,13 +80,15 @@ class FtpServer(SocketServer.BaseRequestHandler):
                         #print ("send:",file_size,sent_size)
                     else:
                         t_cost = time.time() - t_start
-                        print "----file transfer time:---",t_cost
-                        print("\033[32;1m----successfully sent file to client----\033[0m")
+                        cost_time =  "----successfully sent file to client file transfer time:%s ---" % t_cost
+                        log_models(self.login_user,cost_time)
             else:
                 response_msg = "response|403|n/a|n/a"
                 self.request.send(response_msg)
+                log_models(self.login_user,'request invalid file name')
     def file_push(self,user_data):#上传方法
-        print("\033[32;1m---client will push  file----\033[0m")
+        client_want = "\033[32;1m---client will push  file----\033[0m"
+        log_models(self.login_user,client_want)
         if self.login_user:#判断用户是否登录
             file_name = json.loads(user_data[1])#获取文件名
             print file_name
@@ -103,10 +107,12 @@ class FtpServer(SocketServer.BaseRequestHandler):
                 print("recv size:", total_file_size,received_size)
 
             else:
-                print("\033[32;1m----file update finished-----\033[0m")
+                update_msg = "\033[32;1m----file update finished-----\033[0m"
+                log_models(self.login_user,update_msg)
                 local_file_obj.close()
     def file_show(self,show):
-        print ("\033[32;1m---client will show file list---\033[32;1m")
+        client_show = "\033[32;1m---client will show file list---\033[32;1m"
+        log_models(self.login_user,client_show)
         if self.login_user:
             file_abs_path = "%s/%s" %(settings.USER_HOME,self.login_user)
             file_list = json.dumps(os.listdir(file_abs_path))
