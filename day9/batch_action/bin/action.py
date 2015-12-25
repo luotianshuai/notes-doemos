@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) #获取�
 sys.path.append(BASE_DIR) #把路径加入到环境变量
 
 
-from  modules import command
+from  modules import command  #导入模块
 
 if __name__ == '__main__':
     works = command.Cmd(sys.argv)
