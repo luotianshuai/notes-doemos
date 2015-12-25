@@ -7,7 +7,8 @@
 3、MD5值认证
 4、查看文件列表
 5、server端日志记录
-5、断点续传
+6、进度条
+7、断点续传
 
 一、server端启动服务
 C:\Github\homework\day9\FTP\FTPserver\bin>python server.py start
