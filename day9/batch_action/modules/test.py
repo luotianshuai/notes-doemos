@@ -12,5 +12,5 @@ for i in range(10):
     t = threading.Thread(target=show, args=(i,))
     t.start()
  
-print 'main thread stop'
+print 'moduls thread stop'
 
