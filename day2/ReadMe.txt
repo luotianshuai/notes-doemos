@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
+博客：http://www.cnblogs.com/luotianshuai/p/4930655.html
+GitHub：#https://github.com/Tim-luo/homework/tree/master/
+
 程序介绍：
 此程序是一个简易购物商城程序
 
