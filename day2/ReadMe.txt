@@ -56,3 +56,7 @@ Bike
 You this time cost :800
 You have 700 now
 Welcome next shopping
+
+
+账户安全：
+连续输入3次错误密码账户锁定
