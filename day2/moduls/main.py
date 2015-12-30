@@ -9,18 +9,19 @@ import hashlib
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 
-class Buy(object):
-    user_db = "%s\config\user_info" % BASE_DIR
-    product_db = "%s\config\product.list" % BASE_DIR
+class Buy(object): #定义类
+    user_db = "%s\config\user_info" % BASE_DIR  #定义静态字段，使用打开用户信息
+    product_db = "%s\config\product.list" % BASE_DIR #定义静态字段，使用打开商品清单
     def __init__(self):
         self.run()
 
     def run(self):
+        name = self.login()
+        if name:
+            print "\033[34;1mwelcome %s login.....\033[0m" % name
+            self.buy(name)
 
-        if self.login():
-            print "hello"
-        else:
-            print "Login fail"
+
 
     def login(self):
         with open(self.user_db,'rb') as f:
@@ -38,11 +39,13 @@ class Buy(object):
                         pickle.dump(user_info,f)
                     return False
                 if user_pass == user_info[user_name]['password']:
-                    print "\033[34;1mLogin success\033[0m"
+                    #print "\033[34;1mLogin success\033[0m"
                     user_info[user_name]['login_num'] == 0
                     with open(self.user_db,'wb') as f:
                         pickle.dump(user_info,f)
-                    return True
+                        #print user_name
+                    return user_name
+
                 else:
                     print "\033[31;1mInvalid password,please check if your Continuous mis\
 typed 3 password will lock user"
@@ -50,3 +53,6 @@ typed 3 password will lock user"
             else:
                 print "\033[31;1mSorry,username is invalid please check!\033[0m"
 
+    def buy(self,name):
+        with open(self.product_db,'rb') as f:
+            product_list = pickle.dump(f)
