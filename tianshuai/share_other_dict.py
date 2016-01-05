@@ -17,4 +17,4 @@ print dic
 #方式2
 
 #print dict(map(lambda a1,a2,a3:(a1,{a2:a3}),l1,l2,l3))
-print dict(zip(l1,l2))
+#print dict(zip(l1,l2))
