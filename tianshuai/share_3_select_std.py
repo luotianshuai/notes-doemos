@@ -16,9 +16,17 @@ while True:
         print 'select get stdin',sys.stdin.readline()
 
 '''
+注：
+1、[sys.stdin,]  以后不管是列表还是元组在最后的元素后面建议增加一个逗号，那元组举例（1，） | （1） 这两个有区别吗？是不是第二个
+更像方法的调用或者函数的调用，加个，是不是更容易分清楚。还有就是在以后写django的配置文件的时候，他是必须要加的。写作习惯
+2、select第一个参数他就是监听多个文件句柄，当谁改变了我是不是就可以监听到！
+3、select参数里1是超时时间，当到slect那一行后，如果这里还是没有输入，那么我就继续走！
+'''
+
+'''
 when runing the program get error :
 Traceback (most recent call last):
-  File "E:/study/GitHub/homework/tianshuai/share_3_select_socket.py", line 8, in <module>
+  File "E:/study/GitHub/homework/tianshuai/share_3_select_std.py", line 8, in <module>
     readable, writeable, error = select.select([sys.stdin,],[],[],1)
 select.error: (10093, 'Either the application has not called WSAStartup, or WSAStartup failed')
 
