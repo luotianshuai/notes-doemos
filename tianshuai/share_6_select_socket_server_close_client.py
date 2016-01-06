@@ -29,4 +29,7 @@ while True:
         else:
         #如果是客户端，接受和返回数据
             client_data = r.recv(1024)
-            r.sendall(client_data)
+            if client_data:
+                r.sendall(client_data)
+            else:
+                inputs.remove(r)#如果没有收到客户端端数据，则移除客户端句柄 因为，不管是正常关闭还是异常关闭，client端的系统底层都会发送一个消息

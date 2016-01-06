@@ -16,7 +16,6 @@ sk.setblocking(False) #这里设置setblocking为Falseaccept将不在阻塞，�
 while True: #循环
     try:
         print 'waiting client connection .......'
-        #只有accept & recv 会阻塞，这里accept阻塞，直到有client连接过来
         #connection代表客户端对象，address是客户端的IP
         connection,address = sk.accept()
         #等待接收客户端信息
