@@ -42,15 +42,13 @@ while True:
                 message[r].put(client_data)#在指定队列中插入数据
             else:
                 inputs.remove(r)#没有数据，删除监听链接
-
+                del message[r] #当数据为空的时候删除队列~~
     for w in writeable_list:#如果第二个参数有数据
-
         try:
             data = message[w].get_nowait()#去指定队列取数据 并且不阻塞
             w.sendall(data) #返回请求输入给client端
         except Queue.Empty:#反之触发异常
-            del message[w]   #如果异常时移除
             pass
         outputs.remove(w) #因为第二个参数有值得时候就触发捕获值，所以使用完之后需要移除它
-
+        #del message[r]
     print '%s' %('-' * 40)
