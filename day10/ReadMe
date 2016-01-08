@@ -8,7 +8,7 @@ http://www.cnblogs.com/luotianshuai/p/5098408.html
 http://www.cnblogs.com/luotianshuai/p/5111587.html
 '''
 Github地址：
-
+https://github.com/Tim-luo/homework/tree/master/day10
 
 什么是线程池？
     诸如web服务器、数据库服务器、文件服务器和邮件服务器等许多服务器应用都面向处理来自某些远程来源的大量短小的任务。
