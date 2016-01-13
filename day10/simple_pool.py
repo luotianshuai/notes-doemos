@@ -27,7 +27,7 @@ class ThreadPool(object): #创建线程池类
     def add_thread(self):#定义方法在队列里添加线程
         self.queue.put(threading.Thread)
 
-pool = ThreadPool(10) #
+pool = ThreadPool(10)
 
 def func(arg,p):
     print arg
