@@ -21,7 +21,7 @@ def add_end(args):
 add_end('shuaige')
 
 '''
-
+'''
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from  multiprocessing import Process,Pool
@@ -45,3 +45,20 @@ pool.apply(Foo,(1,)) #去进程池里去申请一个进程去执行Foo方法
 print 'end'
 pool.close()
 pool.join()#进程池中进程执行完毕后再关闭，如果注释，那么程序直接关闭。
+
+'''
+
+def fun1():
+    global var
+    var = ' Baby '
+    return fun2(var)
+
+def fun2(var):
+    var += 'I love you'
+    fun3(var)
+    return var
+
+def fun3(var):
+    var = ' 小甲鱼 '
+
+print(fun1())
