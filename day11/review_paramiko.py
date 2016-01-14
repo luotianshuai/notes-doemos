@@ -23,7 +23,7 @@ ssh.close() #关闭连接
 '''
 '''
 transport = paramiko.Transport(('192.168.7.100',22)) #创建一个连接对象
-transport.connect(username='root',password='nihao123!')#调用对象中的连接方法
+transport.connect(username='root',password='nihao123!')#调用transport对象中的连接方法
 
 ssh = paramiko.SSHClient() #创建SSH对象
 ssh._transport = transport #把ssh对象中的_transport 字段进行赋值为transport
