@@ -24,7 +24,6 @@ while True: #循环
         print address
         #发送回执信息给client 收发必须相同
         connection.sendall('hello Client this server')
-        connection.send()
         #关闭和client的连接
         connection.close()
     except Exception as e:
