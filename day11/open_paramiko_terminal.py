@@ -38,7 +38,7 @@ while True:
             x = chan.recv(1024)
             #ssh连接后他发送接收数据也是通过socket来做的
             if len(x) == 0:
-                print '\r\n*** EOF\r\n',
+                print '\r\n************************ EOF ************************\r\n',
                 break
             sys.stdout.write(x)#把内容输入到终端上
             sys.stdout.flush()
