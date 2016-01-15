@@ -31,8 +31,6 @@ def show(li,iterm):
     li.remove(iterm)
 
 
-
-
 def task(arg):
     with show(doing,1):#通过with管理上下文进行切换
         print len(doing)
