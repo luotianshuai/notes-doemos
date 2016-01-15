@@ -2,16 +2,13 @@
 #-*- coding:utf-8 -*-
 import MySQLdb
 
-conn = MySQLdb.connect(host='192.168.0.110',user='root',passwd='nihao123!',db='jumpserver')
+conn = MySQLdb.connect(host='127.0.0.1',user='root',passwd='nihao123!',db='jumpserver')
 cur = conn.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-reCount = cur.execute('SELECT * FROM user_info')
-nret = cur.fetchall()
+cur.execute('SELECT user_name,user_pass FROM user_info')
 
-cur.close()
-conn.close()
+command_mysql = cur.fetchall()
+print command_mysqld
 
-print reCount
-print nret
+#print reCount
+#print nret
 
-for i in nret:
-    print i[0],i[1]
