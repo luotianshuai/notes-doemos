@@ -64,7 +64,7 @@ try:
             x = sys.stdin.read(1)
             if len(x) == 0:
                 break
-            user_log.write(x)
+            user_log.write(x) #把命令写入至文件
             chan.send(x)
 
 finally:
