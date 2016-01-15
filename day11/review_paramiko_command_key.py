@@ -12,3 +12,11 @@ ssh.connect(hostname='192.168.7.100',port=22,username='root',pkey=private_key) #
 stdin,stdout,stderr = ssh.exec_command('ifconfig') #执行命令
 print stdout.read() #获取命令执行结果
 ssh.close()
+
+'''
+如果是运维人员这里不需要看
+1、首先创建一个公钥和私钥
+ssh-keygen
+2、复制id_rsa.pub至要被远程执行命令的机器，并把id_rsa.pub里的内容增加至authorized_keys文件中
+如果authorized_keys文件不存在创建即可
+'''
