@@ -32,6 +32,8 @@ chan.invoke_shell()# 激活器
 '''
 # 获取原tty属性
 oldtty = termios.tcgetattr(sys.stdin)
+#打开文件
+
 try:
     # 为tty设置新属性
     # 默认当前tty设备属性：
@@ -40,9 +42,9 @@ try:
 
     # 这是为原始模式，不认识所有特殊符号
     # 放置特殊字符应用在当前终端，如此设置，将所有的用户输入均发送到远程服务器
-    tty.setraw(sys.stdin.fileno())
+    tty.setraw(sys.stdin.fileno()) #把远端更换为LINUX原始模式
     chan.settimeout(0.0)
-
+    user_log = open('terminalnew_log','ab')
     while True:
         # 监视 用户输入 和 远程服务器返回数据（socket）
         # 阻塞，直到句柄可读
@@ -51,6 +53,7 @@ try:
             try:
                 x = chan.recv(1024)
                 if len(x) == 0:
+                    user_log.close()
                     print '\r\n*** EOF\r\n',
                     break
                 sys.stdout.write(x)
@@ -61,6 +64,7 @@ try:
             x = sys.stdin.read(1)
             if len(x) == 0:
                 break
+            user_log.write(x)
             chan.send(x)
 
 finally:

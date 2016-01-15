@@ -27,7 +27,7 @@ chan.invoke_shell()# 激活器
 # 远程服务器执行命令，并将结果返回
 # 用户终端显示内容
 '''
-log = open('record','ab')#打开一个文件用来保存命令记录
+user_log = open('record','ab')#打开一个文件用来保存命令记录
 while True:
     # 监视用户输入和服务器返回数据
     # sys.stdin 处理用户输入
@@ -39,7 +39,7 @@ while True:
             x = chan.recv(1024)
             #ssh连接后他发送接收数据也是通过socket来做的
             if len(x) == 0:
-                log.close() #关闭文件
+                user_log.close() #关闭文件
                 print '\r\n************************ EOF ************************\r\n',
                 break
             sys.stdout.write(x)#把内容输入到终端上
@@ -48,7 +48,7 @@ while True:
             pass
     if sys.stdin in readable: #当终端有输入捕获到之后
         inp = sys.stdin.readline() #把用户的那一行输入
-        log.write(inp) #记录命令
+        user_log.write(inp) #记录命令
         chan.sendall(inp)#发送命令至远端
 
 chan.close()
