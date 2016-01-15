@@ -6,6 +6,8 @@ import os
 import sys
 import select
 import socket
+import termios
+
 
 tran = paramiko.Transport(('192.168.7.100', 22,))
 tran.start_client()
