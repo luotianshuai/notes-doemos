@@ -31,21 +31,22 @@ while True:
     # 监视用户输入和服务器返回数据
     # sys.stdin 处理用户输入
     # chan 是之前创建的通道，用于接收服务器返回信息
-    readable, writeable, error = select.select([chan, sys.stdin, ],[],[],1)
-    if chan in readable:
+    readable, writeable, error = select.select([chan, sys.stdin, ],[],[],1)  #坚挺chen和终端
+    #只要发生变化，chan或者stdin或者都变化
+    if chan in readable: #远端有变化后捕获到
         try:
             x = chan.recv(1024)
             #ssh连接后他发送接收数据也是通过socket来做的
             if len(x) == 0:
                 print '\r\n*** EOF\r\n',
                 break
-            sys.stdout.write(x)
+            sys.stdout.write(x)#把内容输入到终端上
             sys.stdout.flush()
         except socket.timeout:
             pass
-    if sys.stdin in readable:
-        inp = sys.stdin.readline()
-        chan.sendall(inp)
+    if sys.stdin in readable: #当终端有输入捕获到之后
+        inp = sys.stdin.readline() #把用户的那一行输入
+        chan.sendall(inp)#发送命令至远端
 
 chan.close()
 tran.close()
