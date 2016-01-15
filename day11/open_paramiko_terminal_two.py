@@ -64,10 +64,10 @@ try:
             x = sys.stdin.read(1)
             if len(x) == 0:
                 break
-            if x == '\t': #judge if user input tab dot't write the input to log file
+            if x == '\t': #判断用户的是否为tab如果为tab将不记录
                 pass
             else:
-                user_log.write(x)#will to write the user command to the log
+                user_log.write(x)#如果用户输入的命令保存至日志
             chan.send(x)
 
 finally:
