@@ -3,7 +3,8 @@
 __author__ = 'luo_t'
 
 import paramiko
-private_key = paramiko.RSAKey.from_private_key_file('id_rsa.pub')
+
+private_key = paramiko.RSAKey.from_private_key_file('/root/.ssh/id_rsa')
 
 ssh = paramiko.SSHClient()#创建SSH对象
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy()) #允许连接不在know_host文件中的的主机
