@@ -65,6 +65,7 @@ try:
             if len(x) == 0:
                 break
             user_log.write(x)
+            user_log.write('\n')
             chan.send(x)
 
 finally:
