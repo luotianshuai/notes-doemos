@@ -64,8 +64,10 @@ try:
             x = sys.stdin.read(1)
             if len(x) == 0:
                 break
-            user_log.write(x)
-            user_log.write('\n')
+            if x == '\t': #judge if user input tab dot't write the input to log file
+                pass
+            else:
+                user_log.write(x)#will to write the user command to the log
             chan.send(x)
 
 finally:
