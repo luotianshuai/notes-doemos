@@ -7,6 +7,7 @@ import sys
 import select
 import socket
 import termios
+import tty
 
 
 tran = paramiko.Transport(('192.168.7.100', 22,))
