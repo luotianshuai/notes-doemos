@@ -29,29 +29,41 @@ chan.invoke_shell()# 激活器
 # 远程服务器执行命令，并将结果返回
 # 用户终端显示内容
 '''
-log = open('record','ab')#打开一个文件用来保存命令记录
-while True:
-    # 监视用户输入和服务器返回数据
-    # sys.stdin 处理用户输入
-    # chan 是之前创建的通道，用于接收服务器返回信息
-    readable, writeable, error = select.select([chan, sys.stdin, ],[],[],1)  #坚挺chen和终端
-    #只要发生变化，chan或者stdin或者都变化
-    if chan in readable: #远端有变化后捕获到
-        try:
-            x = chan.recv(1024)
-            #ssh连接后他发送接收数据也是通过socket来做的
-            if len(x) == 0:
-                log.close() #关闭文件
-                print '\r\n************************ EOF ************************\r\n',
-                break
-            sys.stdout.write(x)#把内容输入到终端上
-            sys.stdout.flush()
-        except socket.timeout:
-            pass
-    if sys.stdin in readable: #当终端有输入捕获到之后
-        inp = sys.stdin.readline() #把用户的那一行输入
-        log.write(inp) #记录命令
-        chan.sendall(inp)#发送命令至远端
+# 获取原tty属性
+oldtty = termios.tcgetattr(sys.stdin)
+try:
+    # 为tty设置新属性
+    # 默认当前tty设备属性：
+    #   输入一行回车，执行
+    #   CTRL+C 进程退出，遇到特殊字符，特殊处理。
 
+    # 这是为原始模式，不认识所有特殊符号
+    # 放置特殊字符应用在当前终端，如此设置，将所有的用户输入均发送到远程服务器
+    tty.setraw(sys.stdin.fileno())
+    chan.settimeout(0.0)
+
+    while True:
+        # 监视 用户输入 和 远程服务器返回数据（socket）
+        # 阻塞，直到句柄可读
+        r, w, e = select.select([chan, sys.stdin], [], [], 1)
+        if chan in r:
+            try:
+                x = chan.recv(1024)
+                if len(x) == 0:
+                    print '\r\n*** EOF\r\n',
+                    break
+                sys.stdout.write(x)
+                sys.stdout.flush()
+            except socket.timeout:
+                pass
+        if sys.stdin in r:
+            x = sys.stdin.read(1)
+            if len(x) == 0:
+                break
+            chan.send(x)
+
+finally:
+    # 重新设置终端属性
+    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, oldtty)
 chan.close()
 tran.close()
