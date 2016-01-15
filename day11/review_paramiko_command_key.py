@@ -12,3 +12,5 @@ ssh.connect(hostname='192.168.7.100',port=22,username='root',pkey=private_key) #
 stdin,stdout,stderr = ssh.exec_command('ifconfig') #执行命令
 print stdout.read() #获取命令执行结果
 ssh.close()
+
+#shuaige test
