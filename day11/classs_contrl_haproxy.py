@@ -19,6 +19,7 @@ class Haproxy(object):
         self.upload()
         self.rename()
         self.close()
+
     def connect(self):
         transport = paramiko.Transport(('192.168.7.100',22)) #创建一个连接对象
         transport.connect(username='root',password='nihao123!')#调用transport对象中的连接方法
@@ -30,12 +31,11 @@ class Haproxy(object):
         sftp = paramiko.SFTPClient.from_transport(self.__transport)
         sftp.put(file_name,'/tmp/luotianshuai.txt')
     def rename(self):
-        ssh = paramiko.SSHClient
+        ssh = paramiko.SSHClient()
         ssh._transport = self.__transport
-        stdin,stdout,stderr = ssh.exec_command('mv /tmp/luotianshuai.txt /tmp/shuaige')
-        result = stdout.read()
-        print result
+        stdin,stdout,stderr = ssh.exec_command('ifconfig')
+        print stdout.read()
 
 if __name__ == '__main__':
-    woker = Haproxy()
-    woker.run()
+    ha = Haproxy()
+    ha.run()
