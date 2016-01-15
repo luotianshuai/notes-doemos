@@ -3,10 +3,10 @@
 __author__ = 'luo_t'
 import paramiko
 
-
+private_key = paramiko.RSAKey.from_private_key_file('/root/.ssh/id_rsa')
 
 transport = paramiko.Transport(('192.168.7.100',22))
-transport.connect(username='root',password='nihao123!') #调用transport进行连接
+transport.connect(username='root',pkey=private_key) #调用transport进行连接
 
 sftp = paramiko.SFTPClient.from_transport(transport)#然后创建SFTPClient并基于transport连接，把他俩做个绑定
 
