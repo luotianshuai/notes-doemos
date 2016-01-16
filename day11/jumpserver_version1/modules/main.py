@@ -4,14 +4,12 @@
 import getpass
 import MySQLdb
 import paramiko
-import threading
 from multiprocessing import Process
 from login_terminal import login_terminal
 
 class Jumpserver(object):
     def __init__(self):
         self.mysql_conn()
-
 
     def login(self):
         print '''\033[32;1m**********welcom login jumpserver**********\033[0m
@@ -23,7 +21,6 @@ class Jumpserver(object):
                 self.login_name = user_name
                 self.login_pass = user_pass
                 return
-
 
     def auth(self,username,password):
         self.mysql_command.execute('select user_name,user_pass from user_info')
@@ -70,9 +67,10 @@ class Jumpserver(object):
 
     def func__d(self):
         pass
+        #方法和执行命令类似
     def func__u(self):
         pass
-
+        #方法和执行命令类似
     def func__p(self):
         login_user = '\'%s\'' % self.login_name
         #print login_user
