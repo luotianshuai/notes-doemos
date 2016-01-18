@@ -1,27 +1,14 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
-'''
-import MySQLdb
 
-conn = MySQLdb.connect(host='127.0.0.1',user='root',passwd='nihao123!',db='jumpserver')
-cur = conn.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-tim = '\'luotianshuai\''
-cur.execute('select  and d.user_name = %s' % tim)
+import memcache
 
-command_mysql = cur.fetchall()
-print command_mysql
-#print reCount
-#print nret
+mc = memcache.Client(['192.168.17.15:11211'],debug=True)
+while True:
+    user_input = raw_input('\033[34;1mPlease input ke:value like username:luotianshuai \n==>:\33[0m')
+    user_inputk = user_input.split(':')[0]
+    user_inputv = user_input.split(':')[1]
+    mc.set(user_inputk,user_inputv)
+    result = mc.get(user_inputk)
+    print '\033[32;1mYou\'re input is %s\033[0m' % user_inputv
 
-'''
-import threading
-import paramiko
-
-ssh = paramiko.SSHClient() #创建SSH对象
-ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy()) #允许连接不在know_hosts文件中的主机
-ssh.connect(hostname='192.168.0.111',port=22,username='root',password='nihao123!')
-stdin,stdout,stderror = ssh.exec_command('df -h') #执行命令
-
-print stdout.read() #获取命令结果
-print stderror.read() #如果执行错误返回错误结果
-#ssh.close() #关闭连接
