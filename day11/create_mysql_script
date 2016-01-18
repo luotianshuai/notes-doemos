@@ -1,0 +1,59 @@
+create database jumpserver character set = utf8;
+use jumpserver
+create table host_group
+	(
+		group_id int auto_increment primary key  ,
+		name char(20) not null,
+		description text
+	);
+create table user_info
+	(
+	user_id int auto_increment primary key,
+	user_name char(20) not null,
+	user_group_id int not null,
+	foreign key(user_group_id) references host_group(group_id)
+	);
+
+create table host_info
+	(
+	host_id int auto_increment primary key,
+	host_name char(50) not null,
+	host_type char(50) not null,
+	address char(15) not null,
+	cpu_count smallint,
+	cpu_type char(20),
+	disk_count smallint,
+	size_perdisk int,
+	host_description text
+	);
+
+create table host_group_relation
+	(
+	id int,
+	host_id int not null,
+	group_id int not null,
+	foreign key(host_id) references host_info(host_id),
+	foreign key(group_id) references host_group(group_id),
+	primary key(host_id,group_id)
+	);
+
+insert into host_group values
+(1,'admin','管理员,可以操作所有机器，执行任何操作'),
+(2,'developer','程序开发人员，只能操作应用服务器'),
+(3,'dba','数据库管理员，只能操作数据库服务器');
+
+insert into user_info values
+(1,'han',1),(2,'yan',2),(3,'ling',3);
+
+insert into host_info (host_id,host_name,host_type,address) values
+(1,'host1','web','192.168.137.3'),
+(2,'host2','application','192.168.137.2'),
+(3,'host3','db','192.168.137.4');
+
+insert into host_group_relation values
+(1,1,1),
+(2,2,1),
+(3,3,1),
+(4,2,2),
+(5,3,3);
+
