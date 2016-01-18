@@ -21,7 +21,7 @@ ssh.close() #关闭连接
 '''
 第二种方法
 '''
-'''
+
 transport = paramiko.Transport(('192.168.7.100',22)) #创建一个连接对象
 transport.connect(username='root',password='nihao123!')#调用transport对象中的连接方法
 
@@ -34,7 +34,7 @@ print stdout.read()
 print stderr.read()
 
 transport.close()
-'''
+
 
 '''
 第二种方法和第一种方法的区别！
