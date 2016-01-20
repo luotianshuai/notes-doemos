@@ -5,7 +5,7 @@ import SocketServer
 class MyServer(SocketServer.BaseRequestHandler):
 
     def handle(self):
-        # print self.request,self.client_address,self.server
+        # print self.request,self.client_address,self.services
         conn = self.request
         conn.sendall('欢迎致电 10086，请输入1xxx,0转人工服务.')
         Flag = True

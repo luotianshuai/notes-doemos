@@ -12,7 +12,7 @@ class Haproxy(object):
     def create_file(self):
         file_name = str(uuid.uuid4())  #这个uuid.uuid4()会生成一个文件UUID然后当作文件名
         with open(file_name,'wb') as f:
-            f.write('This is test file will send to server')
+            f.write('This is test file will send to services')
             return file_name
 
     def run(self):

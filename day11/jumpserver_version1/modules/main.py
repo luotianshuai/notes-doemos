@@ -80,7 +80,7 @@ class Jumpserver(object):
         for i in ip_infos:
             print i.values()
             server_list.append(i.values()[0])
-        ask_userlogin = raw_input('\033[34;1mIf you want to login server please input the IP address any else back func list: ')
+        ask_userlogin = raw_input('\033[34;1mIf you want to login services please input the IP address any else back func list: ')
         print server_list
         if ask_userlogin in server_list:
             print "fuck"
@@ -99,10 +99,10 @@ class Jumpserver(object):
             #                           Shuai JumpServer                              #
             #                                                                         #
             ###########################################################################
-            1)Input p will show all server (only you can see,and you can chose ip login)
-            2)Input e send command to all server
-            3)Input d download file from all server
-            4)Input u put file to all server
+            1)Input p will show all services (only you can see,and you can chose ip login)
+            2)Input e send command to all services
+            3)Input d download file from all services
+            4)Input u put file to all services
         '''
         while True:
             func_input = raw_input('\033[34;1mPlease input what you want:::\033[0m')

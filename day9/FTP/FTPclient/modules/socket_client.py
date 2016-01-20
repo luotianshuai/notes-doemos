@@ -12,10 +12,10 @@ class Client_Handler(object):
             '401': "wrong username or password",
             '404': "invalid username or password",
             '300': "Ready to send file",
-            '301': "Ready to get file from server",
-            '302': "Ready to send to  server",
+            '301': "Ready to get file from services",
+            '302': "Ready to send to  services",
             '303': "Ready to recv file from client",
-            '403': "File doesn't exist on ftp server",
+            '403': "File doesn't exist on ftp services",
     }
     def __init__(self,args):
         self.args = args
@@ -97,9 +97,9 @@ class Client_Handler(object):
         try:
             self.logout_flag = False
             while  self.logout_flag is not True:
-                print """\033[34;1mget filename    :will to download file from server
-push filename   :filename    will to update file to server
-show    :will list server file and Directory list\033[0m
+                print """\033[34;1mget filename    :will to download file from services
+push filename   :filename    will to update file to services
+show    :will list services file and Directory list\033[0m
                 """
                 user_input = raw_input("[%s]:[%s]:" %(self.login_user,self.cwd)).strip() #获取用户输入
                 if len(user_input) == 0:continue
@@ -157,7 +157,7 @@ show    :will list server file and Directory list\033[0m
 
     def instruction__push(self,instructions): #下载函数
         if len(instructions) == 1: #如果后面没有跟文件名退出
-            print("Input the  filename which you want to be update to server!")
+            print("Input the  filename which you want to be update to services!")
             return
         else:
             file_name = instructions[1]  #获取文件名
@@ -165,7 +165,7 @@ show    :will list server file and Directory list\033[0m
                 raw_str = "file_push|%s" % (json.dumps(file_name)) #拼接发送的请求
                 self.sock.send(raw_str) #发送至server端
                 if self.sock.recv(1024) == '303': #接收返回的状态码如果为303
-                    print "\033[34;1mwill to send file to server\033[0m"
+                    print "\033[34;1mwill to send file to services\033[0m"
                     file_size = os.path.getsize(file_name) #判断文件是否存在
                     self.sock.send(str(file_size)) #发送文件大小
                     self.sock.recv(1024) #接收状态信息
@@ -188,7 +188,7 @@ show    :will list server file and Directory list\033[0m
                     else:
                         t_cost = time.time() - t_start
                         print "----file transfer time:---",t_cost
-                        print("\033[32;1m----successfully sent file to server----\033[0m")
+                        print("\033[32;1m----successfully sent file to services----\033[0m")
 
             else:
                 print "\033[31;1mPlese input right file name !\033[0m"

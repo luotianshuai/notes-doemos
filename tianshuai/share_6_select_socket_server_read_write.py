@@ -31,7 +31,7 @@ while True:
     print 'writeable_list:',writeable_list
     print 'message',message
     for r in readable_list: #当readable_list有值得时候循环
-        if r == sk:  #判断是否为链接请求变化的是否是socket server
+        if r == sk:  #判断是否为链接请求变化的是否是socket services
             conn,addr = r.accept() #获取请求
             inputs.append(conn) #把客户端对象（句柄）加入到inputs里
             message[conn] = Queue.Queue() #并在字典里为这个客户端连接建立一个消息队列

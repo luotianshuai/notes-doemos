@@ -24,8 +24,8 @@ class ArgvHandler(object):
 
     def help_msg(self):
         msg = '''\033[31;1m
-        start       :will to start ftp server
-        ctrl+c      :will to stop  ftp server
+        start       :will to start ftp services
+        ctrl+c      :will to stop  ftp services
         help        :will to show  ftp helpmsg\033[0m
         '''
         sys.exit(msg) #打印并退出

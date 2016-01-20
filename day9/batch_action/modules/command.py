@@ -31,7 +31,7 @@ class Cmd(object):
                 else:
                     self.help()
             except KeyboardInterrupt as e:
-                print "\033[34;1m the server will exit\033[0m"
+                print "\033[34;1m the services will exit\033[0m"
             except Exception as e:
                 print e
     def c_c(self,arg): #command执行方法
@@ -88,8 +88,8 @@ class Cmd(object):
                 t.start() #开始执行
     def help(self):
         msg = '''\033[31;1m
-python action.py -c command   :will send command to all server
-python action.py -f source_filepath destination_filepath :will send file to all server user home dir
+python action.py -c command   :will send command to all services
+python action.py -f source_filepath destination_filepath :will send file to all services user home dir
         \033[0m
         '''
         sys.exit(msg)

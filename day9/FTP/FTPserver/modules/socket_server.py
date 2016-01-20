@@ -15,10 +15,10 @@ class FtpServer(SocketServer.BaseRequestHandler):
             '401': "wrong username or password",
             '404': "invalid username or password",
             '300': "Ready to send file",
-            '301': "Ready to get file from server",
-            '302': "Ready to send to  server",
+            '301': "Ready to get file from services",
+            '302': "Ready to send to  services",
             '303': "Ready to recv file from client",
-            '403': "File doesn't exist on ftp server",
+            '403': "File doesn't exist on ftp services",
     }
 
     print ('\033[34;1mStart FTPserver on IP:%s PORT:%s\033[0m' % (settings.BIND_HOST,settings.BIND_PORT))

@@ -88,7 +88,7 @@ record信息写入到第二个文件中，然后在第二个文件中匹配的re
 def add_backend(backend):
     backend_title = backend.get('backend')
     current_title = 'backend %s' % backend_title
-    current_record = 'server %s %s weight %s maxconn %s' % (backend['record']['server'],backend['record']['server'],backend['record']['weight'],backend['record']['maxconn'])
+    current_record = 'services %s %s weight %s maxconn %s' % (backend['record']['services'],backend['record']['services'],backend['record']['weight'],backend['record']['maxconn'])
 
     check_backend = get_backend(backend_title)
     if check_backend:
@@ -142,7 +142,7 @@ def add_backend(backend):
 def del_backend(backend):
     backend_title = backend.get('backend')
     current_title = 'backend %s' % backend_title
-    current_record = 'server %s %s weight %s maxconn %s' % (backend['record']['server'],backend['record']['server'],backend['record']['weight'],backend['record']['maxconn'])
+    current_record = 'services %s %s weight %s maxconn %s' % (backend['record']['services'],backend['record']['services'],backend['record']['weight'],backend['record']['maxconn'])
     check_backend = get_backend(backend_title)
     if check_backend:
         '''如果backend存在'''
@@ -204,17 +204,17 @@ if __name__ == '__main__':
             else:
                 print "\033[31;1m无法找到您输入的backend请检查：%s是否正确\033[0m" % read
         if num == '2':
-            print '\033[32;1m输入添加测试：backend不存在：\033[33;1m{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
-            print '\033[32;1m输入添加测试：backend存在record存在：\033[33;1m{"backend": "buy.oldboy.org","record":{"server": "100.1.7.10","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
-            print '\033[32;1m输入添加测试：backend存在record不存在：\033[33;1m{"backend": "buy.oldboy.org","record":{"server": "100.1.7.101","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入添加测试：backend不存在：\033[33;1m{"backend": "test.oldboy.org","record":{"services": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入添加测试：backend存在record存在：\033[33;1m{"backend": "buy.oldboy.org","record":{"services": "100.1.7.10","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入添加测试：backend存在record不存在：\033[33;1m{"backend": "buy.oldboy.org","record":{"services": "100.1.7.101","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
             read = raw_input('\033[33;1m请输入您要添加的信息：\033[0m')
             read_new = json.loads(read)
             print add_backend(read_new)
         if num == '3':
-            print '\033[32;1m输入删除测试：backend不存在：\033[33;1m{"backend": "test.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
-            print '\033[32;1m输入删除测试：backend存在record存在,且仅有一条record记录：\033[33;1m{"backend": "www.oldboy.org","record":{"server": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
-            print '\033[32;1m输入删除测试：backend存在record存在,且有其他record记录：：\033[33;1m{"backend": "buy.oldboy.org","record":{"server": "100.1.7.10","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
-            print '\033[32;1m输入删除测试：backend存在record不存在：\033[33;1m{"backend": "buy.oldboy.org","record":{"server": "100.1.7.99","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入删除测试：backend不存在：\033[33;1m{"backend": "test.oldboy.org","record":{"services": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入删除测试：backend存在record存在,且仅有一条record记录：\033[33;1m{"backend": "www.oldboy.org","record":{"services": "100.1.7.9","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入删除测试：backend存在record存在,且有其他record记录：：\033[33;1m{"backend": "buy.oldboy.org","record":{"services": "100.1.7.10","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
+            print '\033[32;1m输入删除测试：backend存在record不存在：\033[33;1m{"backend": "buy.oldboy.org","record":{"services": "100.1.7.99","weight": 20,"maxconn": 3000}}\033[0m\033[0m'
             read = raw_input('\033[33;1m请输入您要删除的信息：\033[0m')
             read_new = json.loads(read)
             print del_backend(read_new)
