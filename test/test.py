@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
-
+'''
 import memcache
 
 mc = memcache.Client(['192.168.17.15:11211'],debug=True)
@@ -12,3 +12,6 @@ while True:
     result = mc.get(user_inputk)
     print '\033[32;1mYou\'re input is %s\033[0m' % user_inputv
 
+'''
+
+print "shuai"
