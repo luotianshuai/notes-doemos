@@ -27,6 +27,7 @@ class MonitorClient(object):
             config_info = json.loads(config_info)
         return config_info
     def handle(self):#主运行方法
+        print 'fuck'
         if self.host_config:#判断host_config是否有值
             while True: #循环
                 for servers,val in self.host_config.iterms():
