@@ -11,6 +11,6 @@ print BASE_DIR
 from core import main
 
 if __name__ == '__main__':
-    Client = main.MonitorClient()
-    Client.start
+    Client = main.MonitorClients()
+    Client.start()
 
