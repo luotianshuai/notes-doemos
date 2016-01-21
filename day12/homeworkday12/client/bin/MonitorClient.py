@@ -9,8 +9,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) #获取�
 sys.path.append(BASE_DIR) #加载环境变量
 print BASE_DIR
 from core import main
-from config import settings
 
 if __name__ == '__main__':
     Client = main.MonitorClient()
     Client.start
+
