@@ -19,7 +19,7 @@ class MonitorClient(object):
         self.ip = settings.ClientIP #设置客户端IP
         self.host_config = self.get_host_config() #执行get_host_config方法并把值赋予给host_config
     def start(self):
-        pass
+        self.handle()
     def get_host_config(self): #定义get_host_config方法
         config_key = "HostConfig::%s" % self.ip
         config_info = self.r.get(config_key) #获取监控参数
