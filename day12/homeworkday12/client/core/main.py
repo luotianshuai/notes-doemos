@@ -38,7 +38,8 @@ class MonitorClient(object):
                         print "Service [%s] next run time is in [%s] secs" % (servers,next_run_time)
                     else:
                         print "------will to run the [%s] again------" % servers
-                        last_run_time = time.time()
+                        self.host_config[servers][2] = time.time()
+                time.sleep(1)
         else:
             print "\033[31;1mYour config is None,please check Server config!!\033[0m"
 
