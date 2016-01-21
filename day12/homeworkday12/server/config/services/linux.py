@@ -4,7 +4,7 @@ __author__ = 'luotianshuai'
 
 from generic import BaseService
 
-class CPU(BaseService):
+class CPU(BaseService): #继承基类监控参数，创建新的监控参数
     def __init__(self):
         super(CPU,self).__init__() #调用父类的构造方法并重构构造字段
         self.interval = 30 #监控间隔
@@ -32,12 +32,12 @@ class CPU(BaseService):
                 'data_type':float
             }
                     }
-class Memory(BaseService):
+class Memory(BaseService):#继承基类监控参数，创建新的监控参数
     def __init__(self):
         super(Memory,self).__init__() #调用父类的构造方法并重构构造字段
         self.interval = 20 #监控间隔
-        self.name = 'linux_cpu' #定义监控的服务名称
-        self.plugin_name = 'get_cpu_status' #定义Client使用的插件名称
+        self.name = 'linux_mem' #定义监控的服务名称
+        self.plugin_name = 'get_mem_status' #定义Client使用的插件名称
 
         self.triggers = {
             'usage':{
