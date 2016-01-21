@@ -18,15 +18,3 @@ print sys.modules #以字典的形式显示当前脚本中的模块
 print __name__ # __name__ = __main__ 指定当前文件
 print sys.modules[__name__] # <module '__main__' from 'C:/Github/homework/test/fanshe.py'>  当前文件
 '''
-
-
-
-
-
-
-
-
-
-
-
-
