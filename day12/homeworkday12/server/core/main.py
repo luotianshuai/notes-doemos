@@ -23,7 +23,7 @@ class MonitorServer(object): #创建主的类，调用连接Redis&调用serializ
         self.sub = self.r.subscribe()
 
     def start(self):
-        self.monitor_data_handling()
+        self.monitor_data_processing()
         while True:
             client_data = json.loads(self.sub.parse_response()[2])
             client_data['last_update'] = time.time()
