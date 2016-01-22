@@ -46,7 +46,7 @@ class MonitorServer(object): #创建主的类，调用连接Redis&调用serializ
         while True:
             client_data = self.r.keys("ServiceData::*")
             for i in client_data:
-                print i.split('::').split(':')
+                print i.split('::')[1].split(':')
                 #action_process.action_process(self,client_ip,client_server)
                 #time.sleep(1)
                 self.r.del_key(i)
