@@ -30,6 +30,8 @@ class RedisHelper(object):
     def public(self,msg):
         self.__conn.publish(self.pub, msg)
         return True
+    def del_key(self,keys):
+        return  self.__conn.delete(keys)
 
     def subscribe(self):
         pub = self.__conn.pubsub()
