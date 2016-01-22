@@ -36,6 +36,7 @@ def linux_mem(main_instance,keys_name): #内存监控判断
     mem_parameter = mem.triggers.values()[0] #取出监控阀值信息
     print mem_parameter
     print data
+    print type(data)
 
 
 def linux_cpu(main_instance,keys_name):#CPU监控判断
