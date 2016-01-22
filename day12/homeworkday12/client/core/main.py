@@ -13,6 +13,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) #获取�
 sys.path.append(BASE_DIR) #加载环境变量
 
 from config import settings
+from plugins import plugin_api
 
 class MonitorClients(object):
     def __init__(self):
@@ -45,11 +46,19 @@ class MonitorClients(object):
                     else:
                         print "\033[34;1m------will to run the [%s] again------\033[0m" % servers
                         self.host_config[servers][2] = time.time() #重置计数时间
-                        t = threading.Thread(target=self.run_plugin,args=(servers,plugin_name))#调用插件去获取参数
+                        t = threading.Thread(target=self.run_plugin,args=(servers,plugin_name))#调用插件去获取参数，多线程
                         t.start()
                 time.sleep(1)
         else:
             print "\033[31;1mYour config is None,please check Server config!!\033[0m"
 
-    def run_plugin(self,service_name,plugin_name): #调用插件方法使用多线程
-        pass
+    def run_plugin(self,service_name,plugin_name): #调用插件方法
+        func = getattr(plugin_api,plugin_name) #通过反射获取方法
+        server_data = func()  #执行方法并获取数据
+        report_data = {
+            'host':self.ip,
+            'service':service_name,
+            'data':server_data
+        }
+        self.r.pub(json.dumps(report_data))#通过Redis发布至Server端
+        print 'service [%s] res:%s' % (service_name,server_data)
