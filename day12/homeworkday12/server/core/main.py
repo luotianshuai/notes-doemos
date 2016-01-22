@@ -20,6 +20,7 @@ class MonitorServer(object): #创建主的类，调用连接Redis&调用serializ
         self.sub = self.r.subscribe()
 
     def start(self):
+        print 'fuck'
         while True:
             print self.sub.parse_response()
     def save_configs(self):

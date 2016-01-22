@@ -32,7 +32,7 @@ class RedisHelper(object):
         return True
 
     def subscribe(self):
-        pub = self.__conn.publish()
+        pub = self.__conn.pubsub()
         pub.subscribe(self.sub)
         pub.parse_response()
         return pub
