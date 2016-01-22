@@ -25,7 +25,7 @@ class MonitorServer(object): #创建主的类，调用连接Redis&调用serializ
         while True:
             client_data = json.loads(self.sub.parse_response()[2])
             client_data['last_update'] = time.time()
-            print client_data
+            #print client_data
             business_type = client_data.keys()[0]
             action_process.action_process(self,business_type,client_data)
             '''
