@@ -15,3 +15,9 @@ def push_config_toredis(main_ins,host_groups):
     for h,v in host_config_dic.items():
         host_config_key = "HostConfig::%s" % h  #他的KEY就是IP地址
         main_ins.r.set(host_config_key,json.dumps(v))
+def report_monitor_data(main_server_instance,client_data):
+    report_monitor_data.r.set('ServiceData::%s:%s' % (client_data['report_monitor_data']['ip_address'],
+                                               client_data['report_monitor_data']['service_name']),
+                                               client_data)
+    print "------------------------>>",main_server_instance.get((client_data['report_monitor_data']['ip_address'],
+                                               client_data['report_monitor_data']['service_name']))
