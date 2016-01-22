@@ -33,7 +33,7 @@ def report_monitor_data(main_server_instance,client_data):
                                                #client_data['report_monitor_data']['service_name']))
 
 def linux_mem(main_instance,keys_name): #内存监控判断
-    client_datas_info = json.loads(main_instance.r.get(keys_name),unicode) #获取客户端返回的数据
+    client_datas_info = json.loads(main_instance.r.get(keys_name),unicode='utf-8') #获取客户端返回的数据
     print client_datas_info
     mem = services.linux.Memory()#实例化Memory，取出监控值
     mem_parameter = mem.triggers.values()[0] #取出监控阀值信息
