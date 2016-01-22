@@ -34,17 +34,22 @@ def report_monitor_data(main_server_instance,client_data):
 
 def linux_mem(main_instance,keys_name): #内存监控判断
     client_datas_info = json.loads(main_instance.r.get(keys_name)) #获取客户端返回的数据
-    print client_datas_info
+    if client_datas_info:
+        # server_data = client_datas_info.values
+        # client_ip = server_data['ip_address']
+        # client_se = server_data['linux_mem']
+        # MemUsage_p = server_data['data']['MemUsage_p']
+        mem = services.linux.Memory()#实例化Memory，取出监控值
+        mem_parameter = mem.triggers.values()[0] #取出监控阀值信息
+        print mem_parameter
+        # neirong = "%sCPU已超过阀值请检查" %s host_ip
+        # yonghu = 'luotianshuai'
+        # youxiang = '451161316@qq.com'
+        # zhuti = 'CPU已超过阀值请检查'
+        # send_mail.email(neirong,yonghu,youxiang,zhuti)  #发送报警邮件邮件！
+    else:
+        pass
 
-
-    mem = services.linux.Memory()#实例化Memory，取出监控值
-    mem_parameter = mem.triggers.values()[0] #取出监控阀值信息
-
-    # neirong = "%sCPU已超过阀值请检查" %s host_ip
-    # yonghu = 'luotianshuai'
-    # youxiang = '451161316@qq.com'
-    # zhuti = 'CPU已超过阀值请检查'
-    # send_mail.email(neirong,yonghu,youxiang,zhuti)  #发送报警邮件邮件！
 
 
 def linux_cpu(main_instance,keys_name):#CPU监控判断
