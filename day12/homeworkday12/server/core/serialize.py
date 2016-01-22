@@ -33,7 +33,7 @@ def report_monitor_data(main_server_instance,client_data):
 def linux_mem(main_instance,keys_name):
     data = main_instance.r.get(keys_name)
     mem = services.linux.Memory()
-    mem_parameter = mem.triggers.keys()
+    mem_parameter = mem.triggers.keys().keys()[0]
     print mem_parameter
 
 
