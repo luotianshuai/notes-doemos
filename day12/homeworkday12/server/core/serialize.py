@@ -22,10 +22,10 @@ def report_monitor_data(main_server_instance,client_data):
     #print "------------------------>>",main_server_instance.r.get('ServiceData::%s:%s' % (client_data['report_monitor_data']['ip_address'],
                                                #client_data['report_monitor_data']['service_name']))
 
-def linux_mem(main_instance,keys_name,hostip):
+def linux_mem(main_instance,keys_name):
     data = main_instance.r.get(keys_name)
     print data
 
-def linux_cpu(main_instance,keys_name,hostip):
+def linux_cpu(main_instance,keys_name):
     data = main_instance.r.get(keys_name)
     print data
