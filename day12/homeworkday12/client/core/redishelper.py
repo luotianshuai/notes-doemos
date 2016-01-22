@@ -24,5 +24,9 @@ class RedisHelper(object):
     def get(self,key):#定义查询方法
         return self.__conn.get(key)
 
+    def public(self,msg):
+        self.__conn.publish(self.pub, msg)
+        return True
+
     def keys(self,pattern="*"):#定义查询所有keys方法
         return self.keys(pattern)

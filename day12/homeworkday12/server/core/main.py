@@ -21,6 +21,6 @@ class MonitorServer(object): #创建主的类，调用连接Redis&调用serializ
     def start(self):
         self.save_configs()
         while True:
-            print self.r.sub.parse_response()
+            print self.sub.parse_response()
     def save_configs(self):
         serialize.push_config_toredis(self,hosts.monitored_groups)#这里把self传过去，在push_config_toredis中即可调用实例

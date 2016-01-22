@@ -27,6 +27,10 @@ class RedisHelper(object):
     def keys(self,pattern="*"):#定义查询所有keys方法
         return self.keys(pattern)
 
+    def public(self,msg):
+        self.__conn.publish(self.pub, msg)
+        return True
+
     def subscribe(self):
         pub = self.__conn.publish()
         pub.subscribe(self.sub)
