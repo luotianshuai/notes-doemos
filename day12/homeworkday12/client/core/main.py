@@ -6,6 +6,7 @@ import os
 import sys
 import json
 import time
+import threading
 import redishelper
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) #获取文件所在的顶级目录，方便加载其他的模块
@@ -43,8 +44,12 @@ class MonitorClients(object):
                         print "Service [%s] next run time is in [%s] secs" % (servers,next_run_time)
                     else:
                         print "\033[34;1m------will to run the [%s] again------\033[0m" % servers
-                        self.host_config[servers][2] = time.time()
+                        self.host_config[servers][2] = time.time() #重置计数时间
+                        t = threading.Thread(target=self.run_plugin,args=(servers,plugin_name))#调用插件去获取参数
+                        t.start()
                 time.sleep(1)
         else:
             print "\033[31;1mYour config is None,please check Server config!!\033[0m"
 
+    def run_plugin(self,service_name,plugin_name): #调用插件方法使用多线程
+        pass
