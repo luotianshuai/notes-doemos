@@ -59,7 +59,7 @@ class MonitorClients(object):
                               {'ip_address':self.ip,
                                'service_name':service_name,
                                'data':result})
-        self.r.public(msg)
+        self.r.public(msg) #发送消息
     def format_msg(self,key,value):
         msg = {key:value}
         return json.dumps(msg)

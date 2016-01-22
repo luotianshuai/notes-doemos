@@ -16,10 +16,11 @@ from config import hosts
 class MonitorServer(object): #创建主的类，调用连接Redis&调用serialize序列化，把监控模板上传至Redis
     def __init__(self):
         self.r = RedisHelper()
+        self.save_configs()
         self.sub = self.r.subscribe()
 
     def start(self):
-        self.save_configs()
+        
         while True:
             print self.sub.parse_response()
     def save_configs(self):
