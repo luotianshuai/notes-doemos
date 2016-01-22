@@ -30,13 +30,13 @@ def report_monitor_data(main_server_instance,client_data):
     #print "------------------------>>",main_server_instance.r.get('ServiceData::%s:%s' % (client_data['report_monitor_data']['ip_address'],
                                                #client_data['report_monitor_data']['service_name']))
 
-def linux_mem(main_instance,keys_name):
-    data = main_instance.r.get(keys_name)
-    mem = services.linux.Memory()
+def linux_mem(main_instance,keys_name): #内存监控判断
+    data = main_instance.r.get(keys_name) #获取客户端返回的数据
+    mem = services.linux.Memory()#实例化Memory，取出监控值
     mem_parameter = mem.triggers.keys().keys()[0]
     print mem_parameter
 
 
-def linux_cpu(main_instance,keys_name):
+def linux_cpu(main_instance,keys_name):#CPU监控判断
     data = main_instance.r.get(keys_name)
     print data
