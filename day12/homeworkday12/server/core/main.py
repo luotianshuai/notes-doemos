@@ -21,10 +21,10 @@ class MonitorServer(object): #创建主的类，调用连接Redis&调用serializ
         self.sub = self.r.subscribe()
 
     def start(self):
-        print 'fuck'
         while True:
             client_data = self.sub.parse_response()[2]
             client_data['last_update'] = time.time()
-
+            self.r.set('ServiceData::%s:%s' % (client_data['ip_address'],client_data['service_name']),client_data)
+            #数据存入到Redis中并且存储的相同数据只保留一条，数据不断刷新
     def save_configs(self):
         serialize.push_config_toredis(self,hosts.monitored_groups)#这里把self传过去，在push_config_toredis中即可调用实例

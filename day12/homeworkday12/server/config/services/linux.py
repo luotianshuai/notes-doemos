@@ -7,7 +7,7 @@ from generic import BaseService
 class CPU(BaseService): #继承基类监控参数，创建新的监控参数
     def __init__(self):
         super(CPU,self).__init__() #调用父类的构造方法并重构构造字段
-        self.interval = 30 #监控间隔
+        self.interval = 10 #监控间隔
         self.name = 'linux_cpu' #定义监控的服务名称
         self.plugin_name = 'get_cpu_status' #定义Client使用的插件名称
 
