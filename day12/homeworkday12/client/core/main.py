@@ -54,11 +54,12 @@ class MonitorClients(object):
 
     def run_plugin(self,service_name,plugin_name): #调用插件方法
         func = getattr(plugin_api,plugin_name) #通过反射获取方法
-        server_data = func()  #执行方法并获取数据
-        report_data = {
-            'host':self.ip,
-            'service':service_name,
-            'data':server_data
-        }
-        self.r.pub(json.dumps(report_data))#通过Redis发布至Server端
-        print 'service [%s] res:%s' % (service_name,server_data)
+        result = json.dumps(func())  #执行方法并获取数据
+        msg = self.format_msg('report_service_data',
+                              {'ip_address':self.ip,
+                               'service_name':service_name,
+                               'data':result})
+        self.r.pub(msg)
+    def format_msg(self,key,value):
+        msg = {key:value}
+        return json.dumps(msg)

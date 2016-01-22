@@ -5,8 +5,8 @@ __author__ = 'luotianshuai'
 import commands
 
 def monitory():
-    shell_command = 'sar 1 3|grep "^Average:"'
-    status,result = commands.getstatusoutput(shell_command)
+    shell_command = 'sar 1 3|grep "^Average:"' #获取CPU信息字段
+    status,result = commands.getstatusoutput(shell_command) #执行CPU命令获取CPU信息
     if status != 0:
         value_dic = {'status':status}
     else:
@@ -20,3 +20,4 @@ def monitory():
             'idle':idle,
             'status':status
         }
+    return value_dic

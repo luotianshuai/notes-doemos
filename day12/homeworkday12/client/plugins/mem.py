@@ -9,16 +9,16 @@ def monitory(frist_invoke=1):
         'SwapUsage': 'percentage',
         'MemUsage'  : 'percentage',
     }
-    shell_command ="grep 'MemTotal\|MemFree\|Buffers\|^Cached\|SwapTotal\|SwapFree' /proc/meminfo"
+    shell_command ="grep 'MemTotal\|MemFree\|Buffers\|^Cached\|SwapTotal\|SwapFree' /proc/meminfo" #获取内存信息语句
 
-    status,result = commands.getstatusoutput(shell_command)
-    if status != 0: #cmd exec error
+    status,result = commands.getstatusoutput(shell_command) #执行shell命令获取内存信息结果
+    if status != 0: #判断命令返回状态
         value_dic = {'status':status}
     else:
-        value_dic = {'status':status}
-        for i in result.split('kB\n'):
-            key= i.split()[0].strip(':') # factor name
-            value = i.split()[1]   # factor value
+        value_dic = {'status':status} #如果执行成功
+        for i in result.split('kB\n'):#循环
+            key= i.split()[0].strip(':') #设置循环每行的keys
+            value = i.split()[1]   # 设置循环每行的values
             value_dic[ key] =  value
 
         if monitor_dic['SwapUsage'] == 'percentage':
