@@ -9,6 +9,6 @@ def action_process(server_instance,business_type,client_data):
     func = getattr(serialize,business_type)
     func(server_instance,client_data)
 
-def action_work(server_instance,keys_name):
-    func = getattr(serialize,keys_name)
-    func =
+# def action_work(server_instance,keys_name):
+#     func = getattr(serialize,keys_name)
+#     func =
