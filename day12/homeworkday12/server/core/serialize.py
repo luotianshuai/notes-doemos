@@ -4,6 +4,11 @@ __author__ = 'luotianshuai'
 
 import json
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) #获取文件所在的顶级目录，方便加载其他的模块
+sys.path.append(BASE_DIR) #加载环境变量
+
+from config import services
+
 def push_config_toredis(main_ins,host_groups):
     host_config_dic = {} #定义一个空字典
     for group in host_groups: #循环monitored_groups列表
@@ -15,6 +20,7 @@ def push_config_toredis(main_ins,host_groups):
     for h,v in host_config_dic.items():
         host_config_key = "HostConfig::%s" % h  #他的KEY就是IP地址
         main_ins.r.set(host_config_key,json.dumps(v))
+
 def report_monitor_data(main_server_instance,client_data):
     main_server_instance.r.set('ServiceData::%s:%s' % (client_data['report_monitor_data']['ip_address'],
                                                client_data['report_monitor_data']['service_name']),
@@ -24,7 +30,8 @@ def report_monitor_data(main_server_instance,client_data):
 
 def linux_mem(main_instance,keys_name):
     data = main_instance.r.get(keys_name)
-    print data
+    mem = services.linux.Memory()
+    print mem.triggers
 
 def linux_cpu(main_instance,keys_name):
     data = main_instance.r.get(keys_name)
