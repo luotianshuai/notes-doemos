@@ -20,4 +20,4 @@ def report_monitor_data(main_server_instance,client_data):
                                                client_data['report_monitor_data']['service_name']),
                                                client_data)
     #print "------------------------>>",main_server_instance.r.get('ServiceData::%s:%s' % (client_data['report_monitor_data']['ip_address'],
-                                               client_data['report_monitor_data']['service_name']))
+                                               #client_data['report_monitor_data']['service_name']))
