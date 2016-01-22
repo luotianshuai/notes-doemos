@@ -24,6 +24,7 @@ class MonitorServer(object): #创建主的类，调用连接Redis&调用serializ
         while True:
             client_data = self.sub.parse_response()[2]
             client_data['last_update'] = time.time()
+            print client_data
             self.r.set('ServiceData::%s:%s' % (client_data['report_service_data']['ip_address'],
                                                client_data['report_service_data']['service_name']),
                                                client_data)
