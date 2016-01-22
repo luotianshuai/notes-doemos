@@ -46,6 +46,7 @@ class MonitorServer(object): #创建主的类，调用连接Redis&调用serializ
         client_data = self.r.keys("ServiceData::*")
         for data in client_data:
             print data
+            print type(data)
             '''
             for k,v in data.items:
                 print 'client_serve name is :',v['service_name']
