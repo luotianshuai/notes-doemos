@@ -5,6 +5,7 @@ __author__ = 'luotianshuai'
 import os
 import sys
 import json
+import pickle
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) #获取文件所在的顶级目录，方便加载其他的模块
 sys.path.append(BASE_DIR) #加载环境变量
@@ -32,6 +33,7 @@ def report_monitor_data(main_server_instance,client_data):
 
 def linux_mem(main_instance,keys_name): #内存监控判断
     data = main_instance.r.get(keys_name) #获取客户端返回的数据
+    data = pickle.loads(data)
     print data
     mem = services.linux.Memory()#实例化Memory，取出监控值
     mem_parameter = mem.triggers.values()[0] #取出监控阀值信息
