@@ -44,11 +44,8 @@ class MonitorServer(object): #创建主的类，调用连接Redis&调用serializ
     def monitor_data_handling(self):#所有的数据逻辑处理方法
         print '''---starting a new process to deal with monitor data ---'''
         client_data = self.r.keys("ServiceData::*")
-        while True:
-            for i in client_data:
-                print self.r.get(i)
-                print time.time()
-                time.sleep(1)
+        for i in client_data:
+            print i
 
     def save_configs(self):
         serialize.push_config_toredis(self,hosts.monitored_groups)#这里把self传过去，在push_config_toredis中即可调用实例
