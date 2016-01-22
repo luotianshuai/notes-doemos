@@ -33,11 +33,10 @@ def report_monitor_data(main_server_instance,client_data):
 
 def linux_mem(main_instance,keys_name): #内存监控判断
     data = main_instance.r.get(keys_name) #获取客户端返回的数据
-    data = pickle.loads(data)
-    print data
+    print type(data)
     mem = services.linux.Memory()#实例化Memory，取出监控值
     mem_parameter = mem.triggers.values()[0] #取出监控阀值信息
-    print mem_parameter
+    #print mem_parameter
     # print 'IP is :',sdata['report_monitor_data']['ip_address']
     # print 'MemUsage_p is :',sdata['report_monitor_data']['MemUsage_p']
 
@@ -45,4 +44,4 @@ def linux_mem(main_instance,keys_name): #内存监控判断
 
 def linux_cpu(main_instance,keys_name):#CPU监控判断
     data = main_instance.r.get(keys_name)
-    print data
+    #print data
