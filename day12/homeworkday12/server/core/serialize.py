@@ -33,7 +33,7 @@ def report_monitor_data(main_server_instance,client_data):
                                                #client_data['report_monitor_data']['service_name']))
 
 def linux_mem(main_instance,keys_name): #内存监控判断
-    client_datas_info = json.loads(main_instance.r.get(keys_name)) #获取客户端返回的数据
+    client_datas_info = json.loads(main_instance.r.get(keys_name),encoding=unicode,) #获取客户端返回的数据
     print type(client_datas_info)
     print client_datas_info
 
@@ -56,5 +56,5 @@ def linux_cpu(main_instance,keys_name):#CPU监控判断
     # print type(client_datas)
     # print client_datas
     #
-    # cpu = services.linux.Memory()#实例化Memory，取出监控值
+    # cpu = services.linux.CPU()#实例化Memory，取出监控值
     # cpu_parameter = cpu.triggers.values()[0] #取出监控阀值信息
