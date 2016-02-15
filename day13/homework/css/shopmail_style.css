@@ -1,0 +1,83 @@
+/*###################################index页面样式###################################*/
+/*div框体居中，*/
+.top_style{
+            margin-left: auto;
+            margin-right:auto;
+            width:1000px;
+}
+/*内容div样式，背景图片*/
+.content_style{
+    background-size: 100%;
+    background-image: url(../images/content_images.jpg);
+    height: 700px;
+}
+/*用户输入样式*/
+.user_input_style{
+    margin-left: auto;
+    margin-right:auto;
+    width:1000px;
+}
+
+/*框体主体样式*/
+.input_frame_style{
+    background-color: #F0F8FF;
+    width: 340px;
+    height: 360px;
+    float: right;
+    margin-top: 100px
+}
+/*用户登录提交样式*/
+.user_submit{
+    background-color: #4169E1;width: 280px;color: white;font-size: 20px;line-height: 40px;text-align: center;
+}
+
+/*用户输入图标样式*/
+.userinput_images_1{
+    height: 35px;width: 240px;border: 1px solid gainsboro
+}
+.userinput_images_2{
+    height: 35px;width: 240px;border: 1px solid gainsboro
+}
+
+/*注册样式*/
+.register_style{
+    margin-left: 100px;color: white;font-size: 20px;line-height: 40px;text-align: center;
+}
+/*###################################用户意见反馈html样式###################################*/
+/*中心内容格式*/
+/*padding-top 从里面设置边界*/
+.feedback_center{
+    margin-left: auto;
+    margin-right:auto;
+    background-color: #F0F8FF;
+    width:1000px;
+    height:600px;
+    padding-top: 20px;
+    overflow: hidden;
+    /*overflow设置为hidden如果边框突出就隐藏，隐藏超出div的内容*/
+}
+/*顶部字体1*/
+.top_1{
+    margin-left: auto; margin-right: auto;width: 1000px;text-align: center;color: #FF6040;font-size: 30px;
+}
+.top_2{
+    margin-top: 10px;margin-bottom: 10px;margin-left: auto; margin-right: auto;width: 1000px;text-align: center;
+}
+
+/*意见样式*/
+.center_1{
+    margin-left: 20px; margin-right: auto;width: 1000px;
+    /*margin-top: 00px;;*/
+}
+/*意见样式*/
+.center_2{
+    margin-top: 60px;margin-left: 20px; margin-right: auto;width: 1000px;
+    /*margin-top: 00px;;*/
+}
+
+/*###################################注册~html样式###################################*/
+.coner{width:0px;border-color:#666 transparent transparent transparent ;
+    border-style: solid;
+    border-width: 8px 0px 0px 18px;
+    margin: 0px 0px 0px -18px;}
+.left{float:left;}

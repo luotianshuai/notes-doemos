@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--设置网页头部显示信息-->
+    <title>Mr、心弦体育</title>
+    <!--设置网页头部显示图标-->
+    <link rel="shortcut icon" href="images/link_img.jpg">
+    <!--设置样式文件路径-->
+    <link rel="stylesheet" href="css/shopmail_style.css">
+</head>
+<body style="margin: 0px">
+    <!--设置top样式、并设置意见反馈，点击进入form表单-->
+    <div class="top_style">
+        <!--设置log图标-->
+        <img height=70px;width=100px; src="images/log.jpg">
+        <!--设置右侧意见反馈图标和文字，并设置连接-->
+        <div style="margin-top: 25px;float:right;color: red">
+            <a href="html/feedback.html">
+                <div style="float:right">"登录页面"意见反馈</div>
+                <img style="float:right"height=20px;width=20px; src="images/thinks.jpg">
+            </a>
+        </div>
+    </div>
+
+    <!--设置内容总框体，并套用内容总样式-->
+    <div class="content_style">
+        <!--设置用户输入框，并调用用户输入样式-->
+        <div class="user_input_style">
+            <!--用户输入框体主体-->
+            <div class="input_frame_style">
+                <!--对齐框体-->
+                <div style="margin-top: 20px;margin-right: 20px;margin-left: 20px;width: 320px;">
+                    <h3>
+                        账户登录
+                    </h3>
+                    <form action="html/shopingmail.html">
+                        <!--用户名-->
+                        <div style=" margin-top: 40px;width: 320px;height: 60px;">
+                            <label for="user_imags">
+                                <img style="float:left;height: 40px;width: 40px;" src="images/user_image.jpg">
+                            </label>
+                            <input id="user_imags" class="userinput_images_1"  type="text"/>
+
+                        </div>
+                        <!--密码-->
+                        <div style="width: 320px;">
+                            <label for="password_imags">
+                                <img style="float:left;height: 40px;width: 40px;" src="images/password_image.jpg">
+                            </label>
+                            <input id="password_imags" class="userinput_images_2"  type="password"/>
+                        </div>
+                        <!--登录图标-->
+                        <div style="background-color: #4169E1 ;width: 280px;margin-top: 20px;">
+                            <input type="submit" class="user_submit " value="登录">
+                        </div>
+                    </form>
+                    <div style="background-color: #FF6040 ;width: 280px;margin-top: 20px;">
+                        <a href="html/user_agreement.html" class="register_style">免费注册</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
