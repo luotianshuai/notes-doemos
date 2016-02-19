@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>shuaige</title>
+    <style>
+        .r {
+            background-color:red; /* 给标签设置背景颜色为红色*/
+        }
+    </style>
+</head>
+<body>
+
+    <div id="id_1">
+        123
+    </div>
+    <div class="c1">1</div>
+    <div class="c1">2</div>
+    <div class="c1">3</div>
+
+
+    <!--导入Jquery文件-->
+    <script type="text/javascript" src="jquery-1.8.2.min.js"></script>
+    <script>
+        $(function () {alert('Hello shuaige');}); //当页面执行完后加载
+        //这里$是什么呢? 他可以理解为jQurey创建的对象,类似于python中的类创建的对象,对象去调用方法一样.!!!仅仅是类似
+        $('#id_1').text('456');
+        //分解  $('#id_1') 找到id为id_1的标签,病吧里面的内容修改为456
+        //这里虽然永不倒dom但是,会dom对jQurey有很大的帮助
+        $('.c1').addClass('r');
+        //分解  $('.c1') 找到class为c1的标签
+
+        //就可以这么理解:$('这部分是选择').操作(标签 )
+    </script>
+</body>
+</html>
