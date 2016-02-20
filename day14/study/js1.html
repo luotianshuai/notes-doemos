@@ -1,18 +1,21 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset='utf-8' >
-        <title>欢迎blue shit莅临指导&nbsp;&nbsp;</title>
-        <script type='text/javascript'>
-            function Go(){
-                var content = document.title;
-                var firstChar = content.charAt(0);
-                var sub = content.substring(1,content.length);
-                document.title = sub + firstChar;
-            }
-            setInterval('Go()',1000);
-        </script>
-    </head>
-    <body>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>帅哥很帅&nbsp;&nbsp;</title>
+        <!--跑马灯实例-->
+    <script type="text/javascript">
+        function run_go() { //定义一个函数
+            var content = document.title; //获取title的内容
+            var firstChar = content.charAt(0); //获取content第一个元素
+            var sub = content.substring(1,content.length); //获取content字符串剩余的元素
+            document.title = sub + firstChar; //对字符串进行新的拼接
+        }
+        setInterval('run_go()',1000); //使用interval每秒执行然后达到跑马灯的目的
+    </script>
+</head>
+<body>
+
+
+</body>
 </html>

@@ -1,0 +1,40 @@
+
+<!doctype html>
+<html>
+<head>
+<script src="jquery.js"></script>
+<style>
+body{margin:0;}
+.box{margin:100px;overflow:hidden;}
+ul{margin:0;padding:0;list-style:none;}
+.box{border:solid 2px blue;height:30px;line-height:30px;}
+.box ul{border:solid 2px red;}
+</style>
+<meta charset="utf-8">
+<title>shuaige</title>
+</head>
+
+<body>
+<div class="box">
+	<ul>
+    	<li>新闻内容1</li>
+        <li>新闻内容2</li>
+        <li>新闻内容3</li>
+        <li>新闻内容4</li>
+        <li>新闻内容5</li>
+    </ul>
+</div>
+<script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
+<script>
+/*新闻框向上走动*/
+function moveUp(){
+	$(".box ul").animate({marginTop:-30},1000,function(){
+		$(".box ul").css({marginTop:0});
+		$(".box li:last").after($(".box li:first"));
+	});
+}
+t = setInterval(moveUp,2000);
+</script>
+
+</body>
+</html>

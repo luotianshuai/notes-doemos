@@ -1,0 +1,243 @@
+/*###################################index页面样式###################################*/
+/*div框体居中，*/
+.top_style{
+            margin-left: auto;
+            margin-right:auto;
+            width:1000px;
+}
+/*内容div样式，背景图片*/
+.content_style{
+    background-size: 100%;
+    background-image: url(../images/content_images.jpg);
+    height: 700px;
+}
+/*用户输入样式*/
+.user_input_style{
+    margin-left: auto;
+    margin-right:auto;
+    width:1000px;
+}
+
+/*框体主体样式*/
+.input_frame_style{
+    background-color: #F0F8FF;
+    width: 340px;
+    height: 360px;
+    float: right;
+    margin-top: 100px
+}
+/*用户登录提交样式*/
+.user_submit{
+    background-color: #4169E1;width: 280px;color: white;font-size: 20px;line-height: 40px;text-align: center;
+}
+
+/*用户输入图标样式*/
+.userinput_images_1{
+    height: 35px;width: 240px;border: 1px solid gainsboro;color:#dddddd;
+}
+.userinput_images_2{
+    height: 35px;width: 240px;border: 1px solid gainsboro
+}
+
+/*注册样式*/
+.register_style{
+    margin-left: 100px;color: white;font-size: 20px;line-height: 40px;text-align: center;
+}
+
+/*用户输入用户名和密码样式*/
+.black{
+    color:black;
+}
+
+/*###################################用户意见反馈html样式###################################*/
+/*中心内容格式*/
+/*padding-top 从里面设置边界*/
+.feedback_center{
+    margin-left: auto;
+    margin-right:auto;
+    background-color: #F0F8FF;
+    width:1000px;
+    height:600px;
+    padding-top: 20px;
+    overflow: hidden;
+    /*overflow设置为hidden如果边框突出就隐藏，隐藏超出div的内容*/
+}
+/*顶部字体1*/
+.top_1{
+    margin-left: auto; margin-right: auto;width: 1000px;text-align: center;color: #FF6040;font-size: 30px;
+}
+.top_2{
+    margin-top: 10px;margin-bottom: 10px;margin-left: auto; margin-right: auto;width: 1000px;text-align: center;
+}
+
+/*意见样式*/
+.center_1{
+    margin-left: 20px; margin-right: auto;width: 1000px;
+    /*margin-top: 00px;;*/
+}
+/*意见样式*/
+.center_2{
+    margin-top: 60px;margin-left: 20px; margin-right: auto;width: 1000px;
+    /*margin-top: 00px;;*/
+}
+
+/*###################################注册~html样式###################################*/
+.coner{width:0px;border-color:#666 transparent transparent transparent ;
+    border-style: solid;
+    border-width: 8px 0px 0px 18px;
+    margin: 0px 0px 0px -18px;}
+.left{float:left;}
+
+/*###################################后台管理~html样式###################################*/
+.all{
+    min-height: 100%;
+    margin-bottom: 5px;
+}
+
+/*定义头部样式*/
+.pg-header{
+    color: #fff;
+    height: 36px;
+    line-height: 34px;
+    min-width: 1200px;
+    background: #00a2ca;
+    background: -moz-linear-gradient(#00a2ca, #038CAE);
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #038CAE), color-stop(1, #00a2ca));
+    background: -webkit-linear-gradient(#00a2ca, #038CAE);
+    background: -o-linear-gradient(#00a2ca, #038CAE);
+    background: -ms-linear-gradient(#00a2ca, #038CAE);
+    background: linear-gradient(#00a2ca, #038CAE);
+    border-bottom:2px solid #C9D3D3;
+}
+
+/*定义头部log样式*/
+.pg-header .top-logo{
+    margin:0 20px;
+    font-size:19px;
+}
+
+.pg-header .top-menu{
+    border-left: 2px solid #fff;
+}
+/*为使用pg-header 下使用了 top-menu 的ul标签设置样式*/
+.pg-header .top-menu ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+/*为使用用了pg-header 下使用了 top-menu 的ul & li标签设置样式*/
+.pg-header .top-menu ul li{
+    float: left;
+    padding: 0 30px;
+    height: 35px;
+    line-height: 35px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    border-right: 1px solid #ddd;
+
+}
+
+.pg-header .top-menu-check{
+    border-top: 2px solid red;
+}
+
+/*为使用了pg-header下的a标签设置颜色*/
+.pg-header a{
+    color:#fff !important;
+    text-decoration: none;
+}
+
+/*后台管理左边菜单设置~html样式###################*/
+.pg-body{
+
+}
+
+/*定义左侧菜单栏主题底层样式*/
+.pg-body .body-tree-menu{
+    position: absolute;
+    bottom: 0;
+    top: 46px;
+    left:2px;
+    overflow: auto;
+    border-left: 0;
+    background-color:#eee;
+    width:260px;
+    overflow: auto;
+}
+
+/*定义左侧菜单栏title*/
+.scalable-menu-title .summary-title{
+    font-size:18px;
+    font-weight:bold;
+    text-align:center;
+    padding:10px;
+    font-family: Tahoma, Geneva, Helvetica, sans-serif !important;
+}
+
+/*定义左侧两个菜单栏*/
+.scalable-menu-body .item{
+
+}
+.scalable-menu-body .item .title{
+    padding:10px 10px;
+    background: #ddd url('../images/gradient.png') repeat-x;
+}
+
+.scalable-menu-body .item .title span{
+    margin-left:5px;
+}
+.scalable-menu-body .item .body .option{
+    border-left:3px solid transparent;
+    line-height:30px;
+    padding:0 20px;
+    display:block;
+    height:30px;
+}
+
+.fa {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+}
+
+.fa-indent:before {
+  content: "\f03c";
+}
+
+.fa-caret-down:before {
+  content: "\f0d7";
+}
+.fa-caret-up:before {
+  content: "\f0d8";
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+/*右侧主题内容部分#####################*/
+/*滚动标题*/
+.pg-body  .body-crumbs{
+    position: absolute;
+    min-width:920px;
+    top:46px;
+    left: 263px;
+    right: 0;
+    height:30px;
+    background: url('../images/bc_bg.gif') repeat-x;
+    color: red;
+    overflow: hidden;
+    border-bottom: 1px solid #888;
+    border-left: 1px solid #888;
+    line-height: 26px;
+}
+

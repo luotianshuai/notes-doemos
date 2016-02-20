@@ -7,7 +7,7 @@
     <!--设置网页头部显示图标-->
     <link rel="shortcut icon" href="images/link_img.jpg">
     <!--设置样式文件路径-->
-    <link rel="stylesheet" href="css/shopmail_style.css">
+    <link rel="stylesheet" href="css/management.css">
 </head>
 <body style="margin: 0px">
     <!--设置top样式、并设置意见反馈，点击进入form表单-->
@@ -34,13 +34,13 @@
                     <h3>
                         账户登录
                     </h3>
-                    <form action="html/shopingmail.html">
+                    <form action="html/management.html">
                         <!--用户名-->
                         <div style=" margin-top: 40px;width: 320px;height: 60px;">
                             <label for="user_imags">
                                 <img style="float:left;height: 40px;width: 40px;" src="images/user_image.jpg">
                             </label>
-                            <input id="user_imags" class="userinput_images_1"  type="text"/>
+                            <input id="user_imags" class="userinput_images_1" type="text" value="账号/邮箱"/>
 
                         </div>
                         <!--密码-->
@@ -51,16 +51,28 @@
                             <input id="password_imags" class="userinput_images_2"  type="password"/>
                         </div>
                         <!--登录图标-->
-                        <div style="background-color: #4169E1 ;width: 280px;margin-top: 20px;">
-                            <input type="submit" class="user_submit " value="登录">
+                        <div   style="background-color: #4169E1 ;width: 280px;margin-top: 20px; ">
+                            <input  id='login_windows' type="submit" class="user_submit " value="登录">
                         </div>
                     </form>
-                    <div style="background-color: #FF6040 ;width: 280px;margin-top: 20px;">
-                        <a href="html/user_agreement.html" class="register_style">免费注册</a>
+                    <div id="user_register_index"style="background-color: #FF6040 ;width: 280px;margin-top: 20px;">
+                        <a   href="html/user_agreement.html" class="register_style">免费注册</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script>
+        //修改鼠标移动到登录或者注册变更背景颜色
+        $("#login_windows").mouseover(function () { $(this).css({backgroundColor:'red'})});
+        $("#login_windows").mouseout(function () { $(this).css({backgroundColor:'#4169E1'})});
+        $("#user_register_index").mouseover(function () { $(this).css({backgroundColor:'red'})});
+        $("#user_register_index").mouseout(function () { $(this).css({backgroundColor:'#FF6040'})});
+        //用户名或密码的,默认信息,和焦点获取和失去的效果,达到用户提醒
+        $('#user_imags').focus(function () {$(this).val("");$(this).addClass('black')}).blur(function () {if($(this).val()==""){$(this).val('账号/邮箱');$(this).removeClass('black');alert('请输入账号/邮箱')}})
+
+
+    </script>
 </body>
 </html>
