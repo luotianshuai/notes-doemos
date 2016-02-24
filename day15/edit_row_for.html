@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>shuaige</title>
+</head>
+<body>
+    <table>
+        <thead></thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td onclick="get_prev(this)">编辑</td>
+            </tr>
+            <tr>
+                <td>111</td>
+                <td>211</td>
+                <td>333</td>
+                <td onclick="get_prev(this)">编辑</td>
+            </tr>
+            <tr>
+                <td>11111</td>
+                <td>22222</td>
+                <td>33333</td>
+                <td onclick="get_prev(this)">编辑</td>
+            </tr>
+        </tbody>
+    </table>
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript">
+
+        //循环所有的数据,去除每一个数据的内容
+
+        //列表循环
+        var a = [11,22,33,44];
+        $.each(a,function(item){
+            console.log(a[item]);
+        });
+        //字典循环
+        var d = {'k1':'v1','k2':'v2','k3':'v3'};
+        $.each(d,function(key,value){
+            console.log(key,value)
+        })
+    </script>
+</body>
+</html>

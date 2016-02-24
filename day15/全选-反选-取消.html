@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>shuaige</title>
+</head>
+<body>
+
+    <input type="button"  onclick="CheckAll()" value="全选"/>
+    <input type="button"  onclick="CheckCancel()" value="取消"/>
+    <input type="button"  onclick="CheckReverse()" value="反选"/>
+
+    <table border="1">
+        <thead></thead>
+        <tbody id="tb1">
+            <tr>
+                <td>
+                    <input type="checkbox" />
+                </td>
+                <td>
+                    1
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" />
+                </td>
+                <td>
+                    2
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" />
+                </td>
+                <td>
+                    3
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+
+
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript">
+        //全选
+        function CheckAll() {
+            //$('#tb1').find(':checkbox').attr('checked','checked'); 这个方法也是可以的!通过属性修改,但是反选的时候有问题
+            $('#tb1').find(':checkbox').prop('checked',true); //这个方法prop是专门为checkbox 而生的
+        }
+
+        //反选
+        function CheckReverse() {
+            //找到/然后判断如果选中就给取消,如果没有选中就给选中
+            $('#tb1').find(':checkbox').each(function () {
+                //this 每一个复选框
+                //$(this).prop()  如果选中为True,如果未选中为false;
+                if($(this).prop('checked')){
+                    $(this).prop('checked',false)
+                }else{
+                    $(this).prop('checked',true)
+                }
+            })
+        }
+
+        //取消
+        function CheckCancel() {
+            //取消也可以用attr来做
+            //$('#tb1').find(':checkbox').removeAttr('checked')
+            $('#tb11').find(':checkbox').prop('checked',false)
+        }
+    </script>
+
+</body>
+</html>

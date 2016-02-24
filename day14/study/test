@@ -1,3 +1,0 @@
-document.getElementById('id')
-document.getElementsByName('name')
-document.getElementsByTagName('tagname')
