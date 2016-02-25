@@ -41,9 +41,7 @@
                 <td>www.sina.com</td>
                 <td>3.3.3.3</td>
                 <td>8080</td>
-                <div>
-                    <td onclick="GetPrev(this)">编辑</td>
-                </div>
+                <td onclick="GetPrev(this)">编辑</td>
             </tr>
         </tbody>
     </table>
@@ -60,7 +58,7 @@
     <script type="text/javascript">
             //获取用户点击的是哪个一行,并弹出模态对话框
         function GetPrev(arg){
-            //获取我们点击的的<td>标签到顶部的数据(同级别)用什么?$(arg).prevAll()
+            //获取我们点击的的<td>标签的同级别的的数据用什么?$(arg).prevAll()
             //循环所有的数据,取出每一个数据的内容
 
             //假设我这里有一个数组,我要对它进行循环.
@@ -75,12 +73,6 @@
             //=================
             //还有就是,通过each()我很循环的时候这个i,是当前数组的"索引"(这里和python中不同)
             //所以要获取内容的时候a[i]就是获取当前的内容
-
-
-            //上面是循环数组的那字典呢?
-            var b = {'k1':'v1','k2':'v2'};
-            $.each(b, function (key,value) {console.log(key,value)})
-
         }
     </script>
 </body>

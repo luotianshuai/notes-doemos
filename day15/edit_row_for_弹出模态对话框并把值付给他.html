@@ -54,7 +54,7 @@
             <!--这里的input,本身有一个事件,我们在给他设置一个事件,并且给他返回值,如果咱们定义的事件返回值为Flase他本身自带的事件就不执行了!-->
             <!--就不提交了-->
             <input type="submit"  onclick="return SubmitForm()" value="提交"/>
-            <input type="button" onclick="CanCel" value="取消"/>
+            <input type="button" onclick="CanCel()" value="取消"/>
         </form>
     </div>
     <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
@@ -81,7 +81,7 @@
             return ret;
         }
 
-        //当点击时从form表单中的input标签中获取内容病赋值给模态对话框
+        //当点击时从form表单中的input标签中获取内容并赋值给模态对话框
         function GetPrev(arg){
             var list = [];
             $.each($(arg).prevAll(),function(i) {  //循环$(arg).prevAll()这里的内容,然后把值赋值给 i 这里的function(i)
