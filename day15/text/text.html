@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>shuaige</title>
+    <style>
+        .cselect{
+        }
+
+        .select_color{
+            background-color: sandybrown;
+        }
+    </style>
+</head>
+<body>
+    <input onclick="CheckAll()" type="button" value="全选"/>
+    <input onclick="CheckCancel()" type="button" value="取消"/>
+    <input onclick="CheckReverse()" type="button" value="反选"/>
+    <input id="select"  type="button" value="进入编辑模式"/>
+
+    <table border="1">
+        <thead></thead>
+        <tbody id="table_list">
+            <tr>
+                <td>选择</td>
+                <td>序号</td>
+                <td>IP</td>
+                <td>掩码</td>
+                <td>网关</td>
+            </tr>
+            <tr>
+                <td ><input type="checkbox"/></td>
+                <td class="cselect">1</td>
+                <td>192.168.0.101</td>
+                <td>255.255.255.0</td>
+                <td>192.168.0.1</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"/></td>
+                <td class="cselect">2</td>
+                <td>192.168.0.101</td>
+                <td>255.255.255.0</td>
+                <td>192.168.0.1</td>
+            </tr>
+        </tbody>
+    </table>
+    <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
+    <script>
+        //全选
+        function CheckAll() {
+            //$('#tb1').find(':checkbox').attr('checked','checked'); 这个方法也是可以的!通过属性修改,但是反选的时候有问题
+            $('#table_list').find(':checkbox').prop('checked',true); //这个方法prop是专门为checkbox 而生的
+            //找到所有选中的td并循环
+            if($('#select').attr('status') == 'on'){
+                console.log('hello shuaige is ok');
+                //这里需要修改，把所有的内容改为input的。。。。。。。。。。。。。。。。
+            }
+
+
+//             $('#table_list').find(':checkbox').each(function (i) {
+//                console.log($(i).text())})
+        }
+
+        //反选
+        function CheckReverse() {
+            //找到/然后判断如果选中就给取消,如果没有选中就给选中
+            $('#table_list').find(':checkbox').each(function () {
+                //this 每一个复选框
+                //$(this).prop()  如果选中为True,如果未选中为false;
+                if($(this).prop('checked')){
+                    $(this).prop('checked',false)
+                }else{
+                    $(this).prop('checked',true)
+                }
+            })
+        }
+
+        //取消
+        function CheckCancel() {
+            //取消也可以用attr来做
+            //$('#tb1').find(':checkbox').removeAttr('checked')
+            $('#table_list').find(':checkbox').prop('checked',false)
+        }
+
+//        function ChangeModel(arg){
+//            $(arg).css('background-color','red');
+//            $(arg).removeAttr('status','on');
+//        }
+
+
+        $('#select').toggle(
+                function () {
+                    $(this).addClass('select_color');
+                    $(this).attr('status','on');
+                    console.log($(this).attr('status'))
+                },
+                function () {
+                    $(this).removeClass('select_color');
+                    $(this).removeAttr('status')
+                }
+        )
+    </script>
+</body>
