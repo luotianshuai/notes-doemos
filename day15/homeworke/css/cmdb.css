@@ -131,3 +131,19 @@
     margin-left: -200px;
     margin-top: -150px;
 }
+
+
+/*定义作业样式*/
+.cselect{
+}
+/*给点击进入编辑模式按钮设置样式*/
+.select_color{
+    background-color: sandybrown;
+}
+.cmdbchose{
+
+}
+
+.change_modecolor{
+    background-color:#D3FF93;
+}

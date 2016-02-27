@@ -78,13 +78,13 @@ $('#search').focus(function () {
 
 //定义多选\反选\取消实例
 //全选
-function CheckAll() {
+function CheckAll_1() {
     //$('#tb1').find(':checkbox').attr('checked','checked'); 这个方法也是可以的!通过属性修改,但是反选的时候有问题
     $('#tb1').find(':checkbox').prop('checked',true); //这个方法prop是专门为checkbox 而生的
 }
 
 //反选
-function CheckReverse() {
+function CheckReverse_1() {
     //找到/然后判断如果选中就给取消,如果没有选中就给选中
     $('#tb1').find(':checkbox').each(function () {
         //this 每一个复选框
@@ -98,7 +98,7 @@ function CheckReverse() {
 }
 
 //取消
-function CheckCancel() {
+function CheckCancel_1() {
     //取消也可以用attr来做
     //$('#tb1').find(':checkbox').removeAttr('checked')
     $('#tb1').find(':checkbox').prop('checked',false)
@@ -152,3 +152,164 @@ function GetPrev(arg){
 function CanCel() {
     $('#dialog').addClass('hide')
 }
+
+
+//作业js
+//作业全选
+function CheckAll() {
+    //$('#tb1').find(':checkbox').attr('checked','checked'); 这个方法也是可以的!通过属性修改,但是反选的时候有问题
+    $('#table_list').find(':checkbox').prop('checked',true); //这个方法prop是专门为checkbox 而生的
+    //找到所有选中的td并循环
+    if($('#select').attr('status') == 'on'){ //判断编辑模式是否选中，如果选中执行
+        //找到ID为cmdb_form，下面所有选中了的标签下的td标签,但是刨除序列号$('#cmdb_form').find(':checkbox').parent().nextAll().not('.cselect')
+
+        $('#table_list').find(':checkbox').parent().nextAll().not('.cselect').each(function () {
+            //循环取出的每一个td标签，并获取里面的值
+            // 并且判断td标签内的孩子是否为input，如果是什么都不做，如果不是执行修改字符串为input标签
+            if($(this).children().is('input')){console.log('The children type is input so do not running coding')}else{
+            var old = $(this).text();
+            //对取出来的值进行拼接
+            var temp ="<input value='"+old+"'>";
+            //然后赋值
+            $(this).html(temp);}
+        })
+
+        }
+}
+
+//作业反选
+function CheckReverse() {
+    //找到input标签为checkbox 然后判断如果选中就给取消,如果没有选中就给选中
+    $('#table_list').find(':checkbox').each(function () {
+
+        //首先判断是否为编辑状态
+        if($('#select').attr('status') == 'on'){
+        //如果为编辑状态
+        if($(this).prop('checked')){
+            //如果选中了，首先把他的选中状态取消并且，把他的input标签改为字符串类型
+            // 状态给为取消
+            $(this).prop('checked',false);
+            //把父级别下面的所有input标签改为字符串
+            $(this).parent().nextAll().not('.cselect').each(function () {
+                //取出input标签内的内容
+                var input_info = $(this).children().val();
+                //并赋值给td标签
+                $(this).html(input_info);
+            });}else{
+            //如果没有选中，首先把他的状态改为选中，并且把他的字符串赋值给input标签
+            //改为选中
+            $(this).prop('checked',true);
+            //并把兄父级别下面的字符串赋值给input标签
+            $(this).parent().nextAll().not('.cselect').each(function () {
+                //取出他的值来
+                var old = $(this).text();
+                //对取出来的值进行拼接
+                var temp ="<input value='"+old+"'>";
+                //然后赋值
+                $(this).html(temp);})
+            }}else{
+            //如果不是编辑状态
+            if($(this).prop('checked')){
+                //如果不是编辑状态把选中的给取消
+                $(this).prop('checked',false);
+            }else{
+                //如果不是编辑状态把未选中的给选中
+                $(this).prop('checked',true);
+            }}
+        })
+}
+
+//作业取消
+function CheckCancel() {
+    //取消也可以用attr来做
+    //$('#tb1').find(':checkbox').removeAttr('checked')
+    $('#table_list').find(':checkbox').prop('checked',false);
+    //不管是选中，只要点击取消我就去找到所有的td转为input的标签全部转回td标签
+    $('#cmdb_form').find(':checkbox').parent().nextAll().not('.cselect').find(':input').each(function () {
+        var input_info = $(this).val();
+        $(this).parent().html(input_info);
+    })
+}
+
+//编辑按钮功能
+$('#select').toggle(
+        //进入编辑模式执行的function
+        function () {
+            $(this).addClass('select_color');
+            $(this).attr('status','on');
+            console.log($(this).attr('status'))
+        },
+        function () {
+            //退出编辑模式执行的function
+            $(this).removeClass('select_color');//移除按钮上的样式
+            $(this).removeAttr('status');//删除自定义属性
+            //不管是选中，只要你退出编辑模式我就去找到所有的td转为input的标签全部转回td标签
+            //并判断值是否为空
+            $('#cmdb_form').find(':checkbox').parent().nextAll().not('.cselect').find(':input').each(function () {
+                if($(this).val().length == '0'){alert('Sorry the value can not be null')}else{
+                    var input_info = $(this).val();
+                    $(this).parent().html(input_info);
+                    $('.cmdbchose').prop('checked',false)
+                }
+
+            })}
+);
+
+//定义单选功能
+$('.cmdbchose').click(function () {
+    //判断是否为编辑模式
+    if($('#select').attr('status') == 'on'){
+        if($(this).prop('checked')){
+            //如果被选中了，取消选中并把input标签内的value取出并改为字符串
+            //alert('is chose')
+            //找到当前父标签的兄弟标签并刨除.cselect类的标签
+            $(this).parent().siblings().not('.cselect').each(function () {
+                var old = $(this).text();
+                //对取出来的值进行拼接
+                var temp ="<input value='"+old+"'>";
+                //然后赋值
+                $(this).html(temp);
+            })
+        }else{
+            //如果没有被选中，选中并把字符串取出来赋值给input标签
+            //alert('not be chose')
+            //如果没有被选中，找到父亲标签的兄弟标签，并取出里面的input的value并改为字符串
+            $(this).parent().siblings().not('.cselect').each(function () {
+                console.log($(this));
+                var input_info = $(this).children().val();
+                $(this).html(input_info);
+            })
+    }}
+});
+
+//定义作业保存按钮功能
+
+function save_woker(){
+    //找到input标签为checkbox 然后判断如果选中就给取消,如果没有选中就给选中
+    $('#table_list').find(':checkbox').each(function () {
+        //判断是否为编辑状态
+        if($('#select').attr('status') == 'on'){
+            //判断这个标签是否为选中状态
+            if($(this).prop('checked')){
+                //判断值是否空，
+                            //如果为空，报警
+                            //如果不为空然后把input标签的内容写入text，然后取消选中状态
+                //把父级别下面的所有input标签刨除..cselect标签的所有标签
+                $(this).parent().nextAll().not('.cselect').each(function () {
+                    //判断，任意一个值为空都不行
+                    if($(this).children().val().length == '0'){(alert('Sorry the value can not be null'))}else{
+                        //如果值不为空，那么保存
+                        //取出input标签内的内容
+                        var input_info = $(this).children().val();
+                        //并赋值给td标签
+                        $(this).html(input_info);
+                        console.log($(this))
+                    }
+
+                });
+                //保存完成之后，取消所有选中项目
+                $('#table_list').find(':checkbox').prop('checked',false)
+            }
+        }
+    });
+    }

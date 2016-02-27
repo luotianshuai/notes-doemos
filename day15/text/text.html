@@ -6,9 +6,12 @@
     <style>
         .cselect{
         }
-
+        /*给点击进入编辑模式按钮设置样式*/
         .select_color{
             background-color: sandybrown;
+        }
+        .cmdbchose{
+
         }
     </style>
 </head>
@@ -18,7 +21,8 @@
     <input onclick="CheckReverse()" type="button" value="反选"/>
     <input id="select"  type="button" value="进入编辑模式"/>
 
-    <table border="1">
+
+    <table id="cmdb_form" border="1">
         <thead></thead>
         <tbody id="table_list">
             <tr>
@@ -29,14 +33,14 @@
                 <td>网关</td>
             </tr>
             <tr>
-                <td ><input type="checkbox"/></td>
+                <td><input class="cmdbchose" type="checkbox"/></td>
                 <td class="cselect">1</td>
                 <td>192.168.0.101</td>
                 <td>255.255.255.0</td>
                 <td>192.168.0.1</td>
             </tr>
             <tr>
-                <td><input type="checkbox"/></td>
+                <td><input class="cmdbchose" type="checkbox"/></td>
                 <td class="cselect">2</td>
                 <td>192.168.0.101</td>
                 <td>255.255.255.0</td>
@@ -51,53 +55,123 @@
             //$('#tb1').find(':checkbox').attr('checked','checked'); 这个方法也是可以的!通过属性修改,但是反选的时候有问题
             $('#table_list').find(':checkbox').prop('checked',true); //这个方法prop是专门为checkbox 而生的
             //找到所有选中的td并循环
-            if($('#select').attr('status') == 'on'){
-                console.log('hello shuaige is ok');
-                //这里需要修改，把所有的内容改为input的。。。。。。。。。。。。。。。。
-            }
+            if($('#select').attr('status') == 'on'){ //判断编辑模式是否选中，如果选中执行
+                //找到ID为cmdb_form，下面所有选中了的标签下的td标签,但是刨除序列号$('#cmdb_form').find(':checkbox').parent().nextAll().not('.cselect')
 
+                $('#table_list').find(':checkbox').parent().nextAll().not('.cselect').each(function () {
+                    //循环取出的每一个td标签，并获取里面的值
+                    // 并且判断td标签内的孩子是否为input，如果是什么都不做，如果不是执行修改字符串为input标签
+                    if($(this).children().is('input')){console.log('The children type is input so do not running coding')}else{
+                    var old = $(this).text();
+                    //对取出来的值进行拼接
+                    var temp ="<input value='"+old+"'>";
+                    //然后赋值
+                    $(this).html(temp);}
+                })
 
-//             $('#table_list').find(':checkbox').each(function (i) {
-//                console.log($(i).text())})
+                }
         }
 
         //反选
         function CheckReverse() {
-            //找到/然后判断如果选中就给取消,如果没有选中就给选中
+            //找到input标签为checkbox 然后判断如果选中就给取消,如果没有选中就给选中
             $('#table_list').find(':checkbox').each(function () {
-                //this 每一个复选框
-                //$(this).prop()  如果选中为True,如果未选中为false;
+
+                //首先判断是否为编辑状态
+                if($('#select').attr('status') == 'on'){
+                //如果为编辑状态
                 if($(this).prop('checked')){
-                    $(this).prop('checked',false)
-                }else{
-                    $(this).prop('checked',true)
-                }
-            })
+                    //如果选中了，首先把他的选中状态取消并且，把他的input标签改为字符串类型
+                    // 状态给为取消
+                    $(this).prop('checked',false);
+                    //把父级别下面的所有input标签改为字符串
+                    $(this).parent().nextAll().each(function () {
+                        //取出input标签内的内容
+                        var input_info = $(this).children().val();
+                        console.log($(this));
+                        //并赋值给td标签
+                        $(this).html(input_info);
+                    });}else{
+                    //如果没有选中，首先把他的状态改为选中，并且把他的字符串赋值给input标签
+                    //改为选中
+                    $(this).prop('checked',true);
+                    //并把兄父级别下面的字符串赋值给input标签
+                    $(this).parent().nextAll().each(function () {
+                        //取出他的值来
+                        var old = $(this).text();
+                        //对取出来的值进行拼接
+                        var temp ="<input value='"+old+"'>";
+                        //然后赋值
+                        $(this).html(temp);})
+                    }}else{
+                    //如果不是编辑状态
+                    if($(this).prop('checked')){
+                        //如果不是编辑状态把选中的给取消
+                        $(this).prop('checked',false);
+                    }else{
+                        //如果不是编辑状态把未选中的给选中
+                        $(this).prop('checked',true);
+                    }}
+                })
         }
 
         //取消
         function CheckCancel() {
             //取消也可以用attr来做
             //$('#tb1').find(':checkbox').removeAttr('checked')
-            $('#table_list').find(':checkbox').prop('checked',false)
+            $('#table_list').find(':checkbox').prop('checked',false);
+            //不管是选中，只要点击取消我就去找到所有的td转为input的标签全部转回td标签
+            $('#cmdb_form').find(':checkbox').parent().nextAll().not('.cselect').find(':input').each(function () {
+                var input_info = $(this).val();
+                $(this).parent().html(input_info);
+            })
         }
 
-//        function ChangeModel(arg){
-//            $(arg).css('background-color','red');
-//            $(arg).removeAttr('status','on');
-//        }
-
-
+        //编辑按钮功能
         $('#select').toggle(
+                //进入编辑模式执行的function
                 function () {
                     $(this).addClass('select_color');
                     $(this).attr('status','on');
                     console.log($(this).attr('status'))
                 },
                 function () {
-                    $(this).removeClass('select_color');
-                    $(this).removeAttr('status')
-                }
-        )
+                    //退出编辑模式执行的function
+                    $(this).removeClass('select_color');//移除按钮上的样式
+                    $(this).removeAttr('status');//删除自定义属性
+                    //不管是选中，只要你退出编辑模式我就去找到所有的td转为input的标签全部转回td标签
+                    $('#cmdb_form').find(':checkbox').parent().nextAll().not('.cselect').find(':input').each(function () {
+                        var input_info = $(this).val();
+                        console.log(input_info);
+                        $(this).parent().html(input_info);
+                    })}
+        );
+
+        $('.cmdbchose').click(function () {
+            //判断是否为编辑模式
+            if($('#select').attr('status') == 'on'){
+                if($(this).prop('checked')){
+                    //如果被选中了，取消选中并把input标签内的value取出并改为字符串
+                    //alert('is chose')
+                    //找到当前父标签的兄弟标签并刨除.cselect类的标签
+                    $(this).parent().siblings().not('.cselect').each(function () {
+                        var old = $(this).text();
+                        //对取出来的值进行拼接
+                        var temp ="<input value='"+old+"'>";
+                        //然后赋值
+                        $(this).html(temp);
+                    })
+                }else{
+                    //如果没有被选中，选中并把字符串取出来赋值给input标签
+                    //alert('not be chose')
+                    //如果没有被选中，找到父亲标签的兄弟标签，并取出里面的input的value并改为字符串
+                    $(this).parent().siblings().not('.cselect').each(function () {
+                        console.log($(this));
+                        var input_info = $(this).children().val();
+                        $(this).html(input_info);
+                    })
+            }}
+        })
+
     </script>
 </body>

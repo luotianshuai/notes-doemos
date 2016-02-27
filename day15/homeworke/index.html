@@ -90,9 +90,9 @@
                 <div id="content_2" class="content_master hide">
                     <div style="position:relative;height: 150px;width:400px;background-color: #eff2f6;">
                         <div style="position:absolute;top: 20px;left: 120px;">
-                            <input type="button"  onclick="CheckAll()" value="全选"/>
-                            <input type="button"  onclick="CheckCancel()" value="取消"/>
-                            <input type="button"  onclick="CheckReverse()" value="反选"/>
+                            <input type="button"  onclick="CheckAll_1()" value="全选"/>
+                            <input type="button"  onclick="CheckCancel_1()" value="取消"/>
+                            <input type="button"  onclick="CheckReverse_1()" value="反选"/>
 
                             <table style="position:absolute;left: 30px;" border="1">
                                 <thead></thead>
@@ -173,8 +173,41 @@
             <!--作业实例-->
             <div>
                 <div id="content_4" class="content_master hide">
-                    <div>
+                    <div style="position:relative;height: 350px;width:1000px;background-color: #eff2f6;">
+                        <div style="position: absolute;top: 50px;left: 100px;">
+                                <input onclick="CheckAll()" type="button" value="全选"/>
+                                <input onclick="CheckCancel()" type="button" value="取消"/>
+                                <input onclick="CheckReverse()" type="button" value="反选"/>
+                                <input id="select"  type="button" value="进入编辑模式"/>
+                                <input onclick="save_woker()" type="button" value="保存"/>
 
+                                <table id="cmdb_form" border="1">
+                                    <thead></thead>
+                                    <tbody id="table_list">
+                                        <tr>
+                                            <td>选择</td>
+                                            <td>序号</td>
+                                            <td>IP</td>
+                                            <td>掩码</td>
+                                            <td>网关</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input class="cmdbchose" type="checkbox"/></td>
+                                            <td class="cselect">1</td>
+                                            <td>192.168.0.101</td>
+                                            <td>255.255.255.0</td>
+                                            <td>192.168.0.1</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input class="cmdbchose" type="checkbox"/></td>
+                                            <td class="cselect">2</td>
+                                            <td>192.168.0.101</td>
+                                            <td>255.255.255.0</td>
+                                            <td>192.168.0.1</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                        </div>
                     </div>
                 </div>
             </div>
