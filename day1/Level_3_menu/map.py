@@ -2,29 +2,29 @@
 #-*- coding:utf-8 -*-
 
 
-city_map = {"河北省":{"石家庄市":['平山县','无极县','灵寿县'],
-                    "衡水市":['饶阳县','安平县','武强县']
-                    },
-            "山东省":{"济南市":['济阳县','商河县','平阴县'],
-                    "青岛市":['市南区','市北区','市东区'],
-                   },
-            "河南省":{"洛阳市":['新安县','洛宁县','宜阳县'],
-                    "郑州市":['金水区','惠济区','上街区']
-                   }
-}
+city_map = {"河北省":{"石家庄市":['平山县','无极县','灵寿县'],"衡水市":['饶阳县','安平县','武强县'],},
+            "山东省":{"济南市":['济阳县','商河县','平阴县'],"青岛市":['市南区','市北区','市东区'],},
+            "河南省":{"洛阳市":['新安县','洛宁县','宜阳县'],"郑州市":['金水区','惠济区','上街区'],}}
 
-
-for i in range(3):  #循环3次防止无限调用
+#循环3次防止无限调用
+for i in range(3):
     print "\033[31;1m---------------------地图---------------------------\033[0m"
-    sheng_list = city_map.keys()  #获取省的列表
-    for sheng_listname in sheng_list: #循环省的列表
+    #获取省的列表
+    sheng_list = city_map.keys()
+    #循环省的列表
+    for sheng_listname in sheng_list:
         print "\033[31;1m%s\033[0m" % sheng_listname #打印省的列表
     print "\033[34;1m----------------------------------------------------\033[0m"
-    province_name = raw_input("\033[34;1m请输如您要查看的省名:\033[0m ")  #获取市的名称
-    jump_up_flag = False  #定义标志位用来跳出整个循环
-    if province_name in city_map:           #检查输入是否为正确的省名
-        sheng_name = city_map[province_name]  #如果用户输入的信息存在，使用用户输入的信息作为字典的key,（省名）
-        shi_nl = sheng_name.keys() #获取省名下的value
+    #获取市的名称
+    province_name = raw_input("\033[34;1m请输如您要查看的省名:\033[0m ")
+    #定义标志位用来跳出整个循环
+    jump_up_flag = False
+    #检查输入是否为正确的省名
+    if province_name in city_map:
+        #如果用户输入的信息存在，使用用户输入的信息作为字典的key,（省名）
+        sheng_name = city_map[province_name]
+        #获取省名下的value
+        shi_nl = sheng_name.keys()
         while True:
             print"\033[34;1m-----------------%s包含的市为--------------------\033[0m" % province_name
             for shi_list in shi_nl:
