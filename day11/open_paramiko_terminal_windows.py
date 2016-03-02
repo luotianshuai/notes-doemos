@@ -5,7 +5,7 @@ import paramiko
 import sys
 import threading
 
-tran = paramiko.Transport(('192.168.0.111', 22,))
+tran = paramiko.Transport(('192.168.0.ReadMe', 22,))
 tran.start_client()
 
 '''
