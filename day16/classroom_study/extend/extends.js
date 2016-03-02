@@ -2,7 +2,7 @@
  * Created by luotim on 16/2/28.
  */
 
-//扩展用自执行函数来写,逼格比较高点
+//扩展使用自执行函数来写,逼格比较高点
 (function (arg) {
     arg.extend({
         'luotianshuai':function (){
