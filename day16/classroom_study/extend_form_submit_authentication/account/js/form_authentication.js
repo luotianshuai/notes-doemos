@@ -1,3 +1,6 @@
+/**
+ * Created by luo_t on 3/2/2016.
+ */
 (function(jq){
 
 	function ErrorMessage(container,msg){
@@ -8,54 +11,30 @@
 			var temp = "<label class='input-error'>"+msg+"</label>";
 			container.append(temp);
 		}
-		
+
 	}
-	
+
 	function EmptyError(container){
 		$error = container.find("label[class='input-error']");
 		if($error.length>0){
 			$error.remove();
 		}
 	}
-
-	jq.extend({
-		'CheckAll':function(targetcontainer){
-			$(targetcontainer).find(':checkbox').attr('checked',true);
-		},
-		'UnCheckAll':function(targetcontainer){
-			$(targetcontainer).find(':checkbox').attr('checked',false);
-		},	
-		'ReverseCheck':function(targetcontainer){
-			$(targetcontainer).find(':checkbox').each(function(){
-				var check = $(this).attr('checked');
-				console.log(check);
-				if(check){
-					$(this).attr('checked',false);
-				}else{
-					$(this).attr('checked',true);
-				}
-			})
-		},
-		'Hide':function(target){
-			$(target).addClass('hide');
-		},
-		'Show':function(target){
-			$(target).removeClass('hide');
-		},
+    jq.extend({
 		'register':function(form,summaryStatusId){
 			$(form).find(':submit').click(function(){
 				var flag = true;
-                
-                
+
+
 				$(form).find(':text,:password').each(function(){
 					var name = $(this).attr('name');
 					var label = $(this).attr('label');
 					var val = $(this).val();
 					var $parent = $(this).parent();
-					
+
 					//<label class='input-error'>用户名长度只能在4-20位字符之间</label>
 					//<label class='input-error'>用户名只能由中文、英文、数字及"-"、"_"组成</label>
-					
+
 					var required = $(this).attr('require');
 					if(required){
 						if(!val || val.trim() == ''){
@@ -64,7 +43,7 @@
 							return false;
 						}
 					}
-					
+
 					var confirm_to = $(this).attr('confirm-to');
 					if(confirm_to){
 						var $original = $(form).find("input[name='"+confirm_to+"']");
@@ -74,7 +53,7 @@
 							return false;
 						}
 					}
-					
+
 					var number = $(this).attr('number');
 					if(number){
 						if(!$.isNumeric(number)){
@@ -83,7 +62,7 @@
 							return false;
 						}
 					}
-					
+
 					var mobile = $(this).attr('mobile');
 					if(mobile){
 						var reg = /^1[3|5|8]\d{9}$/;
@@ -93,7 +72,7 @@
 							return false;
 						}
 					}
-					
+
 					var min = $(this).attr('min-len');
 					if(min){
 						var len = parseInt(min)
@@ -103,7 +82,7 @@
 							return false;
 						}
 					}
-					
+
 					var max = $(this).attr('max-len');
 					if(max){
 						var len = parseInt(max)
@@ -113,7 +92,7 @@
 							return false;
 						}
 					}
-					
+
 					var range = $(this).attr('range');
 					if(range){
 						var len = range.split('-');
@@ -123,7 +102,7 @@
 							return false;
 						}
 					}
-					
+
 					var field = $(this).attr('Field');
 					if(field=='string'){
 						var reg = /^\w+$/;
@@ -135,10 +114,10 @@
 					}
 					EmptyError($parent);
 				});
-                
-                
+
+
                 var check = $("#protocol").prop('checked');
-                
+
                 if(!check){
                     flag = false;
                     try{
@@ -149,21 +128,21 @@
                 }else{
                     EmptyError($("#protocol").parent().parent());
                 }
-                
+
 				return flag;
 			});
 		},
 		'login':function(form,summaryStatusId){
 			$(form).find(':submit').click(function(){
 				var flag = true;
-                
-                
+
+
 				$(form).find(':text,:password').each(function(){
 					var name = $(this).attr('name');
 					var label = $(this).attr('label');
 					var val = $(this).val();
 					var $parent = $(this).parent();
-					
+
 					var required = $(this).attr('require');
 					if(required){
 						if(!val || val.trim() == ''){
@@ -172,12 +151,11 @@
 							return false;
 						}
 					}
-
 					EmptyError($parent);
 				});
-                
+
 				return flag;
 			});
-		},
-	});
+		}
+    });
 })(jQuery);
