@@ -1,0 +1,11 @@
+/*定义编辑按钮的样式*/
+.edit-mode{
+    background-color: #b3b3b3;
+    padding: 8px;
+    text-decoration: none;
+    color: white;
+}
+/*定义点击编辑按钮后的样式*/
+.editing{
+    background-color: #f0ad4e;
+}
