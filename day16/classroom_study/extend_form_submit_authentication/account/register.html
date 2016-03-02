@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>注册页面</title>
+    <link href="css/common.css" rel="stylesheet" />
+    <link href="css/pg-header.css" rel="stylesheet" />
+    <link href="css/account.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="pg-header">
+        <div class="header-top">
+            <div class="account-container bg">
+                <ul class="top-left">
+                    <li>*<a>收藏本站</a></li>
+                </ul>
+                <ul class="top-right">
+                    <li><a href='/account/login'>登录</a></li>
+                    <li><a href='/account/register'>免费注册</a></li>
+                    <li><a href='/account/manage'>我的订单</a></li>
+                    <li><a>VIP 会员俱乐部</a></li>
+                    <li class="menu" onmouseover="show_menu(this);" onmouseout="hide_menu(this)">
+                        <span>客户服务<i class="triangle down"></i></span>
+                        <div class="hide" style="position:relative;">
+                            <ul class="help-menu">
+                                <li><a href="/article_cat-6/article-101.html" target="_blank" title="购买流程" rel="nofollow">购买流程</a></li>
+                                <li><a href="/article_cat-6/article-646.html" onclick="" target="_blank" title="在线帮助" rel="nofollow">在线帮助</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
+	<div class="pg-body">
+		<div class='account-container'>
+			<div class='header clearfix'>
+	            <div>
+	                <a href="/home/index">
+	                    <img src="images/logo_small.png">
+	                </a>
+	            </div>
+	        </div>
+	        <div class='body clearfix'>
+	            <div class='register left'>
+	                <div>
+	                    <h1 class='mb20'>注册新用户</h1>
+	                    <form id='Form' method='POST' action='/account/register'>
+	                        <div class='group'>
+	                        	<label class='tip'><span class="red">*</span>用户名：</label>
+	                        	<input type='text' require='true' label='用户名' Field='string' range='4-40' name='username' />
+	                        	<i class='i-name'></i>
+	                        	
+	                        </div>
+	                        <div class='group'>
+	                        	<label class='tip'><span class="red">*</span>手机号：</label>
+	                        	<input  type='text' require='true' label='手机号' mobile='true' name='telphone' />
+	                        	<i class='i-phone'></i>
+	                        </div>
+	                        <div class='group'>
+	                        	<label class='tip'><span class="red">*</span>登录密码：</label>
+	                        	<input  type='password' require='true'  label='登录密码' min-len='6' name='pwd' />
+	                        	<i class='i-pwd'></i>
+	                        </div>
+	                        <div class='group'>
+	                        	<label class='tip'><span class="red">*</span>确认密码：</label>
+	                        	<input  type='password' require='true' label='确认密码' confirm-to='pwd' name='confirmpwd' />
+	                        	<i class='i-pwd'></i>
+	                        </div>
+	                        <div class='group'>
+	                        	<label class='tip'><span class="red">*</span>验证码：</label>
+	                        	<input  type='text' require='true' label='验证码' style='width:80px;' name='checkcode' />
+                                <a style='width:125px;display:inline-block;'><img class='checkcode' onclick='ChangeCode();' id='imgCode' src='/account/check' /></a>
+	                        </div>
+	                        <div class='group font12'>
+	                        	<label class='tip'></label>
+	                        	<label style='width:246px;display: inline-block;'>
+                                    <input id='protocol' name='protocol' type='checkbox' checked='checked' /><span>我已阅读并同意<a href='#'>《用户注册协议》</a></span>
+                                </label>
+	                        </div>
+	                        
+	                        <div class='group'>
+	                        	<label class='tip'></label>
+	                        	<input type='submit' class='submit' value='同意以上协议并注册' />
+	                        </div>
+	                    </form>
+	                </div>
+	            </div>
+	            <div class='more left'>
+	            	<div class='mg10 font12'>我已经注册，现在就<a href='/account/login' class='ml5'>登录</a></div>
+	            	<div class='mg10 mt30'><img src="/statics/images/hongbao.jpg"></div>
+	            </div>
+	        </div>
+			
+		</div>
+	</div>
+	
+	<div class="pg-footer">
+		<div class='account-container' style='text-align:center;'>
+			© 2004-2015 www.autohome.com.cn All Rights Reserved. 老男孩 版权所有
+		</div>
+	</div>
+	<script src="js/jquery-1.8.2.min.js"></script>
+	<script src="js/wupeiqi.js"></script>
+    <script type="text/javascript">
+    	
+    	$(function(){
+    		$.register('#Form','');
+    	})
+    
+    	function show_menu(arg) {
+	        $(arg).find(".down").addClass("up").removeClass("down");
+	        $(arg).find(".hide").addClass("show").removeClass("hide");
+	    }
+	    function hide_menu(arg) {
+	        $(arg).find(".up").addClass("down").removeClass("up");
+	        $(arg).find(".show").addClass("hide").removeClass("show");
+	    }
+	    function ChangeCode() {
+            var code = document.getElementById('imgCode');
+            code.src += '?';
+        }
+    </script>
+</body>
+</html>
