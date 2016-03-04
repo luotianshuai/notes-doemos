@@ -1,3 +1,15 @@
+/*========================================定义顶部样式========================================*/
+.top_style{
+    background-color:#2459a2;
+    height: 44px;
+    position: relative;
 
-.navigation_head {
-  background-color: red;  }
+}
+
+
+
+
+
+.glyphicon-search:before {
+    content: "\e003";
+}
