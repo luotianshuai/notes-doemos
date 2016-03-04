@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+#-*- coding:utf-8 -*-
+
+博客地址：
+
+GitHub地址：https://github.com/Tim-luo/homework/tree/master/day16
+
+
+作业：
+
+网页头部：
+    --定义了网页头图标
+    --定义了跑马灯实例
+
+网页顶部：
+    --使用BootStrap菜单栏
+        --定义bootstrap菜单栏
+        --定义bootstrap下拉菜单
+        --定义bootstrap搜索框
+
+网页中心：
+
+
+网页侧部

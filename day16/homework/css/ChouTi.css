@@ -6,10 +6,7 @@
 
 }
 
-
-
-
-
-.glyphicon-search:before {
-    content: "\e003";
+/*设置菜单栏a标签颜色*/
+.nav-pills a{
+    color:Orange
 }
