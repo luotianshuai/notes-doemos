@@ -70,7 +70,7 @@ $('#contrl1').hover(function () {
     $('#hot_m2').addClass('hide')
 
 }, function () {
-    
+
 });
 
 $('#contrl2').hover(function () {
@@ -79,5 +79,5 @@ $('#contrl2').hover(function () {
     $('#hot_m1').addClass('hide')
 
 }, function () {
-    
+
 });

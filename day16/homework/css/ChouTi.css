@@ -39,6 +39,15 @@
     padding-left: 20px;
     padding-right: 20px
 }
+.Content_right{
+    position: absolute;
+    left: 700px;
+    width: 300px;
+    right: 0px;
+    background-color:white;
+    overflow: auto;
+    padding-right: 10px
+}
 /*定义左侧内容样式*/
 .Content_left_c {
     margin-top: 10px;
