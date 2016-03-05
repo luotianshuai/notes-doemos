@@ -20,7 +20,8 @@ GitHub地址：https://github.com/Tim-luo/homework/tree/master/day16
 
 网页中心：
     右侧：占比70%
-
-
+        --定义部分连接按钮
+        --定义发布功能，使用模态对话框
+        --使用background-position & jQuery实现滑动效果
         --定义翻页功能
 网页侧部

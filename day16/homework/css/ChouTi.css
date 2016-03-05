@@ -10,3 +10,139 @@
 .nav-pills a{
     color:Orange
 }
+
+/*定义log样式*/
+.log_style{
+    position: absolute ;
+    left: 50%;
+    margin-left: -500px;
+    width: 1000px;
+
+}
+
+/*定义下部分内容主体样式*/
+.Content_body{
+    margin-left: auto;
+    margin-right: auto;
+    width: 1000px;
+    background-color:white;
+    position: relative;
+}
+
+/*定义下部分内容右侧主体样式*/
+
+.Content_left{
+    position: absolute;
+    width: 700px;
+    background-color:white;
+    overflow: auto;
+    padding-left: 20px;
+    padding-right: 20px
+}
+/*定义左侧内容样式*/
+.Content_left_c {
+    margin-top: 10px;
+    /*height: 112px;*/
+    border-bottom: 1px solid Gainsboro;
+}
+
+
+.Content_left_c div .Content_left_ca {
+    font-size: 18px;
+}
+.Content_left_c div .Content_left_sw{
+    color:#a4adb6;
+}
+
+.Content_left_c div .Content_left_nr{
+    margin-top: 10px;
+    height: 20px;
+}
+
+/*左侧内容，各节内容底部图标样式*/
+
+/*点击a标签样式*/
+.change_style1{
+    cursor: pointer;float: left
+}
+.change_style2{
+    cursor: pointer;float: left
+}
+.change_style2{
+    cursor: pointer;float: left
+}
+/*点赞默认样式*/
+
+.zan_default{
+    background-image: url('../images/check.png');
+    width: 20px;
+    height: 22px;
+    margin-right: 5px;
+    float: left;
+    background-repeat: no-repeat;
+    background-position: 0px -38px;
+}
+
+/*信息默认样式*/
+.xinxi_default{
+    background-image: url('../images/check.png');
+    width: 20px;
+    height: 22px;
+    margin-left: 10px;;
+    margin-right: 5px;
+    float: left;
+    background-repeat: no-repeat;
+    background-position: 0px -58px;
+}
+
+/*收藏默认样式*/
+.shoucang_default{
+    background-image: url('../images/check.png');
+    width: 20px;
+    height: 22px;
+    margin-left: 10px;;
+    margin-right: 5px;
+    float: left;
+    background-repeat: no-repeat;
+    background-position: 0px -158px;
+}
+
+
+/*返回顶部*/
+
+p#back-to-top{
+    position:fixed;
+    display:none;
+    bottom:100px;
+    right:80px;
+}
+p#back-to-top a{
+    text-align:center;
+    text-decoration:none;
+    color:#d1d1d1;
+    display:block;
+    width:64px;
+    /*使用CSS3中的transition属性给跳转链接中的文字添加渐变效果*/
+    -moz-transition:color 1s;
+    -webkit-transition:color 1s;
+    -o-transition:color 1s;
+}
+p#back-to-top a:hover{
+    color:#979797;
+}
+p#back-to-top a span{
+    /*background:transparent url('../images/top.jpg') no-repeat ;*/
+    background-image: url("../images/top.jpg");background-repeat: no-repeat;background-size:100%;
+    border-radius:6px;
+    display:block;
+    height:64px;
+    width:56px;
+    margin-bottom:5px;
+    /*使用CSS3中的transition属性给<span>标签背景颜色添加渐变效果*/
+    -moz-transition:background 1s;
+    -webkit-transition:background 1s;
+    -o-transition:background 1s;
+}
+#back-to-top a:hover span{
+    background:transparent url('../images/top_now.jpg');background-repeat: no-repeat;background-size:100%
+}
