@@ -108,7 +108,14 @@
 }
 
 
-/*返回顶部*/
+.hide{
+    display: none;
+}
+
+
+
+
+/*定义返回顶部样式*/
 
 p#back-to-top{
     position:fixed;

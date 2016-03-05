@@ -325,9 +325,54 @@
       </div>
     </div>
     <!--内容主体右侧-->
-    <div style="position: absolute;left:700px;right: 0px;background-color:blue;overflow: auto;">
-      sdf
+    <div style="position: absolute;left:700px;right: 0px;background-color:white;overflow: auto;padding-right: 10px">
+      <!--定义消息按钮-->
+      <div style="margin-top: 15px;margin-top: 5px; border-bottom: 1px solid Gainsboro;height: 50px">
+        <a id="Message_put" tabindex="0" class="btn btn-lg btn-danger" role="button" data-toggle="popover" data-trigger="focus" title="消息" data-content="你有未查看的消息请点击查看">Message <span class="badge">4</span></a>
+      </div>
+      <div style="background-color:#e2e5e9">
+        <div >新热聊天 20160305</div>
+        <textarea style="border:0;background-color:#f0f2f4;width: 289px;height: 300px; " ></textarea>
+        <div >luotianshuai 20160305</div>
+        <div style="background-color:#f0f2f4;">
+            <form>
+              <input style="float: left;background-color:#f0f2f4;border: 0;height: 50px" type="text" />
+            </form>
+            <div style="height: 50px">
+              <button style="float: left;margin-left: 20px;margin-top: 10px;" type="submit" class="btn btn-default">发送</button>
+            </div>
+        </div>
+      </div>
+      <!--24小时热点-->
+      <div style="height: 450px;background-color:white;position: relative">
+        <div class="alert alert-info" role="alert"><strong>24 hours hot</strong></div>
+        <button id="contrl1" type="button" class="btn btn-success">最热榜单</button>
+        <button id="contrl2" type="button" class="btn btn-danger">最热评论</button>
+        <!--最热榜单-->
+        <div id="hot_m1" class="list-group hide" style="position: absolute;left: 0;right: 0;top: 110px;">
+          <a href="#" class="list-group-item list-group-item-success"></a>
+          <a href="#" class="list-group-item list-group-item-success">《战争与和平》</a>
+          <a href="#" class="list-group-item list-group-item-success">《巴黎圣母院》</a>
+          <a href="#" class="list-group-item list-group-item-success">《悲惨的世界》</a>
+          <a href="#" class="list-group-item list-group-item-success">《约翰·克利斯朵夫》</a>
+        </div>
+                <!--最热评论-->
+        <div id="hot_m2" class="list-group" style="position: absolute;left: 0;right: 0;top: 110px;">
+          <a href="#" class="list-group-item list-group-item-danger">《童年》</a>
+          <a href="#" class="list-group-item list-group-item-danger">《呼啸山庄》</a>
+          <a href="#" class="list-group-item list-group-item-danger">《红与黑》</a>
+          <a href="#" class="list-group-item list-group-item-danger">《安娜·卡列尼娜》</a>
+        </div>
+      </div>
+
+      </div>
     </div>
+
+
+
+
+
+
   </div>
   <p id="back-to-top"><a href="#top"><span></span>返回顶部</a></p>
 
@@ -346,6 +391,8 @@
   <script>
       //网页文字头,使用跑马灯实例
       setInterval('Run_going()',1000);
+      //消息
+      $('#Message_put').popover('show');
   </script>
 </body>
 </html>
