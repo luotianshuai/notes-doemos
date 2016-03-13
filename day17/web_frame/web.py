@@ -1,13 +1,27 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
+import time
 from wsgiref.simple_server import make_server
+from jinja2 import Template
 
 
 def index():
-    #读取html并返回
     data = open('html/index.html').read()
-    return data
+
+    template = Template(data)
+    result = template.render(
+        name = 'luotianshuai',
+        age = '18',
+        time = str(time.time()),
+        user_list = ['tianshuai','tim','shuaige'],
+        num = 1
+    )
+
+    #同样是替换为什么用jinja,因为他不仅仅是文本的他还支持if判断 & for循环 操作
+
+    #这里需要注意因为默认是的unicode的编码所以设置为utf-8
+    return result.encode('utf-8')
 
 def login():
     #读取html并返回
