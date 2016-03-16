@@ -1,9 +1,26 @@
 #!/usr/bin/env python
 #-*-  coding:utf-8 -*-
-import re
+
+import threading
+import time
+
+def show(arg):
+    print 'start',arg
+    print arg/2
+    time.sleep(arg/2)
+    print 'stop',arg
+tl = []
 
 
-a = '10/9*8'
+for i in range(10):
+    t = threading.Thread(target=show, args=(i*4,))
+    tl.append(t)
+    t.start()
 
-#print re.search('\(([\+\-\*\/]*\d+\.*\d*){2,}\)',a)
-print re.search('\d+\.*\d*/\d+\.*\d*',a).group()
+while tl:
+    t = tl.pop()
+    #t.join()
+    print tl
+
+print 'tl : ',tl
+print 'main thread stop'
