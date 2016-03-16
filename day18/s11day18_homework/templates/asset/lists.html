@@ -1,0 +1,132 @@
+{% extends 'master/layout_menu.html' %}
+
+{% block css %}
+    <style>
+        tbody > tr > td, .table > tfoot > tr > td {
+            vertical-align: middle !important;
+            font-size: 10px !important;
+        }
+        td .form-control {
+            font-size: 10px !important;
+        }
+    </style>
+{% endblock %}
+
+
+{% block breadcrumb %}
+    <li><a href="/home/index/">首页</a></li>
+    <li class="active">资产列表</li>
+{% endblock %}
+
+{% block content %}
+
+    <div class="list-block">
+        <div class="clearfix search-area">
+
+            <div class="col-md-offset-10 do-submit">
+                <button type="button" class="btn btn-primary no-radius" onclick="SearchSubmit()"><i class="fa fa-search"></i> 搜索</button>
+            </div>
+
+            <div id="search_conditions" class="col-md-offset-2 col-md-8">
+                <div class="condition">
+                    <div class="icons">
+                        <a class="btn btn-default no-radius" onclick="$.AddSearchCondition(this)"><i class="fa fa-plus-square"></i></a>
+                    </div>
+                    <div class="inputs">
+                        <div class="input-group">
+                          <div class="input-group-btn">
+                            <label type="button" class="btn btn-default no-radius" style="width: 100px;">主机名</label>
+                            <button type="button" class="btn btn-default dropdown-toggle no-border-r" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="change-search-condition dropdown-menu">
+                                <li condition="server__service_sn"><a href="#">服务编码</a></li>
+                                <li condition="server__sn"><a href="#">序列号</a></li>
+                                <li condition="server__manufactory"><a href="#">厂商</a></li>
+                                <li condition="server__model"><a href="#">型号</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li condition="server__hostname"><a href="#">主机名</a></li>
+                                <li condition="ips"><a href="#">业务IP</a></li>
+                                <li condition="server__manage_ip"><a href="#">管理IP</a></li>
+                                <li condition="business_unit__id" find-type="select" options="window_business_unit"><a href="#">业务线</a></li>
+                                <li condition="device_status__id" find-type="select" options="window_device_status"><a href="#">状态</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li condition="idc__id" find-type="select" options="window_idc"><a href="#" >IDC</a></li>
+                                <li condition="cabinet_num"><a href="#">机柜</a></li>
+                                <li condition="cabinet_order"><a href="#">柜上位置</a></li>
+
+                            </ul>
+                          </div>
+                          <input is-condition="true" type="text" placeholder="逗号分割多条件" class="form-control no-radius" name="server__hostname" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="clearfix function-area">
+            <div class="btn-group btn-group-sm custom-btn-group">
+                <a class="btn btn-default no-radius" onclick="$.CheckAll('#table-body')"><i class="fa fa-check-square"></i> 全选</a>
+                <a class="btn btn-default no-radius" onclick="$.UnCheckAll('#table-body')"><i class="fa fa-minus-square-o"></i> 取消</a>
+                <a class="btn btn-default no-radius" onclick="$.ReverseCheck('#table-body')"><i class="fa fa-check-square-o"></i> 反选</a>
+                <a class="btn btn-default no-radius" href="/asset/importsingle/"><i class="fa fa-plus-circle"></i> 添加</a>
+                <a class="btn btn-default no-radius" onclick="$.Show('#shade,#modal_delete');"><i class="fa fa-trash"></i> 删除</a>
+                <a id="edit_mode_target" class="btn btn-default no-radius" onclick="$.TableEditMode(this,'#table-body')"><i class="fa fa-pencil-square-o"></i> <span>进入编辑模式</span></a>
+                <a class="btn btn-default no-radius" onclick="Save()"><i class="fa fa-floppy-o"></i> 保存</a>
+                <a class="btn btn-default no-radius" onclick="Refresh()"><i class="fa fa-refresh"></i> 刷新</a>
+                <a id="handle_status" class="btn no-radius" tabindex="0" role="button" data-toggle="manual" data-trigger="focus" data-container="body" data-html="true" data-placement="bottom" title="错误详细" data-content=""></a>
+            </div>
+        </div>
+
+        <div class="table-responsive table-area">
+            <table class="table table-striped table-bordered" id="example1">
+                <thead id="table-head">
+                    <tr>
+                        <th style="width: 5%;">选择</th>
+                        <th en-sort="true" class="en-sort both" style="width: 5%;">序号</th>
+                        <th en-sort="true" class="col-md-1 en-sort both">业务IP</th>
+                        <th en-sort="true" class="col-md-1 en-sort both">管理IP</th>
+                        <th en-sort="true" class="en-sort both" style="width: 5%;">状态</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body" edit-mode='false'>
+
+                </tbody>
+            </table>
+            <div class="clearfix">
+                <div class="right">
+                  <ul id="pager" class="pagination pagination-sm no-margin">
+
+                 </ul>
+               </div>
+            </div>
+        </div>
+    </div>
+
+
+<div id="modal_delete" class="alert alert-danger alert-dismissible fade in modal-delete hide" role="alert">
+  <button type="button" class="close" aria-label="Close" onclick="$.Hide('#shade,#modal_delete');"><span>×</span></button>
+  <h4>确定删除资产？</h4>
+  <p>与该资产相关联的网卡、硬盘、内存和日志等将全部被删除！<br/> &nbsp;</p>
+  <p>
+    <button type="button" class="btn btn-danger" onclick="DoDeleteAsset();">确定删除</button>
+    <button type="button" class="btn btn-default" onclick="$.Hide('#shade,#modal_delete');">取消</button>
+  </p>
+</div>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+        $(function(){
+            $.InitMenu('#asset_list');
+
+            Initialize('#table-body',1);
+        });
+
+    </script>
+{% endblock %}
+
