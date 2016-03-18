@@ -3,46 +3,56 @@ from django.shortcuts import render
 from cmdb import forms
 from django.shortcuts import HttpResponse
 from django.shortcuts import redirect
+from cmdb import models
+from backend.decorators.login_auth import login_auth
 
 # Create your views here.
 
+
+
 def login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        if username == 'shuai' and password == '123':
-            result = request.session.get('IS_LOGIN', None)
-            print result
-            request.session['IS_LOGIN'] = True
-            return redirect('/index/')
     obj = forms.LoginForm()
+    if request.method == 'POST':
+        #获取用户输入
+        login_form = forms.LoginForm(request.POST)
+        #判断用户输入是否合法
+        if login_form.is_valid():#如果用户输入是合法的
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user_info_list = models.UserInfo.objects.all()
+            for i in user_info_list:
+                if username == i.email and password == i.passwords:
+                    request.session['auth_user'] = username
+                    return redirect('/index/')
+            else:
+                return render(request,'account/login.html',{'model': obj,'backend_autherror':'用户名或密码错误'})
+        else:
+            error_msg = login_form.errors.as_data()
+            return render(request,'account/login.html',{'model': obj,'errors':error_msg})
+
     # 如果登录成功，写入session，跳转index
     return render(request, 'account/login.html', {'model': obj})
 
 
+@login_auth
 def index(request):
-    '''
-    如果用户已经登录
-    '''
-    is_login = request.session.get('IS_LOGIN',False)
-    if is_login:
-        return render(request, 'home/index.html')
-    else:
-        return redirect('/login/')
+    username = request.session['auth_user']
+    return render(request, 'home/index.html',{'username':username})
 
 
-
-
-
-
+@login_auth
 def lists(request):
-    return render(request, 'asset/lists.html')
+    username = request.session['auth_user']
+    host_info = models.HostInfo.objects.all()
+    return render(request, 'asset/lists.html',{'username':username,'hostinfo_list':host_info,})
+
+
 
 def add(request):
     return render(request, 'asset/import_single.html')
 
 
-def user_list(request,v2,v1):
-    print v2 , v1
-    return HttpResponse(v1+v2)
 
+def logout(request):
+    del request.session['auth_user']
+    return redirect('/login/')

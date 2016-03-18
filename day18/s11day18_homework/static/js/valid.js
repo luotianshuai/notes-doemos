@@ -145,7 +145,7 @@
 			$(form).find(':submit').click(function(){
 				var flag = true;
 
-				$(form).find(':text,:password').each(function(){
+				$(form).find(':input').each(function(){
 					var name = $(this).attr('name');
 					var label = $(this).attr('placeholder');
 					var val = $(this).val();
@@ -156,8 +156,6 @@
                         ErrorMessage($parent,label+'不能为空.');
                         return false;
                     }
-
-
 					EmptyError($parent);
 				});
                 

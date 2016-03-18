@@ -1,3 +1,5 @@
+#/usr/bin/env python
+#-*- coding:utf-8 -*-
 """
 Django settings for s11day18_homework project.
 
@@ -104,3 +106,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+# ########## 自定义用户登陆 ##########
+# 如果用户未登录，默认跳转到url
+LOGIN_URL = '/account/login/'

@@ -33,13 +33,13 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                   <a title="{{ username }}" href="#" class="dropdown-toggle user-favicon" data-toggle="dropdown" role="button" aria-expanded="false">
-                      <img src="/static/images/default.png" alt="用户信息" class="img-circle user-img">
+                      {{ username }}    <img src="/static/images/default.png" alt="用户信息" class="img-circle user-img">
                   </a>
                   <ul class="dropdown-menu" role="menu">
                     <li><a href="#">我的资料</a></li>
                     <li><a href="#">待办事项</a></li>
                     <li class="divider"></li>
-                    <li><a href="/account/logout/">退出</a></li>
+                    <li><a href="/logout/">退出</a></li>
                   </ul>
                 </li>
               </ul>
