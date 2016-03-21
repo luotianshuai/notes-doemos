@@ -1,0 +1,114 @@
+{% extends 'master/layout_menu.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/plugsin.css"/>
+    <style>
+        .form-error {
+            font-size: 8px;
+            position: absolute;
+            bottom: -17px;
+            color: #EC6868;
+            margin: 0 15px;
+            left: 0px;
+            right: 0px;
+            background: #f2dede;
+            padding: 0 5px;
+        }
+        .popover{
+            max-width: 500px !important;
+        }
+    </style>
+    <style>
+		.fake-btn{
+			cursor: pointer;
+			background-color: #5CB85C;
+			height: 30px;
+			display: inline-block;
+			line-height: 29px;
+			padding:0 5px;
+			color:white;
+		}
+		.assetsearch-block select{
+			border:0px;
+			min-width:400px;
+            border:0px;display: inline-block;width: 100%;
+		}
+		.asset-search{
+
+		}
+
+        .caption{
+            font-size:28px;padding:0px 15px;
+        }
+
+        .contains{
+            border: 1px solid #ddd;
+        }
+        .contains .search{
+            display: inline-block;width: 100%;
+            width:100%;
+            border:0;
+            border-bottom:1px solid #ddd;
+            height:32px;
+        }
+        .contains .content{
+            border:0px;display: inline-block;width: 100%;
+        }
+	</style>
+{% endblock %}
+
+
+{% block breadcrumb %}
+    <li><a href="/home/index/">首页</a></li>
+    <li><a href="#">用户</a></li>
+    <li><a href="/userinfo/usergroup/">用户组</a></li>
+    <li class="active">{{model.data.user_group_obj.name}}</li>
+{% endblock %}
+
+{% block content %}
+
+    <div class="clearfix">
+
+        <div id='caption' class="caption" value='{{model.data.user_group_obj.id}}'>{{model.data.user_group_obj.name}}</div>
+
+        <div class='clearfix' style="padding:15px;">
+            <div id='othersAsset' class='col-md-5 no-padding contains'>
+                <div>
+                    <div>
+                        <input id='SearchOthersAsset' placeholder='搜 索' class='search'  onKeyUp='SearchOthersAsset();' />
+                    </div>
+                </div>
+                <select id='SelectOthersAsset' class="content" multiple="multiple" size="20">
+                    {% for item in model.data.no_relation %}
+                        <option value='{{item.id}}'>{{item.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class='left' style="padding: 0px 10px;">
+                <div style='margin-top:100px;font-size:18px;'>
+                    <div onclick='AddReleation();'><i class="fa fa-arrow-circle-right"></i></div>
+                    <div onclick='RemoveReleation();'> <i class="fa fa-arrow-circle-left"></i> </div>
+                </div>
+            </div>
+
+            <div id='currentAsset' class='col-md-5 no-padding contains'>
+
+                <div>
+                    <input id='SearchCurrentAsset' class='search' placeholder='搜 索'  onKeyUp='SearchCurrentAsset();' />
+                </div>
+                <select id='SelectCurrentAsset' class="content" multiple="multiple" size="20">
+                    {% for item in model.data.has_relation %}
+                        <option value='{{item.id}}'>{{item.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="/static/js/userinfo/user_group_detail.js"></script>
+{% endblock %}
+
