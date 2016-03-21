@@ -16,8 +16,10 @@ class UserInfo(models.Model):
 
 class HostInfo(models.Model):
     #创建表的字段
+    #host_id = models.CharField(max_length=32)
     host_name = models.CharField(max_length=32)
     host_port = models.CharField(max_length=32)
     host_ip = models.CharField(max_length=32)
     host_business = models.CharField(max_length=32)
     host_status = models.CharField(max_length=32)
+    host_id = models.CharField(max_length=32)

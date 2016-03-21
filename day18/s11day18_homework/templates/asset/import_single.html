@@ -45,14 +45,13 @@
             {% endif %}
         </div>
 
-        <form class="form-horizontal clearfix" method="POST" action="/asset/importsingle/">
-
+        <form class="form-horizontal clearfix" method="POST" action="/add/">
             <div class="form-group col-md-6">
-                <label for="inputEmail3" class="col-md-3 control-label">管理卡：</label>
+                <label for="inputEmail3" class="col-md-3 control-label">ID：</label>
                 <div class="col-md-8">
-                    {{ model.manage_ip }}
+                    {{ model.host_id }}
                     <div class="form-error">
-                        {% error_message message.manage_ip %}
+                        {% error_message message.host_id %}
                     </div>
                 </div>
             </div>
@@ -60,68 +59,56 @@
             <div class="form-group col-md-6">
                 <label for="inputEmail3" class="col-md-3 control-label">主机名：</label>
                 <div class="col-md-8">
-                    {{ model.hostname }}
+                    {{ model.host_name }}
                     <div class="form-error">
-                        {% error_message message.hostname %}
+                        {% error_message message.host_name %}
                     </div>
                 </div>
             </div>
 
             <div class="form-group col-md-6">
-                <label for="inputEmail3" class="col-md-3 control-label">SN号：</label>
+                <label for="inputEmail3" class="col-md-3 control-label">业务IP：</label>
                 <div class="col-md-8">
-                    {{ model.sn }}
+                    {{ model.host_ip }}
                     <div class="form-error">
-                        {% error_message message.sn %}
+                        {% error_message message.host_ip %}
                     </div>
                 </div>
             </div>
          
             <div class="form-group col-md-6">
-                <label for="inputEmail3" class="col-md-3 control-label">机柜：</label>
+                <label for="inputEmail3" class="col-md-3 control-label">端口号：</label>
                 <div class="col-md-8">
-                    {{ model.cabinet_num }}
+                    {{ model.host_port }}
                     <div class="form-error">
-                        {% error_message message.cabinet_num %}
+                        {% error_message message.host_port %}
                     </div>
-                </div>
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputEmail3" class="col-md-3 control-label">机柜上位置：</label>
-                <div class="col-md-8">
-                    {{ model.cabinet_order }}
-                    <div class="form-error">
-                        {% error_message message.cabinet_order %}
-                    </div>
-                </div>
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputEmail3" class="col-md-3 control-label">机房：</label>
-                <div class="col-md-8">
-                    {{ model.idc }}
-                </div>
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputEmail3" class="col-md-3 control-label">合同号：</label>
-                <div class="col-md-8">
-                    {{ model.contract }}
                 </div>
             </div>
             <div class="form-group col-md-6">
                 <label for="inputEmail3" class="col-md-3 control-label">业务线：</label>
                 <div class="col-md-8">
-                    {{ model.business_unit }}
-                </div>
-            </div>
-            <div class="form-group col-md-12">
-                <label for="inputEmail3" class="control-label col-md-2" style="width: 12.1%;">备注：</label>
-                <div class="col-md-10" style="width: 81%">
-                    {{ model.memo }}
+                    {{ model.host_business }}
+                    <div class="form-error">
+                        {% error_message message.host_business %}
+                    </div>
                 </div>
             </div>
             <div class="form-group col-md-6">
+                <label for="inputEmail3" class="col-md-3 control-label">业务线：</label>
+                <div class="col-md-8">
+                    {{ model.host_status }}
+                    <div class="form-error">
+                        {% error_message message.host_status %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
                 <div class="col-md-offset-3 col-md-8">
                      <input type="submit" class="btn btn-primary no-radius" value="提 交">
+                     <span style="background-color:#f2dede;color:#EC6868;">{{ check }}</span>
+                     <span style="background-color:green;color:white;">{{ succeed }}</span>
                 </div>
             </div>
         </form>

@@ -83,12 +83,12 @@
                 <a class="btn btn-default no-radius" onclick="CheckAll('#edit_mode','#table-body')"><i class="fa fa-check-square"></i> 全选</a>
                 <a class="btn btn-default no-radius" onclick="CheckCancel('#edit_mode','#table-body')"><i class="fa fa-minus-square-o"></i> 取消</a>
                 <a class="btn btn-default no-radius" onclick="CheckReverse('#edit_mode','#table-body')"><i class="fa fa-check-square-o"></i> 反选</a>
-                <a class="btn btn-default no-radius" href="/asset/importsingle/"><i class="fa fa-plus-circle"></i> 添加</a>
+                <a class="btn btn-default no-radius" href="/add/"><i class="fa fa-plus-circle"></i> 添加</a>
                 <a class="btn btn-default no-radius" onclick="$.Show('#shade,#modal_delete');"><i class="fa fa-trash"></i> 删除</a>
                 <a id="edit_mode" class="btn btn-default no-radius" onclick="EditMode(this,'#table-body')"><i class="fa fa-pencil-square-o"></i> <span>进入编辑模式</span></a>
                 <a class="btn btn-default no-radius" onclick="SaveTo('#edit_mode','#table-body')"><i class="fa fa-floppy-o"></i> 保存</a>
                 <a class="btn btn-default no-radius" onclick="Refresh()"><i class="fa fa-refresh"></i> 刷新</a>
-                <a id="handle_status" class="btn no-radius" tabindex="0" role="button" data-toggle="manual" data-trigger="focus" data-container="body" data-html="true" data-placement="bottom" title="错误详细" data-content=""></a>
+                <a id="handle_status" class="btn no-radius hide" style="background: green ;color:white;"></a>
             </div>
         </div>
 
@@ -97,7 +97,8 @@
                 <thead id="table-head">
                     <tr>
                         <th style="width: 5%;">选择</th>
-                        <th en-sort="true" class="en-sort both" style="width: 5%;">主机名</th>
+                        <th en-sort="true" class="en-sort both" style="width: 5%;">ID</th>
+                        <th en-sort="true" class="col-md-1 en-sort both">主机名</th>
                         <th en-sort="true" class="col-md-1 en-sort both">业务IP</th>
                         <th en-sort="true" class="col-md-1 en-sort both">端口号</th>
                         <th en-sort="true" class="en-sort both" style="width: 5%;">业务线</th>
@@ -108,11 +109,12 @@
                     {% for iterm in hostinfo_list %}
                         <tr>
                             <td><input type="checkbox" /></td>
-                            <td edit="true">{{ iterm.host_name }} </td>
-                            <td edit="true">{{ iterm.host_ip }} </td>
-                            <td edit="true">{{ iterm.host_port }} </td>
-                            <td edit="true" edit-type="select" global-key="BUSINESS"  select-val={{ iterm.host_business }} >{% if iterm.host_business == '1' %}大保健{% else %}喜乐街{% endif %}</td>
-                            <td edit="true" edit-type="select" global-key="STATUS"  select-val={{ iterm.host_status }} >{% if iterm.host_status == '1' %}在线{% else %}下线{% endif %}</td>
+                            <td name="host_id" >{{ iterm.host_id }}</td>
+                            <td name="host_name" edit="true">{{ iterm.host_name }}</td>
+                            <td name="host_ip" edit="true">{{ iterm.host_ip }}</td>
+                            <td name="host_port" edit="true">{{ iterm.host_port }}</td>
+                            <td name="host_business" edit="true" edit-type="select" global-key="BUSINESS"  select-val={{ iterm.host_business }} >{% if iterm.host_business == '1' %}大保健{% else %}喜乐街{% endif %}</td>
+                            <td name="host_status" edit="true" edit-type="select" global-key="STATUS"  select-val={{ iterm.host_status }} >{% if iterm.host_status == '1' %}在线{% else %}下线{% endif %}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -133,7 +135,7 @@
   <h4>确定删除资产？</h4>
   <p>与该资产相关联的网卡、硬盘、内存和日志等将全部被删除！<br/> &nbsp;</p>
   <p>
-    <button type="button" class="btn btn-danger" onclick="DoDeleteAsset();">确定删除</button>
+    <button type="button" class="btn btn-danger" onclick="DoDeleteAsset('#edit_mode','#table-body');">确定删除</button>
     <button type="button" class="btn btn-default" onclick="$.Hide('#shade,#modal_delete');">取消</button>
   </p>
 </div>
@@ -377,36 +379,120 @@
         }
 
         //定义保存后台提交功能
-        function SaveTo(mode, tb){
+        function SaveTo(mode,tb){
+            //设置一个空列表用来传送数据
+
             //如果在编辑状态那么先进行保存
             var isEditing = $(mode).hasClass('editing');  //判断是否有这个editing的样式
             if(isEditing){  //如果有说明当前是编辑状态，那么点击的时候应该退出编辑状态
                 // 退出编辑模式
-                $(ths).text('进入编辑模式');  //修改他的内容，提升逼格用的。
-                $(ths).removeClass('editing'); //移除这个editing样式
+                $(mode).text('进入编辑模式');  //修改他的内容，提升逼格用的。
+                $(mode).removeClass('editing'); //移除这个editing样式
                 $(tb).children().each(function(){ //获取这个form表单下的所有tr，并循环
                      var tr = $(this); //当前的tr
                     if(tr.find(':checkbox').prop('checked')){ //找到当选中的行
                         // 当前行，推出编辑状态
                         RowOutEditMode(tr);  //这里我们把代码进行了缩写，可以理解为python中调用函数的意思，我传入参数执行函数
                     }});}
+            //获取数据并传递给ajax
+            var change_info = [];
+            $(tb).children().each(function(){
+                var tr = $(this);//当前tr
+                var dic = {};
+                tr.children().each(function () {
+                    //console.log($(this).text());
+                    if($(this).attr('name') == 'host_id'){
+                        dic['host_id'] = $(this).text();}
+                    if($(this).attr('name') == 'host_name'){
+                        dic['host_name'] = $(this).text();}
+                    if($(this).attr('name') == 'host_port'){
+                        dic['host_port'] = $(this).text();}
+                    if($(this).attr('name') == 'host_ip'){
+                        dic['host_ip'] = $(this).text();}
+                    if($(this).attr('name') == 'host_business'){
+                        dic['host_business'] = $(this).attr('select-val');}
+                    if($(this).attr('name') == 'host_status'){
+                        dic['host_status'] = $(this).attr('select-val');}
+                });
+                change_info.push(dic);
+                //console.log(dic)
+            });
+            //console.log(change_info);
+            for (var item in change_info) {console.log(change_info[item])}
             //然后使用ajax进行提交数据
             $.ajax({
                 url:'/save_hostinfo/',
                 type:'POST',
                 tradition: true,
-                data:{data:JSON.stringify(array_users)},
+                data:{data:JSON.stringify(change_info)},
                 success:function(arg){
                     //成功接收的返回值(返回条目)
+                    var callback_dict = $.parseJSON(arg);//这里把字符串转换为对象
+                    //然后咱们就可以判断
+                    if(callback_dict){//执行成功了
+                        //设置5秒钟后隐藏
+                        setTimeout("hide()",5000);
+                        var change_infos = '修改了'+callback_dict['change_count']+'条数据';
+                        $('#handle_status').text(change_infos).removeClass('hide')
+                    }else{//如果为False执行失败了
+                        alert(callback_dict.error)
+                    }
                 }
             })
-
-
-
-
+        }
+        function hide(){
+            $('#handle_status').addClass('hide')
         }
 
+        function DoDeleteAsset(mode,tb){
+            //如果在编辑状态那么先进行退出编辑状态
+            var isEditing = $(mode).hasClass('editing');  //判断是否有这个editing的样式
+            if(isEditing){  //如果有说明当前是编辑状态，那么点击的时候应该退出编辑状态
+                // 退出编辑模式
+                $(mode).text('进入编辑模式');  //修改他的内容，提升逼格用的。
+                $(mode).removeClass('editing'); //移除这个editing样式
+                $(tb).children().each(function(){ //获取这个form表单下的所有tr，并循环
+                     var tr = $(this); //当前的tr
+                    if(tr.find(':checkbox').prop('checked')){ //找到当选中的行
+                        // 当前行，推出编辑状态
+                        RowOutEditMode(tr);  //这里我们把代码进行了缩写，可以理解为python中调用函数的意思，我传入参数执行函数
+                    }});}
+            var del_list = [];
+            $(tb).find(':checkbox').each(function(){
+                if($(this).prop('checked')){
+                    //如果选中状态找到他的父标签然后删除，并使用ajax进行发送到后端删除数据
 
+                    del_list.push($(this).parent().next().text());
+                    console.log(del_list);
+                    $(this).parent().parent().remove()
+                    }
+                });
+            //把数据发送到后台
+            $.ajax({
+                url:'/del_hostinfo/',
+                type:'POST',
+                tradition: true,
+                data:{data:JSON.stringify(del_list)},
+                success:function(arg){
+                    //成功接收的返回值(返回条目)
+                    var callback_dict = $.parseJSON(arg);//这里把字符串转换为对象
+                    //然后咱们就可以判断
+                    if(callback_dict){//执行成功了
+                        //设置5秒钟后隐藏
+                        setTimeout("hide()",5000);
+                        var change_infos = '删除了'+callback_dict['change_count']+'条数据';
+                        $('#handle_status').text(change_infos).removeClass('hide')
+                    }else{//如果为False执行失败了
+                        alert(callback_dict.error)
+                    }
+                }
+            });
+            $.Hide('#shade,#modal_delete')
+        }
+
+        function Refresh(){
+            window.location.href = window.location.href
+        }
 
     </script>
 {% endblock %}

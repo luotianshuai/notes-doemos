@@ -20,6 +20,8 @@ urlpatterns = [
     url(r'^login/$', views.login),
     url(r'^index/$', views.index),
     url(r'^lists/$', views.lists),
+    url(r'^save_hostinfo/$', views.save_hostinfo),
+    url(r'^del_hostinfo/$', views.del_hostinfo),
     url(r'^add/$', views.add),
     url(r'^logout/$', views.logout),
     url(r'', views.login),
