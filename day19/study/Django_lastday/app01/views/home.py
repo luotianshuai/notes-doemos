@@ -4,8 +4,12 @@
 
 from django.shortcuts import render
 from app01.forms import home as HomeForm
+from app01 import models
 
 def index(request):
+    test = models.UserInfo.objects.filter(username='dashuaige')
+    print test
+
     obj = HomeForm.ImportForm(request.POST)
     return render(request,'home/index.html',{'obj':obj})
 

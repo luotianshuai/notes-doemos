@@ -54,6 +54,9 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 's11day18_homework.urls'
 
+#from django.core.context_processors import static
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -66,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.static',
             ],
         },
     },

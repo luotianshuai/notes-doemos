@@ -1,3 +1,6 @@
+#/usr/bin/env python
+#-*- coding:utf-8 -*-
+
 """s11day18_homework URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -15,15 +18,26 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from cmdb import views
+from cmdb.views import account
+from cmdb.views import home
+from cmdb.views import asset
+
 urlpatterns = [
-    url(r'^login/$', views.login),
-    url(r'^index/$', views.index),
-    url(r'^lists/$', views.lists),
-    url(r'^save_hostinfo/$', views.save_hostinfo),
-    url(r'^del_hostinfo/$', views.del_hostinfo),
-    url(r'^add/$', views.add),
-    url(r'^logout/$', views.logout),
-    url(r'', views.login),
+
+    #账户操作登录登出
+    url(r'^login/$', account.login),
+    url(r'^logout/$', account.logout),
+
+    #home操作
+    url(r'^index/$', home.index),
+
+    #资产信息操作
+    url(r'^lists/$', asset.lists),
+    url(r'^save_hostinfo/$', asset.save_hostinfo),
+    url(r'^del_hostinfo/$', asset.del_hostinfo),
+    url(r'^add/$', asset.add),
+
+    #default url
+    url(r'', account.login),
 
 ]
