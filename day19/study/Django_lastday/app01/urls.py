@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^login/$', account.login),
     url(r'^index/$', home.index),
     url(r'^upload/$', home.upload),
+    url(r'^useradd/$', account.useradd),
 
 ]
