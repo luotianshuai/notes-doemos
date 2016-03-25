@@ -33,6 +33,7 @@ urlpatterns = [
 
     #资产信息操作
     url(r'^lists/$', asset.lists),
+    url(r'^get_select/$', asset.get_select),
     url(r'^save_hostinfo/$', asset.save_hostinfo),
     url(r'^del_hostinfo/$', asset.del_hostinfo),
     url(r'^add/$', asset.add),

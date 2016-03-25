@@ -52,20 +52,10 @@
                                 <span class="caret"></span>
                             </button>
                             <ul class="change-search-condition dropdown-menu">
-                                <li condition="server__service_sn"><a href="#">服务编码</a></li>
-                                <li condition="server__sn"><a href="#">序列号</a></li>
-                                <li condition="server__manufactory"><a href="#">厂商</a></li>
-                                <li condition="server__model"><a href="#">型号</a></li>
-                                <li role="separator" class="divider"></li>
                                 <li condition="server__hostname"><a href="#">主机名</a></li>
                                 <li condition="ips"><a href="#">业务IP</a></li>
-                                <li condition="server__manage_ip"><a href="#">管理IP</a></li>
                                 <li condition="business_unit__id" find-type="select" options="window_business_unit"><a href="#">业务线</a></li>
                                 <li condition="device_status__id" find-type="select" options="window_device_status"><a href="#">状态</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li condition="idc__id" find-type="select" options="window_idc"><a href="#" >IDC</a></li>
-                                <li condition="cabinet_num"><a href="#">机柜</a></li>
-                                <li condition="cabinet_order"><a href="#">柜上位置</a></li>
 
                             </ul>
                           </div>
@@ -109,12 +99,12 @@
                     {% for iterm in hostinfo_list %}
                         <tr>
                             <td><input type="checkbox" /></td>
-                            <td name="host_id" >{{ iterm.host_id }}</td>
-                            <td name="host_name" edit="true">{{ iterm.host_name }}</td>
-                            <td name="host_ip" edit="true">{{ iterm.host_ip }}</td>
-                            <td name="host_port" edit="true">{{ iterm.host_port }}</td>
-                            <td name="host_business" edit="true" edit-type="select" global-key="BUSINESS"  select-val={{ iterm.host_business }} >{% if iterm.host_business == '1' %}大保健{% else %}喜乐街{% endif %}</td>
-                            <td name="host_status" edit="true" edit-type="select" global-key="STATUS"  select-val={{ iterm.host_status }} >{% if iterm.host_status == '1' %}在线{% else %}下线{% endif %}</td>
+                            <td name="host_id" >{{ iterm.id }}</td>
+                            <td name="host_name" edit="true">{{ iterm.hostname }}</td>
+                            <td name="host_ip" edit="true">{{ iterm.hostip }}</td>
+                            <td name="host_port" edit="true">{{ iterm.hostport }}</td>
+                            <td name="host_business" edit="true" edit-type="select" global-key="BUSINESS"  select-val={{ iterm.hostbusiness_id }} >{{ iterm.hostbusiness }}</td>
+                            <td name="host_status" edit="true" edit-type="select" global-key="STATUS"  select-val={{ iterm.hoststatus_id }} >{{ iterm.hoststatus }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -143,18 +133,22 @@
 {% endblock %}
 
 {% block js %}
-    <script type="text/javascript">
+    <script>
 
-        STATUS = [
-            {'id': 1, 'text': "在线"},
-            {'id': 2, 'text': "下线"}
-        ];
-
-        BUSINESS = [
-            {'id': 1, 'text': "大保健"},
-            {'id': 2, 'text': "喜乐街"}
-        ];
-
+{#        STATUS = [#}
+{#            {'id': 1, 'text': "在线"},#}
+{#            {'id': 2, 'text': "下线"}#}
+{#        ];#}
+{##}
+{##}
+{##}
+{#        BUSINESS = [#}
+{#            {'id': 1, 'text': "大保健"},#}
+{#            {'id': 2, 'text': "喜乐街"}#}
+{#        ];#}
+{##}
+{#        console.log(STATUS);#}
+{#        console.log(BUSINESS);#}
 
         $(function(){
             $.InitMenu('#asset_list');
@@ -295,6 +289,23 @@
                 // 进入编辑模式
                 $(ths).text('退出编辑模式'); //修改他的内容，提升逼格用的。
                 $(ths).addClass('editing'); //添加这个这个editing样式
+
+                //每次都发送一个ajax请求来获取所有的"业务线,状态及其 iD 作为SELECT 的option"
+                $.ajax({
+                    url:'/get_select/',
+                    type:'GET',
+                    tradition: true,
+                    data:{},
+                    success:function(arg){
+                        var callback_dict = $.parseJSON(arg);//这里把字符串转换为对象
+                        STATUS = callback_dict['status_list'];
+                        BUSINESS = callback_dict['business_list'];
+
+                    }
+
+                });
+
+
                 $(tb).children().each(function(){ //找到每个一个form表单下面的tr循环
                     // $(this) 表示循环过程中,每一个tr，每一行数据
                     var tr = $(this);

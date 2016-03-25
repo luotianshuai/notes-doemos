@@ -46,15 +46,6 @@
         </div>
 
         <form class="form-horizontal clearfix" method="POST" action="/add/">
-            <div class="form-group col-md-6">
-                <label for="inputEmail3" class="col-md-3 control-label">ID：</label>
-                <div class="col-md-8">
-                    {{ model.host_id }}
-                    <div class="form-error">
-                        {% error_message message.host_id %}
-                    </div>
-                </div>
-            </div>
 
             <div class="form-group col-md-6">
                 <label for="inputEmail3" class="col-md-3 control-label">主机名：</label>
@@ -95,7 +86,7 @@
                 </div>
             </div>
             <div class="form-group col-md-6">
-                <label for="inputEmail3" class="col-md-3 control-label">业务线：</label>
+                <label for="inputEmail3" class="col-md-3 control-label">状态：</label>
                 <div class="col-md-8">
                     {{ model.host_status }}
                     <div class="form-error">
