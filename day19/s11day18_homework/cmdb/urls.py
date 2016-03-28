@@ -21,6 +21,7 @@ from django.contrib import admin
 from cmdb.views import account
 from cmdb.views import home
 from cmdb.views import asset
+from cmdb.views import userinfo
 
 urlpatterns = [
 
@@ -37,6 +38,9 @@ urlpatterns = [
     url(r'^save_hostinfo/$', asset.save_hostinfo),
     url(r'^del_hostinfo/$', asset.del_hostinfo),
     url(r'^add/$', asset.add),
+
+    #用户信息
+    url(r'^user/$', userinfo.user),
 
     #default url
     url(r'', account.login),
