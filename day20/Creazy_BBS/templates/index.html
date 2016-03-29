@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <!--指定告诉ID用高版本的解析-->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <link rel="shortcut icon" href="../static/images/ChouTi_Head.jpg">
+  <title>抽屉新热榜-聚合每日热门、搞笑、有趣咨询</title>
+  <!-- Bootstrap -->
+  <!-- 新 Bootstrap 核心 CSS 文件 -->
+  <link rel="stylesheet" href="../static/bootstrap-3.3.4-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/css/ChouTi.css">
+
+</head>
+<body style="position:relative;margin:0 auto;background-color:#f1f1ee">
+  <div class="top_style">
+    <!--定义网站log-->
+    <div class="log_style">
+        <a href="http://dig.chouti.com/"><img style="float:left" src="../static/images/log.png" ></a>
+        <!--定义菜单栏-->
+        <ul style="float:left" class="nav nav-pills">
+          <li role="presentation"><a  href="#">全部</a></li>
+          <li role="presentation"><a href="#">42区</a></li>
+          <li role="presentation"><a href="#">段子</a></li>
+          <li role="presentation"><a href="#">图片</a></li>
+          <li role="presentation"><a href="#">挨踢1024</a></li>
+          <li role="presentation"><a href="#">你问我答</a></li>
+          <li role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              其他 <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="#">各区经典</a></li>
+                <li><a href="#">各区入口</a></li>
+                <li><a href="#">各区动态</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">各区汇总</a></li>
+            </ul>
+          </li>
+        </ul>
+        <!--定义用户下拉菜单-->
+        <div  style="float:right;" class="btn-group">
+          <button style="top: 5px" class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            TimLuo<span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu ">
+                <li><a href="#">个人信息</a></li>
+                <li><a href="#">好友设置</a></li>
+                <li><a href="#">收藏设置</a></li>
+          </ul>
+
+        </div>
+        <!--定义搜索表单-->
+        <div style="float:right;bottom: 5px;" class="btn-group">
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="请输入要搜索的内容">
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+              </div>
+            </form>
+        </div>
+      </div>
+  </div>
+  <!--定义内容主体-->
+  <div class="Content_body">
+    <!--内容主体左侧-->
+    <div class="Content_left">
+      <div style="margin-top: 10px; border-bottom: 1px solid Gainsboro;height: 50px">
+        <a class="btn btn-default frame_style" href="#" role="button">最热</a>
+        <a class="btn btn-default frame_style" href="#" role="button">最新</a>
+        <a class="btn btn-default frame_style" href="#" role="button">人类发布</a>
+        <!--发布模态对话框-->
+        <button style="float: right;margin-right: 20px;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发布新动态
+        </button>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">分享新内容</h4>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="recipient-name" class="control-label">分享连接:</label>
+                    <input type="text" class="form-control" id="recipient-name">
+                  </div>
+                  <div class="form-group">
+                    <label for="message-text" class="control-label">分享内容:</label>
+                    <textarea class="form-control" id="message-text"></textarea>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">发布</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!--分享内容框体-->
+
+
+
+    <div class="Content_left_c">
+        <div>
+          <a  class="Content_left_ca" href="http://www.cnblogs.com/luotianshuai/p/5211984.html">Python之路【第十二篇续】jQuery案例详解</a>
+          <div>
+            什么是线程池？
+            诸如web服务器、数据库服务器、文件服务器和邮件服务器等许多服务器应用都面向处理来自某些远程来源的大量短小的任务。
+            构建服务器应用程序的一个过于简单的模型是：每当一个请求到达就创建一个新的服务对象，然后在新的服务对象中为请求服务。
+            但当有大量请求并发访问时，服务器不断的创建和销毁对象的开销很大。
+            所以提高服务器效率的一个手段就是尽可能减少创建和销毁对象的次数，特别是一些很耗资源的对象创建和销毁，这样就引入了“池”的概念，
+            “池”的概念使得人们可以定制一定量的资源，然后对这些资源进行复用，而不是频繁的创建和销毁。
+
+            线程池是预先创建线程的一种技术。
+            这些线程都是处于睡眠状态，即均为启动，不消耗CPU，而只是占用较小的内存空间。
+            当请求到来之后，缓冲池给这次请求分配一个空闲线程，把请求传入此线程中运行，进行处理。
+            当预先创建的线程都处于运行状态，即预制线程不够，线程池可以自由创建一定数量的新线程，用于处理更多的请求。
+            当系统比较闲的时候，也可以通过移除一部分一直处于停用状态的线程。
+          </div>
+        </div>
+        <div class="Content_left_nr">
+          <div style="height: 30px;margin-top: 5px;">
+            <a class="change_style1">
+              <div class="zan_default"></div>
+              <b>666</b>
+            </a>
+
+            <a class="change_style2">
+              <div class="xinxi_default"></div>
+              <b>666</b>
+            </a>
+
+            <a class="change_style3">
+              <div class="shoucang_default"></div>
+              <b>666</b>
+            </a>
+            <a href="http://www.cnblogs.com/luotianshuai/" style="margin-left: 10px">
+              TimLuo
+            </a>
+            <a href="http://www.cnblogs.com/luotianshuai/" style="margin-left: 10px">
+              6小时之前
+            </a>
+          </div>
+        </div>
+    </div>
+
+      <!--定义翻页功能-->
+      <div>
+        <nav>
+          <ul class="pagination" style="margin-left: 150px;">
+            <li>
+              <a href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">下一页</a></li>
+            <li>
+              <a href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <!--内容主体右侧-->
+    <div class="Content_right">
+      <div style="background-color:#e2e5e9">
+        <div >新热聊天 20160305</div>
+        <div style="border:0;background-color:#f0f2f4;width: 289px;height: 300px; " >
+            <div class="bubble_arrow"></div>
+            <div class="bubble_content"><div style="margin-top: 10px;margin-left: 5px;">Hello Shuaige</div></div>
+        </div>
+        <div >luotianshuai 20160305</div>
+        <div style="background-color:#f0f2f4;">
+            <form>
+              <input style="float: left;background-color:#f0f2f4;border: 0;height: 50px" type="text" />
+            </form>
+            <div style="height: 50px">
+              <button style="float: left;margin-left: 20px;margin-top: 10px;" type="submit" class="btn btn-default">发送</button>
+            </div>
+        </div>
+      </div>
+      <!--24小时热点-->
+      <div style="height: 608px;background-color:white;position: relative">
+          <div class="alert alert-info" role="alert"><strong>24 hours hot</strong></div>
+          <button id="contrl1" type="button" class="btn btn-success">最热榜单</button>
+          <button id="contrl2" type="button" class="btn btn-danger">最热评论</button>
+          <!--最热榜单-->
+          <div id="hot_m1" class="list-group hide" style="position: absolute;left: 0;right: 0;top: 110px;">
+              <a href="#" class="list-group-item list-group-item-success">《战争与和平》</a>
+              <a href="#" class="list-group-item list-group-item-success">《巴黎圣母院》</a>
+              <a href="#" class="list-group-item list-group-item-success">《悲惨的世界》</a>
+              <a href="#" class="list-group-item list-group-item-success">《约翰·克利斯朵夫》</a>
+          </div>
+                    <!--最热评论-->
+          <div id="hot_m2" class="list-group" style="position: absolute;left: 0;right: 0;top: 110px;">
+              <a href="#" class="list-group-item list-group-item-danger">《童年》</a>
+              <a href="#" class="list-group-item list-group-item-danger">《呼啸山庄》</a>
+              <a href="#" class="list-group-item list-group-item-danger">《红与黑》</a>
+              <a href="#" class="list-group-item list-group-item-danger">《安娜·卡列尼娜》</a>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <p id="back-to-top"><a href="#top"><span></span>返回顶部</a></p>
+
+
+
+  <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+  <script src="../static/js/jquery-2.2.1.min.js"></script>
+  <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+  <script src="../static/bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
+  <script src="../static/js/ChouTi.js"></script>
+  <script>
+      //网页文字头,使用跑马灯实例
+      setInterval('Run_going()',1000);
+      //消息
+      $('#Message_put').popover('show');
+  </script>
+</body>
+</html>

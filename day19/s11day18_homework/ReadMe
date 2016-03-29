@@ -34,7 +34,7 @@ http://www.cnblogs.com/luotianshuai/p/5301343.html
 
     --管理页面
         --使用模板语言对html进行渲染
-            --复习使用并优化之前form表单代码
+            --使用并优化之前form表单代码
 
             --通过连表获取数据生成
             --通过ajax获取业务线/状态信息,然后生成select标签.
@@ -46,8 +46,6 @@ http://www.cnblogs.com/luotianshuai/p/5301343.html
             --并设置回执信息5秒后自动隐藏
 
         --添加资产列表，并进行用户输入认证
-
-        --了不起的双下划线查询
 
 
 
