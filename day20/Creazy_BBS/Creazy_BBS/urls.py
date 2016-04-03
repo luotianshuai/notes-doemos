@@ -22,5 +22,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #因为就这一个APP所以直接把所有的请求转发web中的urls里,并在web中urls里在设置views函数和默认跳转
-    url(r'^$', include("web.urls")),
+    url(r'', include("web.urls")),
 ]

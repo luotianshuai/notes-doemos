@@ -56,8 +56,9 @@
 /*定义左侧内容样式*/
 .Content_left_c {
     margin-top: 10px;
+    padding-bottom: 5px;
     /*height: 112px;*/
-    border-bottom: 1px solid Gainsboro;
+    /*border-bottom: 1px solid Gainsboro;*/
 }
 
 
@@ -205,4 +206,40 @@ p#back-to-top a span{
     clear:both; /*加上clear:both*/
     height: 0;/*我们给他定义高度为0*/
 
+}
+
+
+/*文章内容样式*/
+
+
+/*文章盒子总体样式*/
+.article-box{
+    border-bottom: 1px solid Gainsboro;
+    padding-bottom: 10px;
+}
+
+.article-leftimag{
+    float: left;
+}
+.article-leftimag img{
+    height: 125px;
+    width: 220px;
+}
+.article-summary{
+    float: left;
+    width: 400px;
+    margin-left: 5px;;
+}
+
+
+
+
+
+/*评论样式*/
+.comment-box{
+    border: 1px solid #58a8f9 ;
+}
+
+.comment-node{
+    border-bottom: 1px solid silver;
 }

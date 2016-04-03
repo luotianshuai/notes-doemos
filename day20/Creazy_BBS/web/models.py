@@ -22,6 +22,9 @@ class Article(models.Model):
     '''
     #上传文件
     head_img = models.ImageField(upload_to="uploads")
+    #总结
+    summary = models.CharField(max_length=255)
+
     #文章内容(文章内容可能有很多,所以我们就不用"CharField"来写了,我们用TextField,不用规定他多长了,为可扩展长度)
     content = models.TextField(u"内容")
     #文章作者
@@ -64,7 +67,7 @@ class Comment(models.Model):
     通过上面的这种方法来记录,评论的级别关系!
     '''
     def __unicode__(self):
-        return "<user:%s>" %(self.user)
+        return "<%s,user:%s>" %(self.comment,self.user)
 class ThumbUp(models.Model):
     '''
     点赞

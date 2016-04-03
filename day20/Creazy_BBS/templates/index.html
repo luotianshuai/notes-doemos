@@ -1,35 +1,56 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <!--指定告诉ID用高版本的解析-->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-  <link rel="shortcut icon" href="../static/images/ChouTi_Head.jpg">
-  <title>抽屉新热榜-聚合每日热门、搞笑、有趣咨询</title>
-  <!-- Bootstrap -->
-  <!-- 新 Bootstrap 核心 CSS 文件 -->
-  <link rel="stylesheet" href="../static/bootstrap-3.3.4-dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../static/css/ChouTi.css">
+    <meta charset="utf-8">
+    <!--指定告诉ID用高版本的解析-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <link rel="shortcut icon" href="/static/images/ChouTi_Head.jpg">
+    <title>抽屉新热榜-聚合每日热门、搞笑、有趣咨询</title>
+    <!-- Bootstrap -->
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap-3.3.4-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/ChouTi.css">
+    {% block head-js %}
+    {% endblock %}
 
 </head>
 <body style="position:relative;margin:0 auto;background-color:#f1f1ee">
+    {#登录/注册模态框#}
+    <div  class="hide" id="login_model" style="position:fixed;z-index: 20;background-color: #8c99a6;width: 100%;height: 100% ;opacity: 0.8;">
+
+        <div class="container" style="height: 300px;width: 300px;background-color: beige ;margin-top: 200px;border-radius:15%" >
+              <form class="form-signin" method="POST" action="{% url 'login' %} }">{% csrf_token %}
+                    <h2 class="form-signin-heading">Please sign in</h2>
+                    <label for="inputEmail" class="sr-only">Email address</label>
+                    <input type="text" id="inputEmail" name="username" class="form-control" placeholder="Email address" required="" autofocus="">
+                    <label for="inputPassword" class="sr-only">Password</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" value="remember-me"> Remember me
+                      </label>
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+                    <button  id="Cancel_model" type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#myModal">Cancel</button>
+              </form>
+        </div>
+    </div>
+
   <div class="top_style">
     <!--定义网站log-->
     <div class="log_style">
-        <a href="http://dig.chouti.com/"><img style="float:left" src="../static/images/log.png" ></a>
+        <a href="http://dig.chouti.com/"><img style="float:left" src="/static/images/log.png" ></a>
         <!--定义菜单栏-->
         <ul style="float:left" class="nav nav-pills">
-          <li role="presentation"><a  href="#">全部</a></li>
-          <li role="presentation"><a href="#">42区</a></li>
-          <li role="presentation"><a href="#">段子</a></li>
-          <li role="presentation"><a href="#">图片</a></li>
-          <li role="presentation"><a href="#">挨踢1024</a></li>
-          <li role="presentation"><a href="#">你问我答</a></li>
+          <li role="presentation"><a  href="{% url 'index' %}">全部</a></li>
+          <li role="presentation"><a href="{% url 'category' 1 %}">欧美专区</a></li>
+          <li role="presentation"><a href="{% url 'category' 2 %}">日韩专区</a></li>
+          <li role="presentation"><a href="{% url 'category' 3 %}">印度专区</a></li>
           <li role="presentation" class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-              其他 <span class="caret"></span>
+              其他 <span class="caret"></span >
             </a>
             <ul class="dropdown-menu">
                 <li><a href="#">各区经典</a></li>
@@ -42,15 +63,19 @@
         </ul>
         <!--定义用户下拉菜单-->
         <div  style="float:right;" class="btn-group">
-          <button style="top: 5px" class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            TimLuo<span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu ">
-                <li><a href="#">个人信息</a></li>
-                <li><a href="#">好友设置</a></li>
-                <li><a href="#">收藏设置</a></li>
-          </ul>
-
+          {% if request.user.is_authenticated %}
+              <button style="top: 5px" class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ request.user.userprofile.name }}<span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu ">
+                    <li><a href="#">个人信息</a></li>
+                    <li><a href="#">好友设置</a></li>
+                    <li><a href="{% url 'new_article' %}">发帖</a></li>
+                    <li><a href="{% url 'logout' %}">用户注销</a></li>
+              </ul>
+          {% else %}
+              <button id="logins" style="top: 5px" class="btn btn-default btn-sm " type="button" aria-haspopup="true" aria-expanded="false">登录/注册</button>
+          {% endif %}
         </div>
         <!--定义搜索表单-->
         <div style="float:right;bottom: 5px;" class="btn-group">
@@ -73,84 +98,39 @@
         <a class="btn btn-default frame_style" href="#" role="button">最热</a>
         <a class="btn btn-default frame_style" href="#" role="button">最新</a>
         <a class="btn btn-default frame_style" href="#" role="button">人类发布</a>
-        <!--发布模态对话框-->
-        <button style="float: right;margin-right: 20px;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">
-          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发布新动态
-        </button>
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">分享新内容</h4>
-              </div>
-              <div class="modal-body">
-                <form>
-                  <div class="form-group">
-                    <label for="recipient-name" class="control-label">分享连接:</label>
-                    <input type="text" class="form-control" id="recipient-name">
-                  </div>
-                  <div class="form-group">
-                    <label for="message-text" class="control-label">分享内容:</label>
-                    <textarea class="form-control" id="message-text"></textarea>
-                  </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">发布</button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-    <!--分享内容框体-->
-
-
-
+    <!--分享内容框体-----通过模板语言进行渲染-->
     <div class="Content_left_c">
-        <div>
-          <a  class="Content_left_ca" href="http://www.cnblogs.com/luotianshuai/p/5211984.html">Python之路【第十二篇续】jQuery案例详解</a>
-          <div>
-            什么是线程池？
-            诸如web服务器、数据库服务器、文件服务器和邮件服务器等许多服务器应用都面向处理来自某些远程来源的大量短小的任务。
-            构建服务器应用程序的一个过于简单的模型是：每当一个请求到达就创建一个新的服务对象，然后在新的服务对象中为请求服务。
-            但当有大量请求并发访问时，服务器不断的创建和销毁对象的开销很大。
-            所以提高服务器效率的一个手段就是尽可能减少创建和销毁对象的次数，特别是一些很耗资源的对象创建和销毁，这样就引入了“池”的概念，
-            “池”的概念使得人们可以定制一定量的资源，然后对这些资源进行复用，而不是频繁的创建和销毁。
-
-            线程池是预先创建线程的一种技术。
-            这些线程都是处于睡眠状态，即均为启动，不消耗CPU，而只是占用较小的内存空间。
-            当请求到来之后，缓冲池给这次请求分配一个空闲线程，把请求传入此线程中运行，进行处理。
-            当预先创建的线程都处于运行状态，即预制线程不够，线程池可以自由创建一定数量的新线程，用于处理更多的请求。
-            当系统比较闲的时候，也可以通过移除一部分一直处于停用状态的线程。
-          </div>
-        </div>
-        <div class="Content_left_nr">
-          <div style="height: 30px;margin-top: 5px;">
-            <a class="change_style1">
-              <div class="zan_default"></div>
-              <b>666</b>
-            </a>
-
-            <a class="change_style2">
-              <div class="xinxi_default"></div>
-              <b>666</b>
-            </a>
-
-            <a class="change_style3">
-              <div class="shoucang_default"></div>
-              <b>666</b>
-            </a>
-            <a href="http://www.cnblogs.com/luotianshuai/" style="margin-left: 10px">
-              TimLuo
-            </a>
-            <a href="http://www.cnblogs.com/luotianshuai/" style="margin-left: 10px">
-              6小时之前
-            </a>
-          </div>
-        </div>
+        {% block page-container %}
+            {% for article in articles reversed %}
+                {#文章盒子总体样式#}
+                <div class="article-box clearfix">
+                    {#文章盒子左边图片#}
+                    <div class="article-leftimag">
+                        <img src="{{ article.head_img }}">
+                    </div>
+                    {#文章盒子右边内容#}
+                    <div class="article-summary">
+                        <h4><a style="text-decoration:none" href="{% url 'article_detaill' article.id %}">{{ article.title }}</a></h4>
+                        {# 文章点赞评论等~~ #}
+                        <div>
+                            <ul class="list-inline">
+                                <li>作者:{{ article.author }}</li>
+                                <li>时间:{{ article.publish_date }}</li>
+                                {#反向去查关联了Article表的ThumbUp表里的内容,通过:"表名_set"去查询#}
+                                <li>点赞:{{ article.thumbup_set.select_related.count }}</li>
+                                {# Article 文章点赞哪里有个ForginKey指定了文章,就会自动生成一个表名+_set字段取出一个集合,然后通过select_related就会生成一个列表循环这个列表就是所有的点赞 #}
+                                <li>评论:{{ article.comment_set.select_related.count }}</li>
+                            </ul>
+                        </div>
+                        {# 文章总结 #}
+                        <p>文章总结:{{ article.summary }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endblock %}
     </div>
+
 
       <!--定义翻页功能-->
       <div>
@@ -179,12 +159,10 @@
     <!--内容主体右侧-->
     <div class="Content_right">
       <div style="background-color:#e2e5e9">
-        <div >新热聊天 20160305</div>
         <div style="border:0;background-color:#f0f2f4;width: 289px;height: 300px; " >
             <div class="bubble_arrow"></div>
             <div class="bubble_content"><div style="margin-top: 10px;margin-left: 5px;">Hello Shuaige</div></div>
         </div>
-        <div >luotianshuai 20160305</div>
         <div style="background-color:#f0f2f4;">
             <form>
               <input style="float: left;background-color:#f0f2f4;border: 0;height: 50px" type="text" />
@@ -219,18 +197,23 @@
 
   <p id="back-to-top"><a href="#top"><span></span>返回顶部</a></p>
 
+  {#登录模态对话框#}
+
+
 
 
   <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-  <script src="../static/js/jquery-2.2.1.min.js"></script>
+  <script src="{{ STATIC_URL }}js/jquery-2.2.1.min.js"></script>
   <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-  <script src="../static/bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
-  <script src="../static/js/ChouTi.js"></script>
+  <script src="{{ STATIC_URL }}bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
+  <script src="{{ STATIC_URL }}js/ChouTi.js"></script>
   <script>
       //网页文字头,使用跑马灯实例
       setInterval('Run_going()',1000);
       //消息
       $('#Message_put').popover('show');
   </script>
+    {% block bottom-js %}
+    {% endblock %}
 </body>
 </html>

@@ -81,3 +81,14 @@ $('#contrl2').hover(function () {
 }, function () {
 
 });
+
+
+
+//登录模态对话框
+$('#Cancel_model').click(function (){
+    $('#login_model').addClass('hide')
+});
+
+$('#logins').click(function(){
+    $('#login_model').removeClass('hide')
+});

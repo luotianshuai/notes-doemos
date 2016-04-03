@@ -19,5 +19,14 @@ from web import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$',views.index),
+
+    url(r'^category/(\d+)/$',views.category,name='category'),
+
+    url(r'^article_detaill/(\d+)/$',views.article_detaill,name='article_detaill'),
+    url(r'^article/new/$',views.new_article,name='new_article'),
+    url(r'^account/logout$',views.acount_logout,name='logout'),
+    url(r'^account/login',views.acount_login,name='login'),
+
+
+    url(r'',views.index,name='index'),
 ]
