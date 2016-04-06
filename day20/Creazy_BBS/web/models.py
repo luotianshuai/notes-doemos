@@ -105,9 +105,15 @@ class UserProfile(models.Model):
     groups = models.ManyToManyField("UserGroup")
     #朋友
     friends = models.ManyToManyField('self',related_name='my_friends')
+    status = models.ForeignKey("UserStatus",related_name='user_status',blank=True,null=True)
 
     def __unicode__(self):
         return self.name
+
+class UserStatus(models.Model):
+    status = models.CharField(max_length=24,blank=True,null=True)
+    def __unicode__(self):
+        return self.status
 
 class UserGroup(models.Model):
     '''

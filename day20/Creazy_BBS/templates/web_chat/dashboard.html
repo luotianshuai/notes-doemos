@@ -100,5 +100,11 @@
                         }
             });//end body
         });//页面也在完成,结束
+
+        //获取用户列表
+        function LoadContacts(){
+            $.get("{% url 'load_contact_list' %}" ,function(callback){
+                console.log(callback)
+            })}//获取用户列表结束
     </script>
 {% endblock %}
