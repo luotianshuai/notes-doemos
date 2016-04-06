@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'web',
+    'web_chat',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -126,3 +127,5 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR,'static'),
     os.path.join(BASE_DIR,'uploads'),
 )
+
+LOGIN_URL = '/web/account/login/'

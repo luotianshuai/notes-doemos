@@ -19,8 +19,17 @@ from django.conf.urls import url
 from django.conf.urls import include
 from django.contrib import admin
 
+from web import views
+from web import urls as web_urls
+from web_chat import urls as chat_urls
+
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    #因为就这一个APP所以直接把所有的请求转发web中的urls里,并在web中urls里在设置views函数和默认跳转
-    url(r'', include("web.urls")),
+    #include-app web
+    url(r'^web/', include(web_urls)),
+    #include-app  web_chat
+    url(r'^chat/', include(chat_urls)),
+    #指定默认的URL,
+    url(r'',views.index,name='index'),
 ]

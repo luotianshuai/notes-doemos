@@ -1,0 +1,104 @@
+{% extends 'index.html' %}
+
+
+
+{% block  full_windows%}
+    <div style="background-image: url(/static/images/webqq-background.jpg);height: 1000px" class="row">
+        <div class="col-md-2 qq_chat_mem" style="margin-left: 20%;margin-top: 5%;">
+            <div class="user_info row" >
+                <div class="user_img" style="float: left;">
+                    <div >
+                        <img style="width: 40px;height: 40px;" src="/static/images/路飞头像.jpeg">
+                    </div>
+                </div>
+                <div class="user_name " style="float: left;margin-left: 10px">
+                    user_name
+                </div>
+            </div>
+            <div style="height: 45px;width: 100%;border-radius: 6px 6px 0 0;background-color: #101010">联系人</div>
+            <div style="height: 500px;width: 100%" class="user_list">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" chat-type="contact_list" contact-type="single_contact" class="active"><a href="#contacts"role="tab" data-toggle="tab">联系人</a></li>
+                    <li role="presentation" chat-type="group_list" contact-type="group_contact"><a onclick="LoadContacts();" href="#contacts" role="tab" data-toggle="tab">群组</a></li>
+                </ul>
+                <div style="height: 100%;width: 100%;background-color:red">
+                    <div style="height: 20px;width: 100%;">
+                        <div class="frend_list" style="border-bottom: 1px solid blue;">
+                            frends_1
+                        </div>
+                        <div class="frend_list" style="border-bottom: 1px solid blue;">
+                            frends_1
+                        </div>
+                        <div class="frend_list" style="border-bottom: 1px solid blue;">
+                            frends_1
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 qq_chat_content" style="margin-left:2%;margin-top: 5%;">
+            <div class="chat_to">
+                talkto
+            </div>
+            {# 聊天内容框体 #}
+            <div class="chat_contener">
+            </div>
+
+            {# 发送聊天信息窗体 #}
+            <div class="send_contener" style="width: 100%;height: 50px;background-color: black;">
+
+                <img class="send_image" src="/static/images/qq_smile.png">
+                <div>
+                    <textarea class="send_textarea_content"></textarea>
+                </div>
+                <div style="float: left ;margin-top: 7px;">
+                    <input class="send_button" type="button" value="发送"  />
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block bottom-js %}
+    <script>
+        //定义发送到聊天框函数
+        function AddSentMsgIntoBox(msg_text){
+            //拼接聊天内容
+            /*气泡实现
+            <div class="clearfix">
+                <div class="arrow"></div>
+                <div class="content_send"><div style="margin-top: 10px;margin-left: 5px;">Hello Shuaige</div></div>
+            </div>
+             */
+            var msg_ele = "<div class='clearfix' style='padding-top:10px'>" + "<div class='arrow'>" + "</div>" +
+                            "<div class='content_send'>" + "<div style='margin-top: 10px;margin-left: 5px;'>" +
+                            msg_text + "</div>" + "</div>";
+            $(".chat_contener").append(msg_ele);
+            //animate 动画效果
+            $('.chat_contener').animate({
+                scrollTop: $('.chat_contener')[0].scrollHeight}, 500
+            );//动画效果结束
+            }//发送到聊天框函数结束
+
+
+        //页面加载完成后
+        $(document).ready(function () {
+            //delegate 事件链,把多个事件进行绑定
+            //给body下的textarea进行绑定,当回车键按下后执行的函数
+            $("body").delegate("textarea", "keydown",function(e){
+                        if(e.which == 13) {//如果13这个按键(回车,可以通过console.log输出实际按下的那个键),执行下面的函数
+                            //send msg button clicked
+                            var msg_text = $("textarea").val();
+                            if ($.trim(msg_text).length > 0){ //如果去除空格后,大于0
+                                //console.log(msg_text);
+                                //SendMsg(msg_text); //把数据进行发送
+                            }
+                            //把数据发送到聊天框里
+                            AddSentMsgIntoBox(msg_text);
+                            $("textarea").val('');
+                        }
+            });//end body
+        });//页面也在完成,结束
+    </script>
+{% endblock %}

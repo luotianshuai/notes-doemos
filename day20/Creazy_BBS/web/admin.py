@@ -16,6 +16,7 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('id','parent_comment','comment','date')
 
 
+
 admin.site.register(models.Article,ArticleAdmin) #把自定义的类绑定到注册的类中
 admin.site.register(models.Category,CategoryAdmin)  #把自定义的类绑定到注册的类中
 admin.site.register(models.Comment,CommentAdmin)

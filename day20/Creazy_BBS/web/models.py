@@ -103,6 +103,8 @@ class UserProfile(models.Model):
     name = models.CharField(max_length=32)
     #属组
     groups = models.ManyToManyField("UserGroup")
+    #朋友
+    friends = models.ManyToManyField('self',related_name='my_friends')
 
     def __unicode__(self):
         return self.name

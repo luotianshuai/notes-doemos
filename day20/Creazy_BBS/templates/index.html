@@ -12,6 +12,7 @@
     <!-- 新 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap-3.3.4-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/ChouTi.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/webqq.css">
     {% block head-js %}
     {% endblock %}
 
@@ -48,6 +49,7 @@
           <li role="presentation"><a href="{% url 'category' 1 %}">欧美专区</a></li>
           <li role="presentation"><a href="{% url 'category' 2 %}">日韩专区</a></li>
           <li role="presentation"><a href="{% url 'category' 3 %}">印度专区</a></li>
+          <li role="presentation"><a href="{% url 'web_chat' %}">撩妹专区</a></li>
           <li role="presentation" class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
               其他 <span class="caret"></span >
@@ -90,8 +92,10 @@
         </div>
       </div>
   </div>
+ {% block full_windows %}
   <!--定义内容主体-->
   <div class="Content_body">
+
     <!--内容主体左侧-->
     <div class="Content_left">
       <div style="margin-top: 10px; border-bottom: 1px solid Gainsboro;height: 50px">
@@ -193,15 +197,14 @@
           </div>
       </div>
     </div>
+
   </div>
 
   <p id="back-to-top"><a href="#top"><span></span>返回顶部</a></p>
 
   {#登录模态对话框#}
 
-
-
-
+{% endblock %}
   <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
   <script src="{{ STATIC_URL }}js/jquery-2.2.1.min.js"></script>
   <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
@@ -215,5 +218,6 @@
   </script>
     {% block bottom-js %}
     {% endblock %}
+
 </body>
 </html>
