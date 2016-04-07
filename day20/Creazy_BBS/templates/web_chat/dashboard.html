@@ -3,8 +3,9 @@
 
 
 {% block  full_windows%}
+    {% csrf_token %}
     <div style="background-image: url(/static/images/webqq-background.jpg);height: 1000px" class="row">
-        <div class="col-md-2 qq_chat_mem" style="margin-left: 20%;margin-top: 5%;">
+        <div class="col-md-3 qq_chat_mem" style="margin-left: 15%;margin-top: 5%;">
             <div class="user_info row" >
                 <div class="user_img" style="float: left;">
                     <div >
@@ -17,28 +18,50 @@
             </div>
             <div style="height: 45px;width: 100%;border-radius: 6px 6px 0 0;background-color: #101010">联系人</div>
             <div style="height: 500px;width: 100%" class="user_list">
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" chat-type="contact_list" contact-type="single_contact" class="active"><a href="#contacts"role="tab" data-toggle="tab">联系人</a></li>
-                    <li role="presentation" chat-type="group_list" contact-type="group_contact"><a onclick="LoadContacts();" href="#contacts" role="tab" data-toggle="tab">群组</a></li>
-                </ul>
-                <div style="height: 100%;width: 100%;background-color:red">
-                    <div style="height: 20px;width: 100%;">
-                        <div class="frend_list" style="border-bottom: 1px solid blue;">
-                            frends_1
+
+                {# 左侧用户列表显示 #}
+                <div>
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">联系人</a></li>
+                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">群聊组</a></li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                            {# 联系人列表,联系人显示框体 #}
+                            <div style="height: 450px;width: 100%;background-color:whitesmoke">
+                                <div style="height: 20px;width: 100%;border-top: 1px solid red;">
+                                    <div id='user_list' class="list-group">
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="frend_list" style="border-bottom: 1px solid blue;">
-                            frends_1
-                        </div>
-                        <div class="frend_list" style="border-bottom: 1px solid blue;">
-                            frends_1
+                        <div role="tabpanel" class="tab-pane" id="profile">
+                            {# 群聊组列表,群聊组显示框体 #}
+                            <div style="height: 450px;width: 100%;background-color:whitesmoke">
+                                <div style="height: 20px;width: 100%;border-top: 1px solid red;">
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+
+
+                {# 左侧用户列表底部填充 #}
+                <div style="height: 10%;width: 100%;background-color:#101010;border-radius: 0 0 6px 6px ;">
+
+                </div>
             </div>
         </div>
+
+        {# 右侧聊天框体 #}
         <div class="col-md-6 qq_chat_content" style="margin-left:2%;margin-top: 5%;">
-            <div class="chat_to">
-                talkto
+            <div id='chat_hander' class="chat_to">
+
             </div>
             {# 聊天内容框体 #}
             <div class="chat_contener">
@@ -62,6 +85,71 @@
 
 {% block bottom-js %}
     <script>
+        //csrf ref
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        //csrf认证结束
+
+
+
+
+        //页面加载完成后
+        $(document).ready(function () {
+
+            //加载完后执行获取用户信息列表
+            LoadContacts();
+
+            //循环接收消息
+            var RefreshNewMsgs = setInterval(function(){
+                //接收消息
+                GetNewMsgs();
+            },3000);
+
+
+
+            //delegate 事件链,把多个事件进行绑定
+            //给body下的textarea进行绑定,当回车键按下后执行的函数
+            $("body").delegate("textarea", "keydown",function(e){
+                        if(e.which == 13) {//如果13这个按键(回车,可以通过console.log输出实际按下的那个键),执行下面的函数
+                            //send msg button clicked
+                            var msg_text = $("textarea").val();
+                            if ($.trim(msg_text).length > 0){ //如果去除空格后,大于0
+                                //console.log(msg_text);
+                                SendMsg(msg_text); //把数据进行发送
+                            }
+                            //把数据发送到聊天框里
+                            AddSentMsgIntoBox(msg_text);
+                            $("textarea").val('');
+                        }
+            });//end body
+        });//页面也在完成,结束
+
+
         //定义发送到聊天框函数
         function AddSentMsgIntoBox(msg_text){
             //拼接聊天内容
@@ -71,40 +159,128 @@
                 <div class="content_send"><div style="margin-top: 10px;margin-left: 5px;">Hello Shuaige</div></div>
             </div>
              */
-            var msg_ele = "<div class='clearfix' style='padding-top:10px'>" + "<div class='arrow'>" + "</div>" +
-                            "<div class='content_send'>" + "<div style='margin-top: 10px;margin-left: 5px;'>" +
-                            msg_text + "</div>" + "</div>";
+
+            var msg_ele = "<div>" +
+                                "<div style='margin-left:15px;color:whitesmoke'>"  +
+                                "{{ request.user.userprofile.name }} &nbsp;&nbsp;"+
+                                "</div>" +
+                                "<div class='clearfix' style='padding-top:10px'>" +
+                                "<div class='arrow'>" + "</div>" +
+                                "<div class='content_send'>" +
+                                "<div style='margin-top: 10px;margin-left: 5px;'>" +
+                                msg_text + "</div>" + "</div>" + "</div>";
+
+
             $(".chat_contener").append(msg_ele);
             //animate 动画效果
             $('.chat_contener').animate({
                 scrollTop: $('.chat_contener')[0].scrollHeight}, 500
             );//动画效果结束
-            }//发送到聊天框函数结束
+        }//发送到聊天框函数结束
+
+        //定义接收消息到聊天框函数
+        function AddRecvMsgToChatBox(msg_item){
+                        //拼接聊天内容
+            /*接收气泡实现
+                <div class="clearfix">
+                    <div class="content"><div style="margin-top: 10px;margin-left: 5px;">Hello Shuaige</div>
+                    </div>
+                    <div class="back_arrow"></div>
+                </div>
+             */
+            var msg_ele =  "<div style='float: right;width: 100%'>"+
+
+                                "<div style='color:whitesmoke;float: right;'>"+ msg_item.from_name + msg_item.timestamp+"</div>" +
+                                "<div style='visibility: hidden;'>" + "帅哥"+ "</div>"+
+
+                                "<div class='clearfix'>"+
+                                    "<div class='back_arrow'>" + "</div>" +
+                                    "<div class='content_back'>" +
+                                        "<div style='margin-top: 10px;margin-left: 5px;'>" + msg_item.msg + "</div>" +
+                                    "</div>"+
+
+                            "</div>"
+                    ;
 
 
-        //页面加载完成后
-        $(document).ready(function () {
-            //delegate 事件链,把多个事件进行绑定
-            //给body下的textarea进行绑定,当回车键按下后执行的函数
-            $("body").delegate("textarea", "keydown",function(e){
-                        if(e.which == 13) {//如果13这个按键(回车,可以通过console.log输出实际按下的那个键),执行下面的函数
-                            //send msg button clicked
-                            var msg_text = $("textarea").val();
-                            if ($.trim(msg_text).length > 0){ //如果去除空格后,大于0
-                                //console.log(msg_text);
-                                //SendMsg(msg_text); //把数据进行发送
-                            }
-                            //把数据发送到聊天框里
-                            AddSentMsgIntoBox(msg_text);
-                            $("textarea").val('');
-                        }
-            });//end body
-        });//页面也在完成,结束
+            $(".chat_contener").append(msg_ele);
+            //animate 动画效果
+            $('.chat_contener').animate({
+                scrollTop: $('.chat_contener')[0].scrollHeight}, 500
+            );//动画效果结束
+        }
+
+
 
         //获取用户列表
         function LoadContacts(){
             $.get("{% url 'load_contact_list' %}" ,function(callback){
-                console.log(callback)
+                console.log(callback);
+                //循环生成用户列表/组列表
+                var data = JSON.parse(callback);
+                $.each(data.contact_list, function (index,ele) {
+                    //把ID作为属性埋藏在标签中为右侧聊天框使用
+                    console.log(ele);
+                    if(ele.status == 1){
+                        var ele = "<a href='#' onclick='OpenDialogBox(this)' contact_id='" + ele.id + "' class='list-group-item'   contact_type='single_contact' chat_to=" + ele.name + ">" + "<img style='height: 20px;width: 20px' src='/static/images/online.jpg'>"+ele.name + "</a>";
+                    }else{
+                        var ele = "<a href='#' onclick='OpenDialogBox(this)' contact_id='" + ele.id + "' class='list-group-item'   contact_type='single_contact' chat_to=" + ele.name + ">" + "<img style='height: 20px;width: 20px' src='/static/images/offline.jpg'>"+ele.name + "</a>";
+                    }
+                    $("#user_list").append(ele)
+                });//循环结束
+
             })}//获取用户列表结束
+
+        //点击用户打开连天窗口
+        function OpenDialogBox(ele){
+            //获取与谁聊天
+            var contact_id = $(ele).attr("contact_id");
+            var contact_name = $(ele).attr("chat_to");
+            var contact_type = $(ele).attr("contact_type");
+            var chat_to_info = "<h2 style='color:whitesmoke;text-align:center;' contact_type='"+ contact_type +"' contact_id='"+ contact_id+ "'>" + contact_name + "</h2>";
+            $('#chat_hander').html(chat_to_info)
+        }//打开聊天窗口结束
+
+
+
+        //发送消息
+        function SendMsg(msg_text){
+            var contact_id = $('#chat_hander h2').attr("contact_id");  //获取发送给谁消息
+            var contact_type = $('#chat_hander h2').attr("contact_type");//获取聊天类型
+            var msg_dic = {
+                'contact_type':contact_type,
+                'to':contact_id,
+                'from':"{{ request.user.userprofile.id }}",
+                'from_name':"{{ request.user.userprofile.name }}",
+                'msg':msg_text
+            };
+            //向后端发送数据
+            $.post("{% url 'send_msg' %}" ,{'data':JSON.stringify(msg_dic)},function(callback){
+                console.log(callback);
+            });//向发送数据结束
+
+            //解释:
+            // $.post 或者 $.get 是调用ajax方法
+            //("URL路径" ,{'data':JSON.stringify(msg_dic)},function(callback){})
+            //
+            // 这个第一个参数为指定的ULR 第二个参数为发送的内容 第3个参数为回调函数和返回的值!!
+
+        }//发送消息结束
+
+        //接收消息
+        function GetNewMsgs(){
+            $.get("{% url 'get_new_msg' %}",function(callback){
+                console.log("----->new msg:",callback);
+                var msg_list = JSON.parse(callback);
+                var current_open_session_id = $('#chat_hander h2').attr("contact_id");//获取当前打开的ID
+                var current_open_session_type = $('#chat_hander h2').attr("contact_type");//获取当前打开的类型,是单独聊天还是群组聊天
+                $.each(msg_list, function (index,msg_item) {
+                    //接收到的消息的to,是我自己 from是谁发过来的,如果是当前打开的ID和from相同说明,我现在正在和他聊天直接显示即可
+                    if(msg_item.from == current_open_session_id){
+                        AddRecvMsgToChatBox(msg_item)
+                    }//判断挡墙打开ID接收
+                })
+        })}//接收消息结束
+
     </script>
 {% endblock %}
