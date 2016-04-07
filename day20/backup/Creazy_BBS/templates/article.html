@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% load custom_tags %}
+{% block page-container %}
+    <div class="article-detail">
+        <h4>{{ article_obj.title }}</h4>
+        <p>{{ article_obj.content|safe }}</p>
+        <hr/>
+        {# 评论展示 #}
+        {% build_comment_tree article_obj.comment_set.select_related  %}
+    </div>
+    {#评论框体  发送数据到函数中,然后通过函数进行处理,然后并返回结果!#}
+    <form action="{% url 'article_detaill' article_obj.id %}">
+        <textarea name="comment"  class="form-control" placeholder="请输入您要评论的内容"></textarea>
+        <button type="submit" class="btn btn-success pull-right">评论</button>
+    </form>
+{% endblock %}
