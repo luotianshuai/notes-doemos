@@ -120,6 +120,12 @@
 
         //页面加载完成后
         $(document).ready(function () {
+            GLOBAL_SESSION_CACHE = {
+                'single_contact':{},
+                'group_contact':{},
+            };
+
+
 
             //加载完后执行获取用户信息列表
             LoadContacts();
@@ -208,7 +214,31 @@
             );//动画效果结束
         }
 
+        //存储未打开的的消息
+        function GenerateNewMsgItem(msg_item) {
+            //拼接聊天内容
+            /*接收气泡实现
+                    <div class="clearfix">
+                        <div class="content"><div style="margin-top: 10px;margin-left: 5px;">Hello Shuaige</div>
+                        </div>
+                        <div class="back_arrow"></div>
+                    </div>
+            */
+            var msg_ele = " <div style='float: right;width: 100%'>"+
 
+                                "<div style='color:whitesmoke;float: right;'>" + msg_item.from_name + msg_item.timestamp+"</div>" +
+                                "<div style='visibility: hidden;'>" + "帅哥"+ "</div>"+
+
+                                "<div class='clearfix'>"+
+                                    "<div class='back_arrow'>" + "</div>" +
+                                    "<div class='content_back'>" +
+                                        "<div style='margin-top: 10px;margin-left: 5px;'>" + msg_item.msg + "</div>" +
+                                    "</div>"+
+
+                            "</div>"
+                    ;
+            return msg_ele
+        }//存储未打开的消息结束
 
         //获取用户列表
         function LoadContacts(){
@@ -220,9 +250,17 @@
                     //把ID作为属性埋藏在标签中为右侧聊天框使用
                     console.log(ele);
                     if(ele.status == 1){
-                        var ele = "<a href='#' onclick='OpenDialogBox(this)' contact_id='" + ele.id + "' class='list-group-item'   contact_type='single_contact' chat_to=" + ele.name + ">" + "<img style='height: 20px;width: 20px' src='/static/images/online.jpg'>"+ele.name + "</a>";
+                        var ele = "<a href='#' onclick='OpenDialogBox(this)' contact_id='" +
+                                ele.id + "' class='list-group-item'   contact_type='single_contact' chat_to=" +
+                                ele.name + ">" + "<img style='height: 20px;width: 20px' src='/static/images/online.jpg'>"+
+                                ele.name + "<span class='badge hide'> 0 </span>" +
+                                "</a>";
                     }else{
-                        var ele = "<a href='#' onclick='OpenDialogBox(this)' contact_id='" + ele.id + "' class='list-group-item'   contact_type='single_contact' chat_to=" + ele.name + ">" + "<img style='height: 20px;width: 20px' src='/static/images/offline.jpg'>"+ele.name + "</a>";
+                        var ele = "<a href='#' onclick='OpenDialogBox(this)' contact_id='" +
+                                ele.id + "' class='list-group-item'   contact_type='single_contact' chat_to=" +
+                                ele.name + ">" + "<img style='height: 20px;width: 20px' src='/static/images/offline.jpg'>"+
+                                ele.name + "<span class='badge hide'> 0 </span>" +
+                                "</a>";
                     }
                     $("#user_list").append(ele)
                 });//循环结束
@@ -235,8 +273,19 @@
             var contact_id = $(ele).attr("contact_id");
             var contact_name = $(ele).attr("chat_to");
             var contact_type = $(ele).attr("contact_type");
+            //先把当前聊天的内容存储起来
+            DumpSession();
+            //当前聊天内容存储结束
+
+            //修改聊天框与谁聊天
             var chat_to_info = "<h2 style='color:whitesmoke;text-align:center;' contact_type='"+ contact_type +"' contact_id='"+ contact_id+ "'>" + contact_name + "</h2>";
-            $('#chat_hander').html(chat_to_info)
+            $('#chat_hander').html(chat_to_info);
+            $('.chat_contener').html(LoadSession(contact_id,contact_type));
+
+            //清除未读消息显示
+            var unread_msg_num_ele = $(ele).find('span')[0];
+            $(unread_msg_num_ele).text(0);
+            $(unread_msg_num_ele).addClass('hide')
         }//打开聊天窗口结束
 
 
@@ -273,14 +322,74 @@
                 var current_open_session_id = $('#chat_hander h2').attr("contact_id");//获取当前打开的ID
                 var current_open_session_type = $('#chat_hander h2').attr("contact_type");//获取当前打开的类型,是单独聊天还是群组聊天
                 $.each(msg_list, function (index,msg_item) {
-                    //接收到的消息的to,是我自己 from是谁发过来的,如果是当前打开的ID和from相同说明,我现在正在和他聊天直接显示即可
-                    if(msg_item.from == current_open_session_id){
-                        AddRecvMsgToChatBox(msg_item)
-                    }//判断挡墙打开ID接收
+                    //判断当前打开的类型是否相同
+                    if(msg_item.contact_type == current_open_session_type){
+                        //接收到的消息的to,是我自己 from是谁发过来的,如果是当前打开的ID和from相同说明,我现在正在和他聊天直接显示即可
+                        if(msg_item.from == current_open_session_id){
+                            AddRecvMsgToChatBox(msg_item)
+                        }else{//判断当前打开的ID是否相同,如果不同把数据保存
+                            var old_session_content = LoadSession(msg_item.from,msg_item.contact_type);
+                            var new_msg_ele = GenerateNewMsgItem(msg_item);
+                            //把新旧数据进行拼接
+                            var new_session_content =  old_session_content += new_msg_ele;
+                            //把数据保存到字典中
+                            DumpSession2(msg_item.from,msg_item.contact_type,new_session_content);
+                            //更新未读条数数字
+                            UpdateUnreadMsgNums(msg_item.from,msg_item.contact_type);
+
+
+                        }
+                    }//判断当前打开的类型是否相同
+
                 });//结束循环
                 console.log('run.....agin.....');
                 GetNewMsgs();
         })}//接收消息结束
+
+        //存储当前聊天内容
+        function DumpSession() {
+            var current_contact_id = $('#chat_hander h2').attr("contact_id");//获取当前打开的ID
+            var current_contact_type = $('#chat_hander h2').attr("contact_type"); //获取当前打开的类型,是单独聊天还是群组聊天
+            //console.log($('.chat_contener').html());
+            //这里需要判断下,因为咱们默认打开的时候current_contact_id和current_contact_type是空的所以咱们判断下就行了
+            if(current_contact_id){
+                GLOBAL_SESSION_CACHE[current_contact_type][current_contact_id] = $('.chat_contener').html();
+            }
+
+        }
+        //存储当前聊天内容结束
+
+        //存储未打开的聊天内容
+        function DumpSession2(contact_id,contact_type,content) {
+            if(contact_id){
+                GLOBAL_SESSION_CACHE[contact_type][contact_id] = content;
+            }
+
+        }
+
+
+
+        //加载新的聊天窗口,把要打开的聊天内容重新加载上
+        function LoadSession(current_contact_id,current_contact_type) {
+            //通过hasOwnProperty判断key是否存在
+            if(GLOBAL_SESSION_CACHE[current_contact_type].hasOwnProperty(current_contact_id)){
+                  var session_html = GLOBAL_SESSION_CACHE[current_contact_type][current_contact_id];
+              }else{
+                  var session_html = '';
+              }
+            //把内容返回
+            return session_html
+            $('.chat_contener').html(session_html);
+        };
+        //加载新窗口结束
+
+        //更新未读条数函数
+        function UpdateUnreadMsgNums(contact_id,contact_type) {
+            $("#user_list a[contact_id='" + contact_id +"']").find('span').removeClass('hide');
+            var msg_num_ele  = $("#user_list a[contact_id='" + contact_id +"']").find('span')[0];
+            //转换成数字然后+1
+            $(msg_num_ele).text( parseInt($(msg_num_ele).text()) + 1)
+        }
 
     </script>
 {% endblock %}

@@ -69,7 +69,7 @@ def new_msg(request):
                 '''
             except Exception as e:
                 print ('error:',e)
-                print "\033[43;1等待已超时......15秒.....\033[0m"
+                print "\033[43;1m等待已超时......15秒.....\033[0m"
 
             # 把消息循环加入到列表中并发送
             for i in range(stored_msg_nums):
