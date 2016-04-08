@@ -73,7 +73,7 @@
                     <li><a href="#">个人信息</a></li>
                     <li><a href="#">好友设置</a></li>
                     <li><a href="{% url 'new_article' %}">发帖</a></li>
-                    <li><a href="{% url 'logout' %}">用户注销</a></li>
+                    <li><a onclick="ChangeStatus()" href="{% url 'logout' %}">用户注销</a></li>
               </ul>
           {% else %}
               <button id="logins" style="top: 5px" class="btn btn-default btn-sm " type="button" aria-haspopup="true" aria-expanded="false">登录/注册</button>
@@ -211,10 +211,48 @@
   <script src="{{ STATIC_URL }}bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
   <script src="{{ STATIC_URL }}js/ChouTi.js"></script>
   <script>
+        //csrf ref
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        //csrf认证结束
+
+
       //网页文字头,使用跑马灯实例
       setInterval('Run_going()',1000);
       //消息
       $('#Message_put').popover('show');
+
+      function ChangeStatus() {
+          //向后端发送数据
+          $.post("{% url 'change_user_status' %}" ,{'data':'offline'},function(callback){
+                console.log(callback);
+          });//向发送数据结束
+      }
   </script>
     {% block bottom-js %}
     {% endblock %}

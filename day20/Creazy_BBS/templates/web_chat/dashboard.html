@@ -9,21 +9,21 @@
             <div class="user_info row" >
                 <div class="user_img" style="float: left;">
                     <div >
-                        <img style="width: 40px;height: 40px;" src="/static/images/路飞头像.jpeg">
+                        <img style="width: 40px;height: 40px;margin-left: 20px" src="/static/images/路飞头像.jpeg">
                     </div>
                 </div>
-                <div class="user_name " style="float: left;margin-left: 10px">
-                    user_name
+                <div class="user_name " style="float: left;margin-left: 20px">
+                    {{ request.user.userprofile.name }}
                 </div>
             </div>
-            <div style="height: 45px;width: 100%;border-radius: 6px 6px 0 0;background-color: #101010">联系人</div>
+            <div style="height: 45px;width: 100%;border-radius: 6px 6px 0 0;background-color: #101010"></div>
             <div style="height: 500px;width: 100%" class="user_list">
 
                 {# 左侧用户列表显示 #}
                 <div>
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active" chat-type="contact_list" contact-type="single_contact"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">联系人</a></li>
+                        <li role="presentation" class="active" chat-type="contact_list" contact-type="single_contact"><a onclick="LoadContacts()" href="#home" aria-controls="home" role="tab" data-toggle="tab">联系人</a></li>
                         <li role="presentation" chat-type="group_list" contact-type="group_contact"><a onclick="LoadContacts()" href="#home" aria-controls="profile" role="tab" data-toggle="tab">群聊组</a></li>
                     </ul>
                     <!-- Tab panes -->
@@ -123,7 +123,6 @@
 
             //循环接收消息
             GetNewMsgs();
-
 
 
 

@@ -34,7 +34,7 @@ def contacts(request):
     return HttpResponse(json.dumps(contact_dic))
 
 
-
+@login_required
 def new_msg(request):
     if request.method == 'POST':
         print request.POST.get('data')
@@ -94,3 +94,25 @@ def new_msg(request):
             #创建一个新队列给这个用户
             GLOBAL_MQ[str(request.user.userprofile.id)] = Queue.Queue()
         return HttpResponse(json.dumps(msg_lists))
+
+
+def change_status(request):
+    if request.method == 'POST':
+        data = request.POST.get('data')
+        #判断用户发送过来的数据状态
+        if data == 'offline':
+            #获取所有的好友
+            login_user_id = request.user.userprofile.id
+            group_obj = models.QQGroup.objects.get(id=login_user_id)
+
+            for member in group_obj.members.select_related():
+                # 判断队列里是否有这个用户名,如果没有新建一个队列
+                if str(member.id) not in GLOBAL_MQ:
+                    GLOBAL_MQ[str(member.id)] = Queue.Queue()
+                #增加时间戳
+                data['timestamp'] = time.strftime("%Y-%m-%d %X", time.localtime())
+
+                if str(member.id) != login_user_id:
+                    GLOBAL_MQ[str(member.id)].put(data)
+
+    return HttpResponse('ddd')

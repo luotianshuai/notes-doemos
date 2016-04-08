@@ -33,6 +33,9 @@ def article_detaill(request,article_id):
 
 
 def acount_logout(request):
+    #print request.user
+    log_user = models.UserProfile.objects.filter(user__username=request.user)
+    log_user.select_related().update(status_id=2)
     logout(request)
     return HttpResponseRedirect('/')
 
@@ -46,6 +49,8 @@ def acount_login(request):
         #如果验证成功就是这个user对象
         if user is not None:
             login(request,user)
+            log_user = models.UserProfile.objects.filter(user__username=request.user)
+            log_user.select_related().update(status_id=1)
             return render(request,'index.html',{'articles':articles})
     return render(request,'index.html',{'articles':articles,})
 

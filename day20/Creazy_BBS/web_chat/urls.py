@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^contacts/$', views.contacts,name='load_contact_list'),
     url(r'^msg/$', views.new_msg,name='send_msg'),
     url(r'^msg/$', views.new_msg,name='get_new_msg'),
+    url(r'^userstatus/$', views.change_status,name='change_user_status'),
 
 ]
