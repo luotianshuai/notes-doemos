@@ -23,18 +23,20 @@
     background-color: black;
     opacity: 0.6;
     overflow: auto;
+    position: relative;
 }
 
 .send_image {
     height: 35px;
     width: 40px;
-    float: left;
     margin-top: 7px;
     margin-left: 5px;
+    position: absolute;
 }
 
 .send_textarea_content {
-    float: left;
+    position: absolute;
+    left: 5%;
     height:35px;
     width: 80%;
     resize: none;
@@ -45,7 +47,8 @@
 }
 
 .send_button {
-    margin-left: 15px;
+    position: absolute;
+    margin-left: 88%;
     background-color:#396B9E;
     border-radius: 6px 6px 6px 6px;
     height: 37px;

@@ -57,7 +57,24 @@ def new_msg(request):
         if request_user in GLOBAL_MQ:
             #判断有多少条消息
             stored_msg_nums = GLOBAL_MQ[request_user].qsize()
-            #把消息循环加入到列表中并发送
+            try:
+                #如果没有新消息
+                if stored_msg_nums == 0:
+                    print "\033[41;1m没有消息等待,15秒.....\033[0m"
+                    msg_lists.append(GLOBAL_MQ[request_user].get(timeout=15))
+                '''
+                    如果队列里面有没有消息,get就会阻塞,等待有新消息之后会继续往下走,这里如果阻塞到这里了,等有新消息过来之后,把消息加入到
+                    msg_lists中后,for循环还是不执行的因为,这个stored_msg_mums是在上面生成的变量下面for调用这个变量的时候他还是为0
+                    等返回之后再取得时候,现在stored_msg_nums不是0了,就执行执行for循环了,然后发送数据
+                '''
+            except Exception as e:
+                print ('error:',e)
+                print "\033[43;1等待已超时......15秒.....\033[0m"
+
+            # 把消息循环加入到列表中并发送
             for i in range(stored_msg_nums):
                 msg_lists.append(GLOBAL_MQ[request_user].get())
+        else:
+            #创建一个新队列给这个用户
+            GLOBAL_MQ[str(request.user.userprofile.id)] = Queue.Queue()
         return HttpResponse(json.dumps(msg_lists))

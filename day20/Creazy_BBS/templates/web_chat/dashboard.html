@@ -125,10 +125,8 @@
             LoadContacts();
 
             //循环接收消息
-            var RefreshNewMsgs = setInterval(function(){
-                //接收消息
-                GetNewMsgs();
-            },3000);
+            GetNewMsgs();
+
 
 
 
@@ -279,7 +277,9 @@
                     if(msg_item.from == current_open_session_id){
                         AddRecvMsgToChatBox(msg_item)
                     }//判断挡墙打开ID接收
-                })
+                });//结束循环
+                console.log('run.....agin.....');
+                GetNewMsgs();
         })}//接收消息结束
 
     </script>
