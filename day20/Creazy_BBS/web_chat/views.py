@@ -42,11 +42,27 @@ def new_msg(request):
         #获取用户发过来的数据
         data = json.loads(request.POST.get('data'))
         send_to = data['to']
+        msg_from = data['from']
+        #获取是否为组聊天
+        contact_type = data['contact_type']
+        if contact_type == 'group_contact':
+            #获取组ID
+            group_obj = models.QQGroup.objects.get(id=send_to)
+            #循环这个组的所有成员,给每一个人都发送一条消息
+            for member in group_obj.members.select_related():
+                # 判断队列里是否有这个用户名,如果没有新建一个队列
+                if str(member.id) not in GLOBAL_MQ:
+                    GLOBAL_MQ[str(member.id)] = Queue.Queue()
+                data['timestamp'] = time.strftime("%Y-%m-%d %X", time.localtime())
+                if str(member.id) != msg_from:
+                    GLOBAL_MQ[str(member.id)].put(data)
+
         #判断队列里是否有这个用户名,如果没有新建一个队列
-        if send_to not in GLOBAL_MQ:
-            GLOBAL_MQ[send_to] = Queue.Queue()
-        data['timestamp'] = time.strftime("%Y-%m-%d %X", time.localtime())
-        GLOBAL_MQ[send_to].put(data)
+        else:
+            if send_to not in GLOBAL_MQ:
+                GLOBAL_MQ[send_to] = Queue.Queue()
+            data['timestamp'] = time.strftime("%Y-%m-%d %X", time.localtime())
+            GLOBAL_MQ[send_to].put(data)
 
         return HttpResponse(GLOBAL_MQ[send_to].qsize())
     else:

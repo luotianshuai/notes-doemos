@@ -23,8 +23,8 @@
                 <div>
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">联系人</a></li>
-                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">群聊组</a></li>
+                        <li role="presentation" class="active" chat-type="contact_list" contact-type="single_contact"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">联系人</a></li>
+                        <li role="presentation" chat-type="group_list" contact-type="group_contact"><a onclick="LoadContacts()" href="#home" aria-controls="profile" role="tab" data-toggle="tab">群聊组</a></li>
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -33,16 +33,7 @@
                             <div style="height: 450px;width: 100%;background-color:whitesmoke">
                                 <div style="height: 20px;width: 100%;border-top: 1px solid red;">
                                     <div id='user_list' class="list-group">
-
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="profile">
-                            {# 群聊组列表,群聊组显示框体 #}
-                            <div style="height: 450px;width: 100%;background-color:whitesmoke">
-                                <div style="height: 20px;width: 100%;border-top: 1px solid red;">
-
                                 </div>
                             </div>
                         </div>
@@ -246,18 +237,24 @@
                 console.log(callback);
                 //循环生成用户列表/组列表
                 var data = JSON.parse(callback);
-                $.each(data.contact_list, function (index,ele) {
+
+                //获取当前的chat类型
+                var current_tab = $('.nav-tabs li').filter('.active')[0];
+                var chat_type = $(current_tab).attr('chat-type');
+                var contact_type = $(current_tab).attr('contact-type');
+                $("#user_list").empty();
+                $.each(data[chat_type], function (index,ele) {
                     //把ID作为属性埋藏在标签中为右侧聊天框使用
                     console.log(ele);
                     if(ele.status == 1){
                         var ele = "<a href='#' onclick='OpenDialogBox(this)' contact_id='" +
-                                ele.id + "' class='list-group-item'   contact_type='single_contact' chat_to=" +
+                                ele.id + "' class='list-group-item'   contact_type='"+ contact_type +"' chat_to=" +
                                 ele.name + ">" + "<img style='height: 20px;width: 20px' src='/static/images/online.jpg'>"+
                                 ele.name + "<span class='badge hide'> 0 </span>" +
                                 "</a>";
                     }else{
                         var ele = "<a href='#' onclick='OpenDialogBox(this)' contact_id='" +
-                                ele.id + "' class='list-group-item'   contact_type='single_contact' chat_to=" +
+                                ele.id + "' class='list-group-item'   contact_type='"+ contact_type+"' chat_to=" +
                                 ele.name + ">" + "<img style='height: 20px;width: 20px' src='/static/images/offline.jpg'>"+
                                 ele.name + "<span class='badge hide'> 0 </span>" +
                                 "</a>";
@@ -322,24 +319,42 @@
                 var current_open_session_id = $('#chat_hander h2').attr("contact_id");//获取当前打开的ID
                 var current_open_session_type = $('#chat_hander h2').attr("contact_type");//获取当前打开的类型,是单独聊天还是群组聊天
                 $.each(msg_list, function (index,msg_item) {
-                    //判断当前打开的类型是否相同
+                    if(msg_item.contact_type == 'single_contact'){
+                                            //判断当前打开的类型是否相同
                     if(msg_item.contact_type == current_open_session_type){
-                        //接收到的消息的to,是我自己 from是谁发过来的,如果是当前打开的ID和from相同说明,我现在正在和他聊天直接显示即可
-                        if(msg_item.from == current_open_session_id){
-                            AddRecvMsgToChatBox(msg_item)
-                        }else{//判断当前打开的ID是否相同,如果不同把数据保存
-                            var old_session_content = LoadSession(msg_item.from,msg_item.contact_type);
-                            var new_msg_ele = GenerateNewMsgItem(msg_item);
-                            //把新旧数据进行拼接
-                            var new_session_content =  old_session_content += new_msg_ele;
-                            //把数据保存到字典中
-                            DumpSession2(msg_item.from,msg_item.contact_type,new_session_content);
-                            //更新未读条数数字
-                            UpdateUnreadMsgNums(msg_item.from,msg_item.contact_type);
+                            //接收到的消息的to,是我自己 from是谁发过来的,如果是当前打开的ID和from相同说明,我现在正在和他聊天直接显示即可
+                            if(msg_item.from == current_open_session_id){
+                                AddRecvMsgToChatBox(msg_item)
+                            }else{//判断当前打开的ID是否相同,如果不同把数据保存
+                                var old_session_content = LoadSession(msg_item.from,msg_item.contact_type);
+                                var new_msg_ele = GenerateNewMsgItem(msg_item);
+                                //把新旧数据进行拼接
+                                var new_session_content =  old_session_content += new_msg_ele;
+                                //把数据保存到字典中
+                                DumpSession2(msg_item.from,msg_item.contact_type,new_session_content);
+                                //更新未读条数数字
+                                UpdateUnreadMsgNums(msg_item.from,msg_item.contact_type);
 
 
+                            }
+                        } //判断当前打开的类型是否相同
+                    }else{//单独聊天
+                        if(msg_item.contact_type == current_open_session_type){
+                            if(msg_item.to == current_open_session_id){//如果当前是打开的组
+                                AddRecvMsgToChatBox(msg_item)
+                            }else{//如果不是当前打开的窗口
+                                var old_session_content = LoadSession(msg_item.to,msg_item.contact_type);
+                                var new_msg_ele = GenerateNewMsgItem(msg_item);
+                                //把新旧数据进行拼接
+                                var new_session_content =  old_session_content += new_msg_ele;
+                                //把数据保存到字典中
+                                DumpSession2(msg_item.to,msg_item.contact_type,new_session_content);
+                                //更新未读条数数字
+                                UpdateUnreadMsgNums(msg_item.to,msg_item.contact_type);
+                            }//如果不是当前打开的窗口结束
                         }
-                    }//判断当前打开的类型是否相同
+                    }//组聊天
+
 
                 });//结束循环
                 console.log('run.....agin.....');
@@ -366,8 +381,6 @@
             }
 
         }
-
-
 
         //加载新的聊天窗口,把要打开的聊天内容重新加载上
         function LoadSession(current_contact_id,current_contact_type) {
