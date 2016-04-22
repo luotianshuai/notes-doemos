@@ -3,10 +3,11 @@ from django.shortcuts import render
 from cmdb.forms import asset as AssetForm
 from django.shortcuts import HttpResponse
 from django.shortcuts import redirect
-
+from django.db.models import Q
 from cmdb import models
 from backend.decorators.login_auth import login_auth
 import json
+from django.utils.safestring import mark_safe
 
 # Create your views here.
 
@@ -132,3 +133,45 @@ def del_hostinfo(request):
         models.HostInfo.objects.filter(id=i).delete()
         ret['change_count'] += 1
     return HttpResponse(json.dumps(ret))
+
+
+@login_auth
+def search_info(request):
+    #获取用户请求的数据
+    user_post = json.loads(request.GET['search_list'])
+    print user_post
+    #生成搜索对象
+    Serach_Q = Q()
+    #循环字典并生成搜索条件集合
+    for k,v in user_post.items():
+        #生成一个搜索结合
+        q = Q()
+        #生命集合中的搜索条件为'或'条件
+        q.connector = 'OR'
+        #循环字典中的value,value是前端传过来的条件集合
+        for i in v:
+            #在搜索条件集合中增加条件,条件为元组形式,k为字典中的key! key是字段名或者跨表字段名或者支持_gt等
+            #i为字典中的vlaue中的元素,为条件
+            #
+            q.children.append((k,i))
+        #没循环一次后后,吧他加入到总的搜索条件中
+        Serach_Q.add(q,'AND')
+    #使用总的搜索条件进行查询
+    data = models.HostInfo.objects.filter(Serach_Q)
+    #拼接字符串并返回
+    html = []
+    for i in data:
+        html.append(
+            "<tr>"+
+                "<td>" + "<input type='checkbox' >"+ "</td>" +
+                "<td name='host_id'>" + '%s' %i.id + "</td>" +
+                "<td name='host_name' edit='true'>" + i.hostname + "</td>"+
+                "<td name='host_ip' edit='true'>" + i.hostip + "</td>"+
+                "<td name='host_port' edit='true'>" + '%s' %i.hostport + "</td>"+
+                "<td name='host_business' edit='true' edit-type='select' global-key='BUSINESS' select-val='" + '%s' %i.hostbusiness_id + "'>" + i.hostbusiness.hostbusiness + "</td>"+
+                "<td name='host_status' edit='true' edit-type='select' global-key='STATUS' select-val='" + '%s' %i.hoststatus_id + "'>" + i.hoststatus.hoststatus + "</td>"+
+            "</tr>"
+        )
+
+    html = mark_safe("".join(html))
+    return HttpResponse(html)

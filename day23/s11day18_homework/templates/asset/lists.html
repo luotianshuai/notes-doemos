@@ -146,11 +146,59 @@
 {##}
 {#        console.log(STATUS);#}
 {#        console.log(BUSINESS);#}
+        //csrf ref
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        //csrf认证结束
+
+
+
+
 
         $(function(){
             $.InitMenu('#asset_list');
             BindSelectConditionItem('.change-search-condition');
             // checkbox默认事件优先，然后执行自定义的事件
+
+            //每次都发送一个ajax请求来获取所有的"业务线,状态及其 iD 作为SELECT 的option"
+            $.ajax({
+                url:'/get_select/',
+                type:'GET',
+                tradition: true,
+                data:{},
+                success:function(arg){
+                    var callback_dict = $.parseJSON(arg);//这里把字符串转换为对象
+                    STATUS = callback_dict['status_list'];
+                    BUSINESS = callback_dict['business_list'];
+
+                }
+
+            });
         $('#table-body').find(':checkbox').click(function(){
             var tr = $(this).parent().parent();
             if($("#edit_mode").hasClass('editing')){
@@ -533,19 +581,35 @@
         }
 
         function SearchSubmit() {
+            //清空当前列表
             $('#table-body').children().remove();
-
-            var search_dic = {};
+            //设置一个空字典
+            SEARCH_DIC = {};
+            //找到所有的搜索框体
             var search_data = $('.inputs').find("input[is-condition='true']");
+            //循环找到的内容
             $.each(search_data,function (index,data) {
-                var name = $(this).attr('name');
-                var value = $(this).val();
-                if()
+                //获取搜索的类型
+                /*
+                这里需要注意:重点:::::
+                这里和Django的Q可以进行耦合,在我们定义搜索的类型的时候可以直接写成我们要搜索的的'库中的字段或者条件都可以!!!'
+                如下:
+                <input is-condition="true" type="text" placeholder="逗号分割多条件" class="form-control no-radius" name="hostname" />
+                */
+                var search_name = $(this).attr('name');
+                //获取搜索的值
+                var search_value = $(this).val();
+                if(SEARCH_DIC.hasOwnProperty(search_name)){//判断是否有这个KEY
+                    SEARCH_DIC[search_name].push(search_value)
+                }else{
+                    SEARCH_DIC[search_name] = [search_value]
+                }
 
-                console.log(name,value);
-                //var name = data.attr('name');
-                //console.log(name)
-            });
+
+            } );//ajax请求结束
+            $.get("{% url 'search_info' %}",{'search_list':JSON.stringify(SEARCH_DIC)},function(callback){
+                $('#table-body').append(callback)
+            });//搜索按钮结束
 
 
 

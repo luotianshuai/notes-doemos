@@ -39,6 +39,9 @@ urlpatterns = [
     url(r'^del_hostinfo/$', asset.del_hostinfo),
     url(r'^add/$', asset.add),
 
+    #获取搜索信息
+    url(r'^search_info/$', asset.search_info,name='search_info'),
+
     #用户信息
     url(r'^user/$', userinfo.user),
 
