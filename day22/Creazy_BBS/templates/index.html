@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <!--指定告诉ID用高版本的解析-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <link rel="shortcut icon" href="/static/images/ChouTi_Head.jpg">
+    <title>抽屉新热榜-聚合每日热门、搞笑、有趣咨询</title>
+    <!-- Bootstrap -->
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap-3.3.4-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/ChouTi.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/webqq.css">
+    {% block head-js %}
+    {% endblock %}
+
+</head>
+<body style="position:relative;margin:0 auto;background-color:#f1f1ee">
+    {#登录/注册模态框#}
+    <div  class="hide" id="login_model" style="position:fixed;z-index: 20;background-color: #8c99a6;width: 100%;height: 100% ;opacity: 0.8;">
+
+        <div class="container" style="height: 300px;width: 300px;background-color: beige ;margin-top: 200px;border-radius:15%" >
+              <form class="form-signin" method="POST" action="{% url 'login' %} }">{% csrf_token %}
+                    <h2 class="form-signin-heading">Please sign in</h2>
+                    <label for="inputEmail" class="sr-only">Email address</label>
+                    <input type="text" id="inputEmail" name="username" class="form-control" placeholder="Email address" required="" autofocus="">
+                    <label for="inputPassword" class="sr-only">Password</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" value="remember-me"> Remember me
+                      </label>
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+                    <button  id="Cancel_model" type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#myModal">Cancel</button>
+              </form>
+        </div>
+    </div>
+
+  <div class="top_style">
+    <!--定义网站log-->
+    <div class="log_style">
+        <a href="http://dig.chouti.com/"><img style="float:left" src="/static/images/log.png" ></a>
+        <!--定义菜单栏-->
+        <ul style="float:left" class="nav nav-pills">
+          <li role="presentation"><a  href="{% url 'index' %}">全部</a></li>
+          <li role="presentation"><a href="{% url 'category' 1 %}">欧美专区</a></li>
+          <li role="presentation"><a href="{% url 'category' 2 %}">日韩专区</a></li>
+          <li role="presentation"><a href="{% url 'category' 3 %}">印度专区</a></li>
+          <li role="presentation"><a href="{% url 'web_chat' %}">撩妹专区</a></li>
+          <li role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              其他 <span class="caret"></span >
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="#">各区经典</a></li>
+                <li><a href="#">各区入口</a></li>
+                <li><a href="#">各区动态</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">各区汇总</a></li>
+            </ul>
+          </li>
+        </ul>
+        <!--定义用户下拉菜单-->
+        <div  style="float:right;" class="btn-group">
+          {% if request.user.is_authenticated %}
+              <button style="top: 5px" class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ request.user.userprofile.name }}<span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu ">
+                    <li><a href="#">个人信息</a></li>
+                    <li><a href="#">好友设置</a></li>
+                    <li><a href="{% url 'new_article' %}">发帖</a></li>
+                    <li><a onclick="ChangeStatus()" href="{% url 'logout' %}">用户注销</a></li>
+              </ul>
+          {% else %}
+              <button id="logins" style="top: 5px" class="btn btn-default btn-sm " type="button" aria-haspopup="true" aria-expanded="false">登录/注册</button>
+          {% endif %}
+        </div>
+        <!--定义搜索表单-->
+        <div style="float:right;bottom: 5px;" class="btn-group">
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="请输入要搜索的内容">
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+              </div>
+            </form>
+        </div>
+      </div>
+  </div>
+ {% block full_windows %}
+  <!--定义内容主体-->
+  <div class="Content_body">
+
+    <!--内容主体左侧-->
+    <div class="Content_left">
+      <div style="margin-top: 10px; border-bottom: 1px solid Gainsboro;height: 50px">
+        <a class="btn btn-default frame_style" href="#" role="button">最热</a>
+        <a class="btn btn-default frame_style" href="#" role="button">最新</a>
+        <a class="btn btn-default frame_style" href="#" role="button">人类发布</a>
+      </div>
+    <!--分享内容框体-----通过模板语言进行渲染-->
+    <div class="Content_left_c">
+        {% block page-container %}
+            {% for article in articles reversed %}
+                {#文章盒子总体样式#}
+                <div class="article-box clearfix">
+                    {#文章盒子左边图片#}
+                    <div class="article-leftimag">
+                        <img src="{{ article.head_img }}">
+                    </div>
+                    {#文章盒子右边内容#}
+                    <div class="article-summary">
+                        <h4><a style="text-decoration:none" href="{% url 'article_detaill' article.id %}">{{ article.title }}</a></h4>
+                        {# 文章点赞评论等~~ #}
+                        <div>
+                            <ul class="list-inline">
+                                <li>作者:{{ article.author }}</li>
+                                <li>时间:{{ article.publish_date }}</li>
+                                {#反向去查关联了Article表的ThumbUp表里的内容,通过:"表名_set"去查询#}
+                                <li>点赞:{{ article.thumbup_set.select_related.count }}</li>
+                                {# Article 文章点赞哪里有个ForginKey指定了文章,就会自动生成一个表名+_set字段取出一个集合,然后通过select_related就会生成一个列表循环这个列表就是所有的点赞 #}
+                                <li>评论:{{ article.comment_set.select_related.count }}</li>
+                            </ul>
+                        </div>
+                        {# 文章总结 #}
+                        <p>文章总结:{{ article.summary }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endblock %}
+    </div>
+
+
+      <!--定义翻页功能-->
+      <div>
+        <nav>
+          <ul class="pagination" style="margin-left: 150px;">
+            <li>
+              <a href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">下一页</a></li>
+            <li>
+              <a href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <!--内容主体右侧-->
+    <div class="Content_right">
+      <div style="background-color:#e2e5e9">
+        <div style="border:0;background-color:#f0f2f4;width: 289px;height: 300px; " >
+            <div class="bubble_arrow"></div>
+            <div class="bubble_content"><div style="margin-top: 10px;margin-left: 5px;">Hello Shuaige</div></div>
+        </div>
+        <div style="background-color:#f0f2f4;">
+            <form>
+              <input style="float: left;background-color:#f0f2f4;border: 0;height: 50px" type="text" />
+            </form>
+            <div style="height: 50px">
+              <button style="float: left;margin-left: 20px;margin-top: 10px;" type="submit" class="btn btn-default">发送</button>
+            </div>
+        </div>
+      </div>
+      <!--24小时热点-->
+      <div style="height: 608px;background-color:white;position: relative">
+          <div class="alert alert-info" role="alert"><strong>24 hours hot</strong></div>
+          <button id="contrl1" type="button" class="btn btn-success">最热榜单</button>
+          <button id="contrl2" type="button" class="btn btn-danger">最热评论</button>
+          <!--最热榜单-->
+          <div id="hot_m1" class="list-group hide" style="position: absolute;left: 0;right: 0;top: 110px;">
+              <a href="#" class="list-group-item list-group-item-success">《战争与和平》</a>
+              <a href="#" class="list-group-item list-group-item-success">《巴黎圣母院》</a>
+              <a href="#" class="list-group-item list-group-item-success">《悲惨的世界》</a>
+              <a href="#" class="list-group-item list-group-item-success">《约翰·克利斯朵夫》</a>
+          </div>
+                    <!--最热评论-->
+          <div id="hot_m2" class="list-group" style="position: absolute;left: 0;right: 0;top: 110px;">
+              <a href="#" class="list-group-item list-group-item-danger">《童年》</a>
+              <a href="#" class="list-group-item list-group-item-danger">《呼啸山庄》</a>
+              <a href="#" class="list-group-item list-group-item-danger">《红与黑》</a>
+              <a href="#" class="list-group-item list-group-item-danger">《安娜·卡列尼娜》</a>
+          </div>
+      </div>
+    </div>
+
+  </div>
+
+  <p id="back-to-top"><a href="#top"><span></span>返回顶部</a></p>
+
+  {#登录模态对话框#}
+
+{% endblock %}
+  <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+  <script src="{{ STATIC_URL }}js/jquery-2.2.1.min.js"></script>
+  <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+  <script src="{{ STATIC_URL }}bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
+  <script src="{{ STATIC_URL }}js/ChouTi.js"></script>
+  <script>
+        //csrf ref
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        //csrf认证结束
+
+
+      //网页文字头,使用跑马灯实例
+      setInterval('Run_going()',1000);
+      //消息
+      $('#Message_put').popover('show');
+
+      function ChangeStatus() {
+          //向后端发送数据
+          $.post("{% url 'change_user_status' %}" ,{'data':'offline'},function(callback){
+                console.log(callback);
+          });//向发送数据结束
+      }
+  </script>
+    {% block bottom-js %}
+    {% endblock %}
+
+</body>
+</html>

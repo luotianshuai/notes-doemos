@@ -1,0 +1,121 @@
+
+
+/*#####################################左侧列表样式#####################################*/
+
+
+
+
+
+
+/*#####################################发送窗口样式#####################################*/
+
+.chat_to {
+    height: 45px;
+    width: 100%;
+    border-radius: 6px 6px 0 0;
+    background-color: #101010;
+    margin-top: 41px;
+}
+
+.chat_contener {
+    width: 100%;
+    height: 490px;
+    background-color: black;
+    opacity: 0.6;
+    overflow: auto;
+    position: relative;
+}
+
+.send_image {
+    height: 35px;
+    width: 40px;
+    margin-top: 7px;
+    margin-left: 5px;
+    position: absolute;
+}
+
+.send_textarea_content {
+    position: absolute;
+    left: 8%;
+    height:35px;
+    width: 80%;
+    resize: none;
+    border: none;
+    border-radius: 6px 6px;
+    margin-top: 7px;
+    margin-left:15px;
+}
+
+.send_button {
+    position: absolute;
+    margin-left: 88%;
+    background-color:#396B9E;
+    border-radius: 6px 6px 6px 6px;
+    height: 37px;
+    width: 50px;
+    border: none;
+    color:whitesmoke
+}
+
+/*#####################################气泡实现#####################################*/
+ .arrow{
+    display: inline-block; /* 内联标签但是有块级标签的特性*/
+    border-top:10px solid;
+    border-right:10px solid;
+    border-bottom: 10px solid;
+    border-left:10px solid;
+
+
+    /*把其他的颜色设置为透明色*/
+    border-top-color:transparent;
+    border-right-color:#bfccd9;
+    border-left-color:transparent;
+    border-bottom-color:transparent;
+    float: left;
+    margin-top: 7px;
+}
+.content_send{
+    background-color: #bfccd9;
+    height: 35px;
+    float: left;
+    border-radius:10px;
+    color:red;
+}
+/*使用after在后面新增了一个内容为teacher的*/
+.clearfix:after {
+    /*我们给他一个内容,但是我们给他隐藏看不到,把div撑起来看下*/
+    content: "."; /*定义一个内容*/
+    visibility: hidden; /*内容不可见*/
+    display: block; /*默认他是一个内联标签,我们给他改为块级标签*/
+    clear: both; /*加上clear:both*/
+    height: 0; /*我们给他定义高度为0*/
+
+
+}
+
+
+
+.back_arrow{
+    display: inline-block; /* 内联标签但是有块级标签的特性*/
+    border-top:10px solid;
+    border-right:10px solid;
+    border-bottom: 10px solid;
+    border-left:10px solid;
+
+
+    /*把其他的颜色设置为透明色*/
+    border-top-color:transparent;
+    border-right-color:transparent;
+    border-left-color:#51f666;
+    border-bottom-color:transparent;
+    float: right;
+    margin-top: 7px;
+}
+
+.content_back {
+    background-color: #51f666;
+    height: 35px;
+    float: right;
+    border-radius:10px;
+    color:red;
+}

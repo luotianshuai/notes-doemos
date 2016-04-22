@@ -1,0 +1,560 @@
+ {% extends 'master/layout_menu.html' %}
+
+{% block css %}
+    <style>
+        tbody > tr > td, .table > tfoot > tr > td {
+            vertical-align: middle !important;
+            font-size: 10px !important;
+        }
+        td .form-control {
+            font-size: 10px !important;
+        }
+
+        /*定义编辑按钮的样式*/
+        .edit-mode{
+            background-color: #b3b3b3;
+            padding: 8px;
+            text-decoration: none;
+            color: white;
+        }
+        /*定义点击编辑按钮后的样式*/
+        .editing{
+            background-color: #f0ad4e;
+        }
+    </style>
+{% endblock %}
+
+
+{% block breadcrumb %}
+    <li><a href="/home/index/">首页</a></li>
+    <li class="active">资产列表</li>
+{% endblock %}
+
+{% block content %}
+
+    <div class="list-block">
+        <div class="clearfix search-area">
+
+            <div class="col-md-offset-10 do-submit">
+                <button type="button" class="btn btn-primary no-radius" onclick="SearchSubmit()"><i class="fa fa-search"></i> 搜索</button>
+            </div>
+
+            <div id="search_conditions" class="col-md-offset-2 col-md-8">
+                <div class="condition">
+                    <div class="icons">
+                        <a class="btn btn-default no-radius" onclick="$.AddSearchCondition(this)"><i class="fa fa-plus-square"></i></a>
+                    </div>
+                    <div class="inputs">
+                        <div class="input-group">
+                          <div class="input-group-btn">
+                            <label type="button" class="btn btn-default no-radius" style="width: 100px;">主机名</label>
+                            <button type="button" class="btn btn-default dropdown-toggle no-border-r" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="change-search-condition dropdown-menu">
+                                <li condition="hostname"><a href="#">主机名</a></li>
+                                <li condition="hostip"><a href="#">业务IP</a></li>
+                            </ul>
+                          </div>
+                          <input is-condition="true" type="text" placeholder="逗号分割多条件" class="form-control no-radius" name="hostname" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="clearfix function-area">
+            <div class="btn-group btn-group-sm custom-btn-group">
+                <a class="btn btn-default no-radius" onclick="CheckAll('#edit_mode','#table-body')"><i class="fa fa-check-square"></i> 全选</a>
+                <a class="btn btn-default no-radius" onclick="CheckCancel('#edit_mode','#table-body')"><i class="fa fa-minus-square-o"></i> 取消</a>
+                <a class="btn btn-default no-radius" onclick="CheckReverse('#edit_mode','#table-body')"><i class="fa fa-check-square-o"></i> 反选</a>
+                <a class="btn btn-default no-radius" href="/add/"><i class="fa fa-plus-circle"></i> 添加</a>
+                <a class="btn btn-default no-radius" onclick="$.Show('#shade,#modal_delete');"><i class="fa fa-trash"></i> 删除</a>
+                <a id="edit_mode" class="btn btn-default no-radius" onclick="EditMode(this,'#table-body')"><i class="fa fa-pencil-square-o"></i> <span>进入编辑模式</span></a>
+                <a class="btn btn-default no-radius" onclick="SaveTo('#edit_mode','#table-body')"><i class="fa fa-floppy-o"></i> 保存</a>
+                <a class="btn btn-default no-radius" onclick="Refresh()"><i class="fa fa-refresh"></i> 刷新</a>
+                <a id="handle_status" class="btn no-radius hide" style="background: green ;color:white;"></a>
+            </div>
+        </div>
+
+        <div class="table-responsive table-area">
+            <table class="table table-striped table-bordered" id="example1">
+                <thead id="table-head">
+                    <tr>
+                        <th style="width: 5%;">选择</th>
+                        <th en-sort="true" class="en-sort both" style="width: 5%;">ID</th>
+                        <th en-sort="true" class="col-md-1 en-sort both">主机名</th>
+                        <th en-sort="true" class="col-md-1 en-sort both">业务IP</th>
+                        <th en-sort="true" class="col-md-1 en-sort both">端口号</th>
+                        <th en-sort="true" class="en-sort both" style="width: 5%;">业务线</th>
+                        <th en-sort="true" class="en-sort both" style="width: 5%;">状态</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body" edit-mode='false'>
+                    {% for iterm in hostinfo_list %}
+                        <tr>
+                            <td><input type="checkbox" /></td>
+                            <td name="host_id" >{{ iterm.id }}</td>
+                            <td name="host_name" edit="true">{{ iterm.hostname }}</td>
+                            <td name="host_ip" edit="true">{{ iterm.hostip }}</td>
+                            <td name="host_port" edit="true">{{ iterm.hostport }}</td>
+                            <td name="host_business" edit="true" edit-type="select" global-key="BUSINESS"  select-val={{ iterm.hostbusiness_id }} >{{ iterm.hostbusiness }}</td>
+                            <td name="host_status" edit="true" edit-type="select" global-key="STATUS"  select-val={{ iterm.hoststatus_id }} >{{ iterm.hoststatus }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="clearfix">
+                <div class="right">
+                  <ul id="pager" class="pagination pagination-sm no-margin">
+
+                 </ul>
+               </div>
+            </div>
+        </div>
+    </div>
+
+
+<div id="modal_delete" class="alert alert-danger alert-dismissible fade in modal-delete hide" role="alert">
+  <button type="button" class="close" aria-label="Close" onclick="$.Hide('#shade,#modal_delete');"><span>×</span></button>
+  <h4>确定删除资产？</h4>
+  <p>与该资产相关联的网卡、硬盘、内存和日志等将全部被删除！<br/> &nbsp;</p>
+  <p>
+    <button type="button" class="btn btn-danger" onclick="DoDeleteAsset('#edit_mode','#table-body');">确定删除</button>
+    <button type="button" class="btn btn-default" onclick="$.Hide('#shade,#modal_delete');">取消</button>
+  </p>
+</div>
+
+{% endblock %}
+
+{% block js %}
+    <script>
+
+{#        STATUS = [#}
+{#            {'id': 1, 'text': "在线"},#}
+{#            {'id': 2, 'text': "下线"}#}
+{#        ];#}
+{##}
+{##}
+{##}
+{#        BUSINESS = [#}
+{#            {'id': 1, 'text': "大保健"},#}
+{#            {'id': 2, 'text': "喜乐街"}#}
+{#        ];#}
+{##}
+{#        console.log(STATUS);#}
+{#        console.log(BUSINESS);#}
+
+        $(function(){
+            $.InitMenu('#asset_list');
+            BindSelectConditionItem('.change-search-condition');
+            // checkbox默认事件优先，然后执行自定义的事件
+        $('#table-body').find(':checkbox').click(function(){
+            var tr = $(this).parent().parent();
+            if($("#edit_mode").hasClass('editing')){
+                if($(this).prop('checked')){
+                    // 当前行进入编辑状态
+                    RowIntoEditMode(tr);
+                }else{
+                    // 当前行退出编辑状态
+                    RowOutEditMode(tr);
+                        }
+                    }
+                });
+        });
+
+
+
+
+        //退出编辑模式，函数（被下面调用）
+        function RowOutEditMode(tr){
+            tr.children().each(function(){  //tr下面的自标签
+                var td = $(this);
+                if(td.attr('edit') == 'true'){ //如果在编辑状态
+                    var inp  = td.children(':first');//获取td里面的第一个元素
+                    var input_value = inp.val();//取出里面的值
+                    td.text(input_value);//并复制给td标签
+
+                    //在这里设置提出编辑然后获取他的select-val id
+                    if(td.attr('select-val')){
+                        var all_values = window[td.attr('global-key')];
+                        $.each(all_values ,function(index,value){
+                            if(input_value == value.text){
+                                console.log(value.id);
+                                td.attr('select-val',value.id)
+                            }
+                        })
+                    }
+
+                }
+            });
+        }
+
+        //进入编辑模式，函数（被下面调用）
+        function RowIntoEditMode(tr){
+            tr.children().each(function(){ //获取tr下面的所有td，循环
+                var td = $(this);
+                if(td.attr('edit') == 'true'){ //判断是否为可编辑状态
+                    if(td.attr('edit-type') == "select"){  //判断是否为input的select标签
+                        var all_values = window[td.attr('global-key')]; //获取全局变量判断获取当前的项目类型，
+                        var select_val = td.attr('select-val'); //获取当前类型的下的值
+                        select_val = parseInt(select_val); //把字符串转换为数字
+                        var options = "";//定义一个空值，把标签循环加上。
+                        $.each(all_values, function(index, value){ //循环这个项目类型
+                            if(select_val == value.id){ //判断，当前选中的值和项目类型的ID的值是否相等，如果相等使用这个值
+                                options += "<option selected='selected'>" + value.text + "</option>";
+                            }else{//没有，使用默认的项目类型
+                                options += "<option>" + value.text + "</option>";
+                            }
+                        });
+                        //当input标签，类型为select的标签发生改变时执行
+                        var temp = "<select onchange='MultiChange(this);'>" + options + "</select>";
+                        td.html(temp);
+                    }else{ //如果不是select类型的那么
+                        var text = td.text(); //获取td里的val值
+                        var temp = "<input type='text' value='"  + text+    "' />";  //把值赋给input标签的value
+                        td.html(temp);
+                    }
+                }
+            })
+        }
+
+
+
+
+        globalCtrlKeyPress = false;
+        // 如果按下键盘的任意键，执行 function
+        window.onkeydown = function(event){
+            console.log(event.keyCode);
+            //如果按下ctrl键
+            if(event && event.keyCode == 17){
+                //设置globalCtrlKeyPress为true
+                window.globalCtrlKeyPress = true;
+            }else{
+                //按下其他的键盘为false
+                window.globalCtrlKeyPress = false;
+            }
+        };
+
+        //如果任意键放开执行function
+        window.onkeyup = function (event) { //这里需要传入evnent
+            //如果ctrl键up
+            if(event && event.keyCode == 17 ){
+                //设置globalCtrlKeyPress为false
+                window.globalCtrlKeyPress = false;
+            }
+        };
+
+        //提升逼格多行修改
+        function MultiChange(ths){
+            // 检测是否按下ctr键
+            if(window.globalCtrlKeyPress == true){
+                // 获取当前td所在的tr中的索引位置
+                var index = $(ths).parent().index();
+                //获取当前td内的值
+                var value = $(ths).val();
+                //找到当前td下的所有的选中的(tr)标签，并循环
+                $(ths).parent().parent().nextAll().find("td input[type='checkbox']:checked").each(function(){
+                    //找到当前选中标签（:checked）的上面获取的index索引值的的td标签，的子标签的值。
+                    $(this).parent().parent().children().eq(index).children().val(value);
+                });
+
+            }
+        }
+
+
+
+
+        //进入编辑模式 按钮触发功能
+        function EditMode(ths, tb){ //ths & tb 就是在html页面中我们传入的参数：onclick="EditMode(this, '#tb1');"
+            // ths =this,
+            var isEditing = $(ths).hasClass('editing');  //判断是否有这个editing的样式
+            if(isEditing){  //如果有说明当前是编辑状态，那么点击的时候应该退出编辑状态
+                // 退出编辑模式
+                $(ths).text('进入编辑模式');  //修改他的内容，提升逼格用的。
+                $(ths).removeClass('editing'); //移除这个editing样式
+                $(tb).children().each(function(){ //获取这个form表单下的所有tr，并循环
+                     var tr = $(this); //当前的tr
+                    if(tr.find(':checkbox').prop('checked')){ //找到当选中的行
+                        // 当前行，推出编辑状态
+                        RowOutEditMode(tr);  //这里我们把代码进行了缩写，可以理解为python中调用函数的意思，我传入参数执行函数
+                    }
+
+                });
+            }else{
+                // 进入编辑模式
+                $(ths).text('退出编辑模式'); //修改他的内容，提升逼格用的。
+                $(ths).addClass('editing'); //添加这个这个editing样式
+
+                //每次都发送一个ajax请求来获取所有的"业务线,状态及其 iD 作为SELECT 的option"
+                $.ajax({
+                    url:'/get_select/',
+                    type:'GET',
+                    tradition: true,
+                    data:{},
+                    success:function(arg){
+                        var callback_dict = $.parseJSON(arg);//这里把字符串转换为对象
+                        STATUS = callback_dict['status_list'];
+                        BUSINESS = callback_dict['business_list'];
+
+                    }
+
+                });
+
+
+                $(tb).children().each(function(){ //找到每个一个form表单下面的tr循环
+                    // $(this) 表示循环过程中,每一个tr，每一行数据
+                    var tr = $(this);
+                    var isChecked = $(this).find(':checkbox').prop('checked'); //获取当前tr下的checkbox的checked属性，用来判断是否为选中状态
+                    if(isChecked==true){//如果为选中状态
+                        // 当前行进入编辑状态
+                        RowIntoEditMode(tr);//我们可以把重复的代码进行简化，类似于python中的函数！
+                    }
+                });
+            }
+        }
+
+        //设置全选功能
+        function CheckAll(mode, tb){
+            // 1、选中checkbox
+            // 2、如果已经进入编辑模式，让选中行进入编辑状态
+            // tb = #tb1
+            //$(tb) = $('#tb1')
+            $(tb).children().each(function(){//找到tb下面的所有tr，循环
+                // $(this) 表示循环过程中,每一个tr，每一行数据
+                var tr = $(this);
+                var isChecked = $(this).find(':checkbox').prop('checked');//找到所有选中的tr标签
+                if(isChecked==true){//如果选中什么都不做
+                }else{//如果没有选中
+                    $(this).find(':checkbox').prop('checked',true);//如果没有选中首先把他设置为选中状态
+                    // 如果已经进入编辑模式，让选中行进入编辑状态
+                    var isEditMode = $(mode).hasClass('editing');
+                    if(isEditMode){
+                        // 当前行进入编辑状态
+                        RowIntoEditMode(tr);
+                    }
+                }
+            });
+        }
+
+        //设置反选功能
+        function CheckReverse(mode, tb){
+            // 是否进入了编辑模式
+            if($(mode).hasClass('editing')){//如果进入编辑模式
+                $(tb).children().each(function(){//循环所有的tr
+                    // 遍历所有tr
+                    var tr = $(this);
+                    var check_box = tr.children().first().find(':checkbox');//找到所有的input的checkbox标签
+                    if(check_box.prop('checked')){  //判断如果选中
+                        check_box.prop('checked',false);//给他取消
+                        RowOutEditMode(tr);//并退出编辑模式
+                    }else{//如果没有选中
+                        check_box.prop('checked',true);//给他选中
+                        RowIntoEditMode(tr);//并进入编辑模式
+                    }
+                });
+            }else{//如果没有进入编辑模式
+                $(tb).children().each(function(){ //找到所有的tr并循环
+                    var tr = $(this);
+                    var check_box = tr.children().first().find(':checkbox');//周到所有的checkbox标签
+                    if(check_box.prop('checked')){ //判断是否选中
+                        check_box.prop('checked',false);//如果选中，给他设置为为选中
+                    }else{
+                        check_box.prop('checked',true);//如果没有选中，给他设置为选中
+                    }
+                });
+            }
+        }
+
+        //设置取消功能
+        function CheckCancel(mode, tb){
+            // 1、取消选中checkbox
+            // 2、如果已经进入编辑模式，行退出编辑状态
+            $(tb).children().each(function(){ //渠道所有的tr标签，并循环
+                var tr = $(this);
+                if(tr.find(':checkbox').prop('checked')){//找到所有选中的checked标签
+                    // 移除选中
+                    tr.find(':checkbox').prop('checked', false);
+                    //获取是否为编辑状态
+                    var isEditing = $(mode).hasClass('editing');
+                    if(isEditing == true){ //如果为编辑状态
+                        // 当前行，推出编辑状态
+                        RowOutEditMode(tr);
+                    }
+                }
+            });
+        }
+
+        //定义保存后台提交功能
+        function SaveTo(mode,tb){
+            //设置一个空列表用来传送数据
+
+            //如果在编辑状态那么先进行保存
+            var isEditing = $(mode).hasClass('editing');  //判断是否有这个editing的样式
+            if(isEditing){  //如果有说明当前是编辑状态，那么点击的时候应该退出编辑状态
+                // 退出编辑模式
+                $(mode).text('进入编辑模式');  //修改他的内容，提升逼格用的。
+                $(mode).removeClass('editing'); //移除这个editing样式
+                $(tb).children().each(function(){ //获取这个form表单下的所有tr，并循环
+                     var tr = $(this); //当前的tr
+                    if(tr.find(':checkbox').prop('checked')){ //找到当选中的行
+                        // 当前行，推出编辑状态
+                        RowOutEditMode(tr);  //这里我们把代码进行了缩写，可以理解为python中调用函数的意思，我传入参数执行函数
+                    }});}
+            //获取数据并传递给ajax
+            var change_info = [];
+            $(tb).children().each(function(){
+                var tr = $(this);//当前tr
+                var dic = {};
+                tr.children().each(function () {
+                    //console.log($(this).text());
+                    if($(this).attr('name') == 'host_id'){
+                        dic['host_id'] = $(this).text();}
+                    if($(this).attr('name') == 'host_name'){
+                        dic['host_name'] = $(this).text();}
+                    if($(this).attr('name') == 'host_port'){
+                        dic['host_port'] = $(this).text();}
+                    if($(this).attr('name') == 'host_ip'){
+                        dic['host_ip'] = $(this).text();}
+                    if($(this).attr('name') == 'host_business'){
+                        dic['host_business'] = $(this).attr('select-val');}
+                    if($(this).attr('name') == 'host_status'){
+                        dic['host_status'] = $(this).attr('select-val');}
+                });
+                change_info.push(dic);
+                //console.log(dic)
+            });
+            //console.log(change_info);
+            for (var item in change_info) {console.log(change_info[item])}
+            //然后使用ajax进行提交数据
+            $.ajax({
+                url:'/save_hostinfo/',
+                type:'POST',
+                tradition: true,
+                data:{data:JSON.stringify(change_info)},
+                success:function(arg){
+                    //成功接收的返回值(返回条目)
+                    var callback_dict = $.parseJSON(arg);//这里把字符串转换为对象
+                    //然后咱们就可以判断
+                    if(callback_dict){//执行成功了
+                        //设置5秒钟后隐藏
+                        setTimeout("hide()",5000);
+                        var change_infos = '修改了'+callback_dict['change_count']+'条数据';
+                        $('#handle_status').text(change_infos).removeClass('hide')
+                    }else{//如果为False执行失败了
+                        alert(callback_dict.error)
+                    }
+                }
+            })
+        }
+        function hide(){
+            $('#handle_status').addClass('hide')
+        }
+
+        function DoDeleteAsset(mode,tb){
+            //如果在编辑状态那么先进行退出编辑状态
+            var isEditing = $(mode).hasClass('editing');  //判断是否有这个editing的样式
+            if(isEditing){  //如果有说明当前是编辑状态，那么点击的时候应该退出编辑状态
+                // 退出编辑模式
+                $(mode).text('进入编辑模式');  //修改他的内容，提升逼格用的。
+                $(mode).removeClass('editing'); //移除这个editing样式
+                $(tb).children().each(function(){ //获取这个form表单下的所有tr，并循环
+                     var tr = $(this); //当前的tr
+                    if(tr.find(':checkbox').prop('checked')){ //找到当选中的行
+                        // 当前行，推出编辑状态
+                        RowOutEditMode(tr);  //这里我们把代码进行了缩写，可以理解为python中调用函数的意思，我传入参数执行函数
+                    }});}
+            var del_list = [];
+            $(tb).find(':checkbox').each(function(){
+                if($(this).prop('checked')){
+                    //如果选中状态找到他的父标签然后删除，并使用ajax进行发送到后端删除数据
+
+                    del_list.push($(this).parent().next().text());
+                    console.log(del_list);
+                    $(this).parent().parent().remove()
+                    }
+                });
+            //把数据发送到后台
+            $.ajax({
+                url:'/del_hostinfo/',
+                type:'POST',
+                tradition: true,
+                data:{data:JSON.stringify(del_list)},
+                success:function(arg){
+                    //成功接收的返回值(返回条目)
+                    var callback_dict = $.parseJSON(arg);//这里把字符串转换为对象
+                    //然后咱们就可以判断
+                    if(callback_dict){//执行成功了
+                        //设置5秒钟后隐藏
+                        setTimeout("hide()",5000);
+                        var change_infos = '删除了'+callback_dict['change_count']+'条数据';
+                        $('#handle_status').text(change_infos).removeClass('hide')
+                    }else{//如果为False执行失败了
+                        alert(callback_dict.error)
+                    }
+                }
+            });
+            $.Hide('#shade,#modal_delete')
+        }
+
+        function Refresh(){
+            window.location.href = window.location.href
+        }
+
+
+        {#绑定搜索更换选项#}
+        function BindSelectConditionItem(conditionObj){
+            $(conditionObj).children().bind('click', function () {
+                var condition = $(this).attr('condition');
+                var text = $(this).text();
+                var findType = $(this).attr('find-type');
+                //全局变量key
+                var options = $(this).attr('options');
+                var $current = $(this).parent().parent();
+
+                if(findType == 'select'){
+                    if(condition=='status') {
+                        var obj = $.CreateSelect({'is-condition':'true','class':'form-control select-icon no-radius','name':condition }, {}, window[options], null, 0 ,1);
+                    }else if(condition=='idc__id') {
+                        var obj = $.CreateSelect({'is-condition':'true','class':'form-control select-icon no-radius','name':condition }, {}, window[options], null, 'id' ,'display');
+                    }else{
+                        var obj = $.CreateSelect({'is-condition':'true','class':'form-control select-icon no-radius','name':condition }, {}, window[options], null, 'id' ,'name');
+                    }
+
+                }else{
+                    var obj = $.CreateInput({'is-condition':'true','class':'form-control no-radius','name':condition,'placeholder':'逗号分割多条件'}, {});
+                }
+                $current.children().first().text(text);
+                $current.next().remove();
+                $current.parent().append(obj);
+            });
+        }
+
+        function SearchSubmit() {
+            $('#table-body').children().remove();
+
+            var search_dic = {};
+            var search_data = $('.inputs').find("input[is-condition='true']");
+            $.each(search_data,function (index,data) {
+                var name = $(this).attr('name');
+                var value = $(this).val();
+                if()
+
+                console.log(name,value);
+                //var name = data.attr('name');
+                //console.log(name)
+            });
+
+
+
+
+
+
+{#            $.get#}
+        }
+
+    </script>
+{% endblock %}
+
