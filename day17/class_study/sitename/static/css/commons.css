@@ -1,0 +1,19 @@
+
+
+.header{
+    height: 80px;
+    background-color:red;
+}
+.body{
+    background-color:green;
+}
+.body .menu{
+    background-color:blue;
+    float: left;
+    width:30%;
+}
+.body .content{
+    background-color:skyblue;
+    float: left;
+    width:70%;
+}

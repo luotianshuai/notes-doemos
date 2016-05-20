@@ -1,0 +1,30 @@
+#博客地址:
+http://www.cnblogs.com/luotianshuai/p/5253593.html
+http://www.cnblogs.com/luotianshuai/p/5258572.html
+http://www.cnblogs.com/luotianshuai/p/5262561.html
+
+github地址:
+
+
+作业：
+
+--登录页面
+    --同一页面内两个from表单提交
+
+--管理页面
+    --登录页面
+        --登录验证
+        --快速注册,使用ajax
+    --母版
+        --子版
+            --用户中心
+                --输出用户名和密码
+            --删除用户
+                --删除用户,判断是否用户存在,不存在提示
+            --重置密码
+                --重置密码,判断用户是否存在,不存在提示
+            --创建用户
+                --创建用户,使用ajax判断用户是否存在,存在提示
+            --批量创建用户
+                --批量创建用户
+

@@ -1,0 +1,39 @@
+{% extends 'master/master_templates.html' %}
+
+{% block content %}
+    <div style="position: absolute">
+        <div style="position: absolute;top: 100px;left: 140px;width: 400px">
+
+            <div>
+                <table border="1px">
+                    <thead>
+                        <tr>
+                            <th>邮箱账号</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for line in user_info_list %}
+                            <tr>
+                                <td>{{ line.email }}</td>
+
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <form action="/deluser/" method="post">
+                    <input type="text" name="em" />
+                    <input type="submit" value="删除" />
+                    <span style="color:red">{{ status }}</span>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>运维权限管理系统</title>
+    <!--指定告诉ID用高版本的解析-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- Bootstrap -->
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="/static/plugins/bootstrap-3.3.4-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/login.css">
+</head>
+<body class="body">
+    {#定义登录from表单#}
+    <div class="login">
+        <div class="login_register">
+            <a id="lg_1" style="padding: 10px;">登录</a>
+            <a id="lg_2" style="padding: 10px;">注册</a>
+        </div>
+        <form id="login_1" class="form-horizontal" action="/login/" method="post">
+          <div style="margin-top: 20px;" class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">邮箱</label>
+            <div class="col-sm-10">
+              <input style="width: 200px;" type="email" class="form-control" name="email" placeholder="Email">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+            <div class="col-sm-10">
+              <input style="width: 200px;" type="password" class="form-control" name="pwd" placeholder="Password">
+            </div>
+          </div>
+          <div class="form-group">
+            <div style="margin-left: 150px;" class="col-sm-offset-2 col-sm-10">
+              <button type="submit" name="login" class="btn btn-default">登录</button>
+                <span style="color: red;">{{ status }}</span>
+            </div>
+          </div>
+        </form>
+
+{#        注册from表单#}
+        <form id="login_2" class="form-horizontal hide" action="/login/" method="post">
+          <div style="margin-top: 20px;" class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">邮箱</label>
+            <div class="col-sm-10">
+              <input id="add_email" style="width: 200px;" type="email" class="form-control" name="email" placeholder="Email">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+            <div class="col-sm-10">
+              <input style="width: 200px;" type="password" class="form-control" name="pwd" placeholder="Password">
+            </div>
+          </div>
+          <div class="form-group">
+            <div style="margin-left: 150px;" class="col-sm-offset-2 col-sm-10">
+              <button type="submit" name="register" class="btn btn-default">注册</button>
+                <span style="color: red;">{{ status }}</span>
+                <span class="hide" id="user_yes" style="color:red">用户名已存在</span>
+                <span class="hide" id="user_no" style="color:green">用户名可以使用</span>
+            </div>
+          </div>
+        </form>
+
+    </div>
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="/static/js/jquery-2.2.1.min.js"></script>
+    <script src="/static/js/manage.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="/static/plugins/bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
+    <script>
+        $('#add_email').blur(function() {
+           console.log('test');
+           $.ajax({
+              type:'POST',
+              url:'/login/',
+              data:{'email':$('#add_email').val(),'check_status':'on'},
+              success: function (data){
+                  console.log(data);
+                 if(data == 'yes'){
+                     $('#user_yes').removeClass('hide');
+                     $('#user_no').addClass('hide');
+                 }else{
+                      $('#user_no').removeClass('hide');
+                      $('#user_yes').addClass('hide');
+                 }
+              }
+           })
+
+        });
+    </script>
+</body>
+</html>

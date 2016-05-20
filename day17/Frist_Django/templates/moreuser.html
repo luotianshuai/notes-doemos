@@ -1,0 +1,35 @@
+{% extends 'master/master_templates.html' %}
+
+{% block content %}
+    <div style="position: absolute">
+        <div style="position: absolute;top: 100px;left: 140px;width: 400px">
+
+            <div>
+                <table border="1px">
+                    <thead>
+                        <tr>
+                            <th>邮箱账号</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for line in user_info_list %}
+                            <tr>
+                                <td>{{ line.email }}</td>
+
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            请输入您要创建的用户名和密码格式如下:username:password,username:password,:
+            <form  action="/moreuser/" method="post">
+                <textarea name="moreadd" style="width: 500px;height: 300px"></textarea>
+                <input type="submit" value="批量添加用户"/>
+                <span style="background-color:red">{{ status }}</span> <span style="background-color:red">{{ user_check }}</span>
+            </form>
+
+        </div>
+    </div>
+
+{% endblock %}

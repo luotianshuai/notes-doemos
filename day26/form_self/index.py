@@ -238,15 +238,44 @@ class ListForm(object):
             flag = False
 
 
-class MainForm(BaseForm):
+class MainForm(Form):
+
     def __init__(self):
-        self.host = "().*"
-        self.ip = IPField()
+        # self.ip = IPField(required=True)
+        # self.port = IntegerField(required=True)
+        # self.new_ip = IPField(required=True)
+        # self.second = SecondForm()
+        self.fff = FileField(required=True)
+        super(MainForm, self).__init__()
+
+#
+# class SecondForm(Form):
+#
+#     def __init__(self):
+#         self.ip = IPField(required=True)
+#         self.new_ip = IPField(required=True)
+#
+#         super(SecondForm, self).__init__()
+
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.render('index.html')
     def post(self, *args, **kwargs):
+        # for i in  dir(self.request):
+        #     print i
+        # print self.request.arguments
+        # print self.request.files
+        # print self.request.query
+        # name_list = self.request.arguments.keys() + self.request.files.keys()
+        # print name_list
+
+        # list_form = ListForm(MainForm)
+        # list_form.validate(self)
+        #
+        # print list_form.valid_status
+        # print list_form.value_dict
+        # print list_form.error_dict
 
         # obj = MainForm()
         # obj.validate(self)
@@ -256,7 +285,29 @@ class MainHandler(tornado.web.RequestHandler):
         # print "错误信息:"
         # for key, item in obj.error_dict.items():
         #     print key,item
+        # print self.get_arguments('favor'),type(self.get_arguments('favor'))
+        # print self.get_argument('favor'),type(self.get_argument('favor'))
+        # print type(self.get_argument('fff')),self.get_argument('fff')
+        # print self.request.files
+        # obj = MainForm()
+        # obj.validate(self)
+        # print obj.valid_status
+        # print obj.value_dict
+        # print obj.error_dict
+        # print self.request,type(self.request)
+        # obj.fff.save(self.request)
+        # from tornado.httputil import HTTPServerRequest
+        # name_list = self.request.arguments.keys() + self.request.files.keys()
+        # print name_list
+        # print self.request.files,type(self.request.files)
+        # print len(self.request.files.get('fff'))
 
+        # obj = MainForm()
+        # obj.validate(self)
+        # print obj.valid_status
+        # print obj.value_dict
+        # print obj.error_dict
+        # obj.fff.save(self.request)
         self.write('ok')
 
 
@@ -277,3 +328,4 @@ application = tornado.web.Application([
 if __name__ == "__main__":
     application.listen(8888)
     tornado.ioloop.IOLoop.instance().start()
+

@@ -1,0 +1,51 @@
+{% extends 'master/master_templates.html' %}
+
+{% block content %}
+    <div style="position: absolute">
+        <div style="position: absolute;top: 100px;left: 140px;width: 400px">
+
+            <div>
+                <table border="1px">
+                    <thead>
+                        <tr>
+                            <th>邮箱账号</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for line in user_info_list %}
+                            <tr>
+                                <td>{{ line.email }}</td>
+
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            请输入您要创建的用户名和密码:
+            <form  class="form-horizontal" action="/adduser/" method="post">
+              <div style="margin-top: 20px;" class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">邮箱</label>
+                <div class="col-sm-10">
+                  <input  id="add_email" style="width: 200px;" type="email" class="form-control" name="em" placeholder="Email">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+                <div class="col-sm-10">
+                  <input style="width: 200px;" type="password" class="form-control" name="pw" placeholder="Password">
+                </div>
+              </div>
+              <div class="form-group">
+                <div style="margin-left: 150px;" class="col-sm-offset-2 col-sm-10">
+                  <button type="submit" name="register" class="btn btn-default">注册</button>
+                    <span style="color:red">{{ status }}</span>
+                    <span class="hide" id="user_yes" style="color:red">用户名已存在</span>
+                    <span class="hide"  id="user_no" style="color:green">用户名可以使用</span>                </div>
+              </div>
+            </form>
+
+        </div>
+    </div>
+
+{% endblock %}
