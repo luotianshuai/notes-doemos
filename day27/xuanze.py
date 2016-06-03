@@ -21,5 +21,5 @@ if __name__ == '__main__':
     for i in range(50000):
         array.append(random.randrange(1000000))
     handler(array)
-    print array
-    print 'Cost time is :',time.time() - old_time
+    print(array)
+    print('Cost time is :',time.time() - old_time)

@@ -48,4 +48,4 @@ if __name__ == '__main__':
     for i in range(50000):
         array.append(random.randrange(1000000))
     quick_sort(array,0,len(array)-1)
-    print array
+    print(array)
