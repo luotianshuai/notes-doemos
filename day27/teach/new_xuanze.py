@@ -4,7 +4,7 @@ __author__ = 'luotianshuai'
 
 import random
 import time
-#maopao_list = [69, 471, 106, 66, 149, 983, 160, 57, 792, 489, 764, 589, 909, 535, 972, 188, 866, 56, 243, 619]
+
 
 def handler(array):
     for i in range(len(array)):
@@ -18,9 +18,6 @@ def handler(array):
         tmp = array[i]
         array[i] = array[smallest_index]
         array[smallest_index] = tmp
-
-
-
 
 
 if __name__ == '__main__':

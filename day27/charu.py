@@ -18,10 +18,6 @@ def handler(array):
         array[position] = current_val  #把值替换
 
 
-
-
-
-
 if __name__ == '__main__':
     array = []#[69, 471, 106, 66, 149, 983, 160, 57, 792, 489, 764, 589, 909, 535, 972, 188, 866, 56, 243, 619]
     old_time = time.time()
