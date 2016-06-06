@@ -14,9 +14,8 @@ def quick_sort(array,start,end):
         '''
         left_flag = start 默认为0
         right_flag = end 默认为穿过来的列表总长度
-        当left_flag 小与right_flag的时候成立,说明左右两边的小旗子还没有集合(为相同的值)
+        当left_flag 小与right_flag的时候成立,说明左右两边的小旗子还没有碰头(为相同的值)
         '''
-
         #右边旗子
         while left_flag < right_flag and array[right_flag] > k:#代表要继续往左一移动小旗子
             right_flag -= 1
@@ -44,8 +43,12 @@ def quick_sort(array,start,end):
 
 if __name__ == '__main__':
     array = []  # [69, 471, 106, 66, 149, 983, 160, 57, 792, 489, 764, 589, 909, 535, 972, 188, 866, 56, 243, 619]
-    old_time = time.time()
+    start_time = time.time()
     for i in range(50000):
         array.append(random.randrange(1000000))
     quick_sort(array,0,len(array)-1)
+    end_time = time.time()
     print(array)
+    print(start_time,end_time)
+    cost_time = end_time - start_time
+    print('Cost time is :%d' % cost_time)
