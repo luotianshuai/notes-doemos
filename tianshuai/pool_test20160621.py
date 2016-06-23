@@ -7,7 +7,7 @@ __author__ = 'luotianshuai'
 from multiprocessing import Pool
 class a(object):
     def run(self):
-        print(1)
+        return '1'
 x = a()
 pool = Pool(1)
 
