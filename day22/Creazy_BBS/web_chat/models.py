@@ -17,7 +17,7 @@ class QQGroup(models.Model):
     description = models.CharField(max_length=255,default="The Admin is so lazy,The Noting to show you ....")
 
     '''
-    线面members和admins在做跨表关联的时候,关联的表不能使用双引号!
+    下面members和admins在做跨表关联的时候,关联的表不能使用双引号!
     '''
     #成员
     members = models.ManyToManyField(UserProfile,blank=True)

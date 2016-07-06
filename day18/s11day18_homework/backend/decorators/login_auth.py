@@ -14,7 +14,7 @@ def login_auth(func):
         if not result:
             login_url = '%s?back=%s' % (settings.LOGIN_URL, request.path)
             return redirect(login_url)
-        print result
+        print(result)
         response = func(request, *args, **kwargs)
         return response
     return wrapper

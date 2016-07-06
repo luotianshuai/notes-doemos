@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 import time
 import json
 import Queue
+
 GLOBAL_MQ = {
 
 }
@@ -27,6 +28,8 @@ def contacts(request):
     contact_dic = {}
     #通过一个字段去查多对多都要使用select_related
     contacts = request.user.userprofile.friends.select_related().values('id','name','status')
+    print request.user.userprofile.friends.select_related()
+    print contacts
     contact_dic['contact_list']= list(contacts)
     groups = request.user.userprofile.qqgroup_set.select_related().values('id','name','max_member_nums')
     contact_dic['group_list'] = list(groups)
