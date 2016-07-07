@@ -3,14 +3,17 @@
 '''
 本程序是登录认证的程序，3次错误密码锁定
 '''
+
+
 with open('db','rb') as user_info: #打开文件
     user_infos = user_info.readlines() #读取用户信息按行存储到列表中
-    for i in user_infos:
-        print(i)
+
 user_dic = {} #定义一个空字典把列表中的用户循环加入到字典中
 
 for list_to_dic in user_infos: #循环列表
-    list_to_dic = list_to_dic.strip()
+    print(type(list_to_dic.decode('utf-8')))
+
+    list_to_dic = list_to_dic.strip().decode() #因为是二进制打开的所以需要进行解码一下才可以
     print(list_to_dic)
     #list_to_dic = list_to_dic.strip() #取消每行后面的换行符
     list_info = list_to_dic.split(';') #按照‘；’分割每行
