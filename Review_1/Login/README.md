@@ -19,6 +19,7 @@ will lock user name:
 欢迎tianshuai登录系统
 
 > * login failure：
+```python
 您好请输入您的用户名：tianshuai
 您好请输入您的密码：test
 tianshuai的密码错误
@@ -31,3 +32,4 @@ tianshuai的密码错误
 您好请输入您的用户名：tianshuai
 您好请输入您的密码：lskdjf
 tianshuai用户账户已被锁定请联系管理员解锁
+```
