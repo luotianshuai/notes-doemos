@@ -1,22 +1,24 @@
-### 博客地址
-[博客地址](http://www.cnblogs.com/luotianshuai/p/4949497.html)
+### blog address
+[Python之路【第三篇】：Python基础（二）](http://www.cnblogs.com/luotianshuai/p/4949497.html)
 
 
-### 程序功能
+### programing features
 
-本程序是3次登录认证的程序，3次登录失败后锁定账号：
-
-
-1、运行程序:python login.py
+The programing is three times login ,if user input three times error
+will lock user name:
 
 
-2、程序测试
+1、run the programing:   python login.py
 
-登录成功：
+
+2、program test:
+
+> * login success：
 您好请输入您的用户名：tianshuai
 您好请输入您的密码：123
 欢迎tianshuai登录系统
-登录失败：
+
+> * login failure：
 您好请输入您的用户名：tianshuai
 您好请输入您的密码：test
 tianshuai的密码错误
