@@ -24,11 +24,20 @@ BASE_DIR = '\\'.join(os.path.abspath(os.path.dirname(__file__)).split('\\')[:-1]
 sys.path.append(BASE_DIR)
 """
 
-if platform.system() == 'windows':
+if platform.system() == 'Windows':
     BASE_DIR = '\\'.join(os.path.abspath(os.path.dirname(__file__)).split('\\')[:-1])
 else:
     BASE_DIR = '/'.join(os.path.abspath(os.path.dirname(__file__)).split('/')[:-1])
 
 # 加载环境变量
 sys.path.append(BASE_DIR)
+
+from moduls import main
+
+if __name__ == "__main__":
+    main.shopping_run()
+
+
+
+
 
