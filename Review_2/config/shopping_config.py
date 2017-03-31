@@ -7,6 +7,6 @@
 """
 
 user_db = {
-    "luotianshuai": {"password": 123, "salary": 10000, },
-    "alex": {"password": 123, "salary": 100000, }
+    "luotianshuai": {"password": "123", "salary": 10000, },
+    "alex": {"password": "123", "salary": 100000, }
     }
