@@ -13,6 +13,9 @@ def core(*args, **kwargs):
     :param kwargs: 字典组
     :return: None
     """
+    print(args, kwargs)
+    login_user = args[0]
+    
 
 
 def shopping_run():
