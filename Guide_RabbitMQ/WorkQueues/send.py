@@ -28,3 +28,4 @@ channel.basic_publish(exchange='',
 # 发送消息结束,并关闭通道
 print(" [x] Sent %r" % message)
 channel.close()
+

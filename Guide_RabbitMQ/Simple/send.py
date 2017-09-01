@@ -37,7 +37,9 @@ channel = connection.channel()
 # 声明队列hello,RabbitMQ的消息队列机制如果队列不存在那么数据将会被丢掉,下面我们声明一个队列如果不存在创建
 channel.queue_declare(queue='hello')
 # 给队列中添加消息
-channel.publish(exchange="", routing_key="hello", body="Hello World")
+channel.publish(exchange="",
+                routing_key="hello",
+                body="Hello World")
 print("向队列hello添加数据结束")
 # 缓冲区已经flush而且消息已经确认发送到了RabbitMQ中，关闭通道
 channel.close()
