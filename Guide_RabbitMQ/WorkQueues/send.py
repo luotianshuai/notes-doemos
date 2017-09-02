@@ -18,14 +18,16 @@ channel = connection.channel()
 channel.queue_declare(queue='task_queue')
 
 # 在队列中添加消息
-message = ' '.join(sys.argv[1:]) or "Hello World!"
-# 发送消息
-channel.basic_publish(exchange='',
-                      routing_key='task_queue',
-                      body=message,
-                      properties=pika.BasicProperties(delivery_mode=2, ))  # make message persistent
+for i in range(100):
+    message = '%s Meassage '% i or "Hello World!"
+    # 发送消息
+    channel.basic_publish(exchange='',
+                          routing_key='task_queue',
+                          body=message,
+                          properties=pika.BasicProperties(delivery_mode=2, ))  # make message persistent
 
-# 发送消息结束,并关闭通道
-print(" [x] Sent %r" % message)
+    # 发送消息结束,并关闭通道
+    print(" [x] Sent %r" % message)
+
 channel.close()
 
