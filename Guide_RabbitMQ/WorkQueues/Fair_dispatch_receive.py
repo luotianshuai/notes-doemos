@@ -28,8 +28,7 @@ channel.basic_qos(prefetch_count=1)
 
 # 定义通道消费者参数
 channel.basic_consume(callback,
-                      queue="task_queue",
-                      no_ack=True)
+                      queue="task_queue",)
 
 print(' [*] Waiting for messages. To exit press CTRL+C')
 # 开始接收信息，并进入阻塞状态，队列里有信息才会调用callback进行处理。按ctrl+c退出。
