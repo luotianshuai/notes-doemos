@@ -27,7 +27,7 @@ guest	.*	.*	.*
 
 
 ConnectionParameters 中的参数:virtual_host 注：
-    相当于在rabbitmq层面又加了一层域名空间的限制,每个域名空间是独立的有自己的Echange/queues等
+    相当于在rabbitmq层面又加了一层域名空间的限制,每个域名空间是独立的有自己的权限控制、Echange/queues等
     举个好玩的例子Redis中的db0/1/2类似
     
 
