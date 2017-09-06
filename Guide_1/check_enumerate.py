@@ -2,13 +2,13 @@
 #-*- coding:utf-8 -*-
 __author__ = 'luotianshuai'
 
-#一 enumerrate函数
+# 一 enumerrate函数
 #
 # #一般情况下对一个列表话属组记要遍历所以又要遍历元素时,会这样写
-check_list = [1,2,3,4,5,6,7]
+check_list = [1, 2, 3, 4, 5, 6, 7]
 
-for i in range (0,len(check_list)):
-    print(i,len(check_list))
+for i in range(0, len(check_list)):
+    print(i, len(check_list))
 
 # #但是这种方法有些累赘,使用内置的enumerrate函数会有更直接更优美的做法
 '''
@@ -24,9 +24,9 @@ emumerate会降属组或列表组成一个索引序列,使我们在获取索引�
 '''
 
 for index,list_value in enumerate(check_list):
-    print(index,list_value)
+    print(index, list_value)
 
-#二 有序字典
+# 二 有序字典
 
 from collections import OrderedDict
 

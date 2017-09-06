@@ -1,0 +1,7 @@
+ [*] Waiting for logs. To exit press CTRL+C
+ [x] 'error':b'error : number 1'
+ [x] 'error':b'error-number 1'
+ [*] Waiting for logs. To exit press CTRL+C
+ [x] 'error':b'error-number 1'
+ [x] 'error':b'error-number shuaige hello'
+ [*] Waiting for logs. To exit press CTRL+C
