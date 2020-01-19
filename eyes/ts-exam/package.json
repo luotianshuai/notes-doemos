@@ -1,0 +1,27 @@
+{
+  "name": "react-doemos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GoTim/react-doemos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GoTim/react-doemos/issues"
+  },
+  "homepage": "https://github.com/GoTim/react-doemos#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "node-fetch": "^2.6.0"
+  }
+}

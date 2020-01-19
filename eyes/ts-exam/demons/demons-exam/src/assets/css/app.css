@@ -1,0 +1,9 @@
+.headerStyle {
+    background-color: #000000;
+    text-align: center;
+}
+
+.headerStyle a {
+    color: #ffffff;
+    padding: 40px;
+}

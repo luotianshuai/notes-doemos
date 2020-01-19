@@ -1,0 +1,14 @@
+.listContent {
+    width: 600px;
+    background-color: aquamarine;
+}
+
+.listContent .title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.listContent .title span {
+    padding: 25px;
+}
+

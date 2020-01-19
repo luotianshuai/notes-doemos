@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>display</title>
+    <style type="text/css">
+        .testStatic {
+            height: 100px;
+            position: static;
+            background-color: #8470FF;
+        }
+
+        .testRelativeFather{
+            height: 100px;
+            background-color: #C1FFC1;
+
+        }
+        .testRelative {
+            position: relative;
+            /*margin: auto;*/
+            left:20px;
+            top:100px;
+            width: 400px;
+            height: 50px;
+            background-color: red;
+        }
+
+        .testRelativeNext {
+            text-align: center;
+            color: aliceblue;
+            background-color:#8470FF;
+            height: 100px;
+        }
+
+        .testFixedFather{
+            height: 100px;
+            text-align: center;
+            color: aliceblue;
+            background-color:#54FF9F;
+        }
+
+        .testFixed {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 200px;
+            height:50px;
+            margin:auto;
+            background-color:#0000CD
+        }
+
+        .testAbsoluteFather{
+            position: relative;
+            height:200px;
+            text-align: center;
+            background-color: #00FFFF;
+        }
+
+        .testAbsolute{
+            position: absolute;
+            top:0;
+            right:0;
+            bottom:0;
+            left:0;
+            margin:auto;
+            width: 50px;
+            height:50px;
+            background-color:#FF6A6A
+        }
+
+    </style>
+</head>
+<body>
+<!--    <span class="inlineTest">测试下块级元素应用宽会有什么效果</span>-->
+<!--    <span class="goodMain">测试下块级元素应用宽会有什么效果</span>-->
+<div class="main">
+    <div class="testStatic">static 是position的默认值</div>
+
+    <div class="testRelativeFather">
+        testRelativeFather
+        <div class="testRelative">
+            testRelative 我的参照是谁我的父亲元素testRelativeFather,不管他是否是positioned元素
+        </div>
+    </div>
+
+    <div class="testRelativeNext">
+        testRelative 测试用的next元素，告诉你relative不会挤走我
+    </div>
+
+    <div class="testFixedFather">
+        我是testFixed父亲元素
+        <div class="testFixed"> 我是testFixed元素，我只对整个浏览器窗口位置感兴趣</div>
+    </div>
+
+    <div class="testAbsoluteFather">
+        我是testAbsolute父元素，现在我有钱(定义了position)儿子就听我的(位置参考就是父元素,否则就去找他爷爷或者更高的长辈了)
+        <div class="testAbsolute">
+
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>float</title>
+    <style type="text/css">
+      .row:before,
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+
+      .outline,
+      .outline * {
+        outline: 1px solid #f6a1a1;
+      }
+
+      [class*="col-"] {
+        float: left;
+        min-height: 1px;
+        width: 16.66%;
+        /*-- 设置列的左右间隙 -- */
+        padding: 12px;
+        background-color: #ffdcdc;
+      }
+
+      .col-1 {
+        width: 16.66%;
+      }
+
+      /*-- 列的额外内容样式 --*/
+      [class*="col-"] > p {
+        background-color: #ffc2c2;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="row outline">
+      <div class="col-1"><p>col-1</p></div>
+      <div class="col-1"><p>col-1</p></div>
+      <div class="col-1"><p>col-1</p></div>
+      <div class="col-1"><p>col-1</p></div>
+      <div class="col-1"><p>col-1</p></div>
+      <div class="col-1"><p>col-1</p></div>
+    </div>
+    <div class="row">
+      <div class="col-1"><p>col-1</p></div>
+      <div class="col-1"><p>col-1</p></div>
+      <div class="col-1"><p>col-1</p></div>
+      <div class="col-1"><p>col-1</p></div>
+      <div class="col-1"><p>col-1</p></div>
+      <div class="col-1"><p>col-1</p></div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    /*水平居中*/
+    justify-content: center;
+    /* 垂直居中 */
+    align-items: center;
+    flex-wrap:wrap;
+    background-color:#BEBEBE;
+    /*margin:0;*/
+    /*padding: 0;*/
+}
