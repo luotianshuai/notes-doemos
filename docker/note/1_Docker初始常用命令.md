@@ -39,7 +39,7 @@ systemctl enable docker
 
 ### 检索镜像
 
-![镜像检索标识](./resource/Docker-1-1.png)
+![镜像检索标识](./assets/docker_1.1.png)
 
 ### 下载镜像
 
