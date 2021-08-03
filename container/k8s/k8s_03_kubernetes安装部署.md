@@ -1,7 +1,7 @@
 [TOC]
 
 
-## 部署方式对比
+# 部署方式对比
 | 部署方式 | 优点                                                         | 缺点                                                         | 是否支持容器化                       |
 | -------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------ |
 | 源码部署 | 能快速熟悉kubernetes架构和组件构成和组件间的耦合关系         | 部署繁琐、复杂且易出错、后期升级维护麻烦                     | 否                                   |
@@ -10,39 +10,69 @@
 
 
 
+## 源码部署优缺点
 
+### 缺点
+
+- 部署起来比较复杂
+- 后期的升级维护比较复杂
+
+### 优点
+
+* 可以很快熟悉它的架构，但是在生产中使用的时候也会逐步去熟悉他
+
+
+
+## 容器部署的优点
+
+* 后期维护升级只需要升级下image就OK
 
 # 安装Kubernetes
 
 ## Ubuntu安装Docker
 
-```
-# step 1: 安装必要的一些系统工具
-sudo apt-get update
-sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common
-# step 2: 安装GPG证书
-curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
-# Step 3: 写入软件源信息
-sudo add-apt-repository "deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
-# Step 4: 更新并安装Docker-CE
-sudo apt-get -y update
-sudo apt-get -y install docker-ce
+```sh
+# 准备工作（所有节点操作）
 
-# 安装指定版本的Docker-CE:
-# Step 1: 查找Docker-CE的版本:
-# apt-cache madison docker-ce
-#   docker-ce | 17.03.1~ce-0~ubuntu-xenial | https://mirrors.aliyun.com/docker-ce/linux/ubuntu xenial/stable amd64 Packages
-#   docker-ce | 17.03.0~ce-0~ubuntu-xenial | https://mirrors.aliyun.com/docker-ce/linux/ubuntu xenial/stable amd64 Packages
-# Step 2: 安装指定版本的Docker-CE: (VERSION例如上面的17.03.1~ce-0~ubuntu-xenial)
-# sudo apt-get -y install docker-ce=[VERSION]
+1. 配置主机名
 
-```
+hostnamectl set-hostname cka01 --static
+hostnamectl set-hostname cka02 --static
+hostnamectl set-hostname cka03 --static
 
-### 优化TABLE自动补全
+2. 修改/etc/hosts
 
-Centos需要安装一个包就可以了，但是ubuntu只需要启用一个配置即可，vim /etc/bash.bashrc
+#以master为例
 
-```
+vim /etc/hosts
+192.168.0.131 cka01
+
+
+3. 修改apt源
+
+# 清空/etc/apt/sources.list，并添加如下内容
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+
+
+# 执行apt源更新操作
+
+apt update -y 
+
+# 开启命令补全
 # enable bash completion in interactive shells
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -53,47 +83,174 @@ if ! shopt -oq posix; then
 fi
 
 
-```
+4. 清空防火墙规则 并 关闭防火墙
+iptables -F
+ufw disable
 
-### 解决问题
+5. 关闭swap分区
+swapoff -a
 
-当执行`docker info`看到有提示: WARNING: No swap limit support，只有Ubuntu的系统会有这个问题
+6. 修改内核参数(启用ipv4转发和关闭swap分区)
 
-```
-# step 1 修改配置
-vim /etc/default/grub
-# GRUB_CMDLINE_LINUX 新增cgroup_enable=memory swapaccount=1
-GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1 net.ifnames=0 consoleblank=600 console=tty0 console=ttyS0,115200n8 nospectre_v2 nopti noibrs noibpb"
-
-# step2 更新grub并重启
-update-grub && reboot
-```
-
-修改默认的:iptables FORWARD 默认策略并持久化
-
-```
-# step 1 修改: /lib/systemd/system/docker.service
-# 在Service下面新增
-ExecStartPost=/sbin/iptables -P FORWARD ACCEPT
-
-# step2 重启docker
-systemctl daemon-reload && systemctl restart docker
-
-```
-
-### 修改Docker的daemon.json
-
-```
-cat > /etc/docker/daemon.json <<EOF
-{
-	"exec-opts": "native.cgroupdirver=systemd",
-	"log-dirver": "json-file",
-	"log-opts": {"max-size": "100m"},
-	"storage-dirver": "overlay2"
-}
-
+cat >/etc/sysctl.d/k8s.conf<<EOF
+  net.ipv4.ip_forward = 1
+  vm.swappiness = 0
 EOF
+sysctl -p /etc/sysctl.d/k8s.conf
+
+6. 加载内核模块
+
+cat > /etc/modules-load.d/modules.conf<<EOF
+br_netfilter
+ip_vs
+ip_vs_rr
+ip_vs_wrr
+ip_vs_sh
+nf_conntrack_ipv4
+EOF
+
+for i in br_netfilter ip_vs ip_vs_rr ip_vs_wrr ip_vs_sh nf_conntrack_ipv4;do modprobe $i;done
+
+7. 安装docker
+# 允许apt使用https使用存储库
+apt -y install apt-transport-https ca-certificates curl software-properties-common
+# 添加docker官网的秘钥
+curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+
+apt update -y
+
+# 安docker
+apt-get install -y docker-ce=5:19.03.15~3-0~ubuntu-xenial containerd.io
+
+mkdir -p /etc/docker
+
+cat > /etc/docker/daemon.json<<EOF
+{
+    "exec-opts": ["native.cgroupdriver=systemd"],
+    "log-driver": "json-file",
+    "log-opts": {
+        "max-size": "100m",
+        "max-file": "10"
+    },
+    "registry-mirrors": ["https://pqbap4ya.mirror.aliyuncs.com"]
+}
+EOF
+
+systemctl restart docker
+systemctl enable docker
+
+# 检查docker状态
+docker info
+
+# 只有ubuntu会有提示不支持内存限制警告解决方法: WARNING: No swap limit support
+    修改: /etc/default/grub
+    里面的内容:GRUB_CMDLINE_LINUX配置新增键值对: cgroup_enable=memory swapaccount=1
+
+    # 更新grub然后重启
+    update-grub && reboot
+
+# 如果iptables默认是Drop的话需要改下
+    # 临时
+      iptables -P FORWARD ACCEPT
+    # 永久
+      vim /lib/systemd/system/docker.service
+        server下新增: ExecStartPost=/sbin/iptables -P FORWARD ACCEPT
+
+8. 安装kubeadm、kubectl、kubelet
+
+apt-get update && apt-get install -y apt-transport-https
+curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add - 
+cat > /etc/apt/sources.list.d/kubernetes.list<<EOF 
+deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
+EOF
+apt update -y 
+apt-cache madison kubelet
+
+apt install -y kubelet=1.20.5-00  kubeadm=1.20.5-00  kubectl=1.20.5-00 
+
+
+
+# 安装master(只在master上操作)
+
+kubeadm config print init-defaults  > kubeadm-config.yaml
+
+apiVersion: kubeadm.k8s.io/v1beta2
+bootstrapTokens:
+- groups:
+  - system:bootstrappers:kubeadm:default-node-token
+  token: abcdef.0123456789abcdef
+  ttl: 24h0m0s
+  usages:
+  - signing
+  - authentication
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: 192.168.0.180
+  bindPort: 6443
+nodeRegistration:
+  criSocket: /var/run/dockershim.sock
+  name: cka01
+  taints:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+---
+apiServer:
+  timeoutForControlPlane: 4m0s
+apiVersion: kubeadm.k8s.io/v1beta2
+certificatesDir: /etc/kubernetes/pki
+clusterName: kubernetes
+controllerManager: {}
+dns:
+  type: CoreDNS
+etcd:
+  local:
+    dataDir: /var/lib/etcd
+imageRepository: registry.cn-hangzhou.aliyuncs.com/google_containers
+kind: ClusterConfiguration
+kubernetesVersion: v1.20.5
+networking:
+  dnsDomain: cluster.local
+  serviceSubnet: 10.96.0.0/12
+  podSubnet: 10.244.0.0/16
+scheduler: {}
+
+
+kubeadm init --config kubeadm-config.yaml
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+# 添加自动补全
+kubectl completion -h
+  # 临时
+    source <(kubectl completion bash)
+  # 永久Ubuntu
+    kubectl completion bash > ~/.kube/completion.bash.inc
+    echo "source ~/.kube/completion.bash.inc" >> .profile
+
+# 部署网络插件
+
+curl https://docs.projectcalico.org/manifests/calico.yaml -O
+
+kubectl apply -f calico.yaml
+
+# 添加节点
+
+kubeadm join 192.168.0.180:6443 --token abcdef.0123456789abcdef \
+    --discovery-token-ca-cert-hash sha256:d19eafe0f6ea680a75aca46bdedf9ea20da869a09ff5923d335277ff95d4094e
+
+
+# 在所有节点设置kubelet开机自启动
+systemctl enable kubelet
 ```
-
-
-
