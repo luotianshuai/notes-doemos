@@ -254,3 +254,52 @@ kubeadm join 192.168.0.180:6443 --token abcdef.0123456789abcdef \
 # 在所有节点设置kubelet开机自启动
 systemctl enable kubelet
 ```
+
+# kubectl 如何简单快速了解
+
+> 记住我们操作的是资源
+
+```
+root@cka01:~# kubectl api-resources 
+NAME                              SHORTNAMES   APIVERSION                             NAMESPACED   KIND
+bindings                                       v1                                     true         Binding
+componentstatuses                 cs           v1                                     false        ComponentStatus
+configmaps                        cm           v1                                     true         ConfigMap
+endpoints                         ep           v1                                     true         Endpoints
+events                            ev           v1                                     true         Event
+limitranges                       limits       v1                                     true         LimitRange
+namespaces                        ns           v1                                     false        Namespace
+nodes                             no           v1                                     false        Node
+persistentvolumeclaims            pvc          v1                                     true         PersistentVolumeClaim
+persistentvolumes                 pv           v1                                     false        PersistentVolume
+
+
+# 查看资源
+kubectl get nodes										# 获取node节点
+kubectl create namespace damon1			# 创建一个namespace
+kubectl delete namespaces damon1    # 删除一个namespace
+
+```
+
+# Kubernetes网络插件对比
+
+## Kubernetes网络
+
+Kubernetes 对所有网络设施的实施，都需要满足以下的基本要求（除非有设置一些特定的网络分段策略）：
+
+- 节点上的 Pod 可以不通过 NAT 和其他任何节点上的 Pod 通信
+- 节点上的代理（比如：系统守护进程、kubelet）可以和节点上的所有Pod通信
+
+
+
+| 列表       | Overlay                                    | L3 Routing                   | Underlay                             |
+| ---------- | ------------------------------------------ | ---------------------------- | ------------------------------------ |
+| 描述       | 二层报文被封装了IP数据中                   | 通过IP路由的方式进行数据交互 | 直接使用宿主所在的底层网络组件和功能 |
+| 网络要求   | IP可达                                     | IP可达                       | IP可达                               |
+| 性能       | 中性能损耗60%                              | 性能损耗30%                  | 几乎接近原生性能                     |
+| 集群外访问 | Ingress/NodePort                           | Ingress/NodePort             | Ingress/NodePort                     |
+| 访问控制   | NetworkPolicy                              | NetworkPolicy                | Iptables、宿主所在网络控制           |
+| IP类型     | 虚拟IP                                     | 虚拟IP                       | 物理IP                               |
+| 静态IP     | 不支持                                     | 不支持                       | 支持                                 |
+| 场景       | 对性能要求不高，网络环境简单               | 大多数场景                   | 对性那个呢要求较高需要支持静态IP     |
+| 开源产品   | Flannel-vxlan、OpenShift-sdn、Cisco-contiv | Clico、Flannel-HostGW        | MACvlan、lpvlan、sriov               |
