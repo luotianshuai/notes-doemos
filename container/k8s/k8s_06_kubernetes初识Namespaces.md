@@ -83,7 +83,7 @@ apiextensions.k8s.io/v1
 # 会发现在版本前面还有一段: apiextensions.k8s.io/  这个是API组进行归类管理的
 ```
 
-### 帮助
+## 帮助
 
 可以通过： kubectl api-resources   来查看资源的对应的API版本
 
@@ -135,7 +135,7 @@ root@cka01:~/yaml#
 
 
 
-### 创建
+## 创建
 
 ```yaml
 apiVersion: v1
@@ -163,6 +163,6 @@ demon   Active   100s   app=demon
 
 
 
-### 删除
+## 删除
 
 kubectl delete -f my-namespaces.yaml

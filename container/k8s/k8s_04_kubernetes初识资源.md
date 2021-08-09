@@ -1,4 +1,4 @@
-[TCO]
+[TOC]
 
 # Node资源介绍
 
@@ -22,7 +22,6 @@ Conditions:
   Ready                True   .....  KubeletReady                 kubelet is posting ready status. AppArmor enabled
   
   网络是否有异常、内存是否有充足、硬盘是否有压力、Pid是否充足、是否准备就绪
-
 
 
 Capacity: # 当前节点的容量
