@@ -393,7 +393,6 @@ spec:
         - name: web            # 端口映射命名
           containerPort: 80    # 声明容器端口
           protocol: TCP        # 声明协议
-          hostPort: 8081       # 将声明的容器端口映射到宿主机
 
 ```
 
@@ -427,7 +426,6 @@ spec:
         - name: web            # 端口映射命名
           containerPort: 80    # 声明容器端口
           protocol: TCP        # 声明协议
-          hostPort: 8081       # 将声明的容器端口映射到宿主机
 ```
 
 
@@ -586,7 +584,7 @@ kubectl -n demon exec pod-mem -it -c container-mem-1 bash
  kubectl edit pod pod-mem
 ```
 
-# 通过标签选择Pod
+# apply申请-更新
 
 先创建一个Pod
 
@@ -611,7 +609,7 @@ spec:
      args: ["--vm", "1", "--vm-bytes", "150M", "--vm-hang", "1"] 
 ```
 
-## apply申请-更新
+## 
 
 ```yaml
 apiVersion: v1
@@ -750,3 +748,7 @@ spec:
           protocol: TCP
 ```
 
+# Kind类型为Pod的缺点
+
+* 只能部署单节点
+* 不支持高可用，如果该节点故障了那么不会自动部署到其他节点
