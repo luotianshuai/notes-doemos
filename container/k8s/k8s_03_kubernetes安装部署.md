@@ -114,13 +114,13 @@ for i in br_netfilter ip_vs ip_vs_rr ip_vs_wrr ip_vs_sh nf_conntrack_ipv4;do mod
 7. 安装docker
 # 允许apt使用https使用存储库
 apt -y install apt-transport-https ca-certificates curl software-properties-common
-# 添加docker官网的秘钥
+# 添加docker官网的秘钥 # 安docker
 curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
 
 apt update -y
 
-# 安docker
+
 apt-get install -y docker-ce=5:19.03.15~3-0~ubuntu-xenial containerd.io
 
 mkdir -p /etc/docker

@@ -68,7 +68,7 @@ metadata:
 spec:
   containers:
    - name: container-mem
-     image: plinux/stress
+     image: progrium/stress
      command: ["stress"]
      args: ["--vm", "1", "--vm-bytes", "150M", "--vm-hang", "1"] 
 ```
@@ -83,9 +83,9 @@ NAME      READY   STATUS    RESTARTS   AGE   IP              NODE    NOMINATED N
 pod-mem   1/1     Running   0          58s   10.244.204.71   cka03   <none>           <none>
 ```
 
-## 镜像下载策略
+## containers
 
-### 创建Pod的时候指定镜像下载策略
+### Pod中containers指定镜像下载策略: imagePullPolicy
 
 我们制定了镜像，镜像下载有3中模式
 
@@ -97,19 +97,15 @@ pod-mem   1/1     Running   0          58s   10.244.204.71   cka03   <none>     
 ....
   containers:
    - name: container-mem
-     image: plinux/stress
+     image: progrium/stress
      imagePullPolicy: IfNotPresent
      command: ["stress"]
      args: ["--vm", "1", "--vm-bytes", "150M", "--vm-hang", "1"] 
 ```
 
-### 对已经创建的Pod修改
+###  Pod中containers指定资源配额: resources
 
-```
- kubectl edit pod pod-mem
-```
-
-## Pod资源配额
+给容器设置资源配额
 
 ```yaml
 apiVersion: v1
@@ -146,9 +142,391 @@ NAME      READY   STATUS    RESTARTS   AGE
 pod-mem   1/1     Running   0          6m39s
 ```
 
-## 注意事项
+限制临时存储空间的大小
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: frontend
+spec:
+  containers:
+  - name: app
+    image: images.my-company.example/app:v4
+    resources:
+      requests:
+        ephemeral-storage: "2Gi"
+      limits:
+        ephemeral-storage: "4Gi"
+  - name: log-aggregator
+    image: images.my-company.example/log-aggregator:v6
+    resources:
+      requests:
+        ephemeral-storage: "2Gi"
+      limits:
+        ephemeral-storage: "4Gi"
+```
+
+### Pod中containers指定环境变量: env
+
+容器内部设置环境变量
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: testvm
+  labels:
+    type: vm
+  annotations:
+    description: "hello kubernetes"
+spec:
+  containers:
+    - name: test-vm-1
+      image: polinux/stress
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: x1
+          value: y1
+        - name: x2
+          value: y2
+      command: ["stress"]
+      args: ["--vm", "1", "--vm-bytes", "150M", "--vm-hang", "1"]
+```
+
+### Pod中containers声明端口和端口映射
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web1
+  labels:
+    type: nginx
+  annotations:
+    description: "hello kubernetes"
+spec:
+  containers:
+    - name: nginx1
+      image: nginx:1.21
+      imagePullPolicy: IfNotPresent
+      ports:
+        - name: web            # 端口映射命名web
+          containerPort: 80    # web声明容器端口
+          protocol: TCP        # web声明协议
+          hostPort: 8081       # 将web声明的容器80端口映射到宿主机8081端口
+```
+
+### Pod中containers健康检测
+
+健康检测，场景：
+
+比如我有一个数据库我执行了kubectl create -f mysql.yaml 很快就看到Pod状态Running了，但是我mysql有一个40秒的初始化时间，如果你在这40秒内访问就是是异常的
+
+比如我的nginx运行了1周时间了突然无法访问，但是容器还是Running的状态
+
+> **`所以Running状态并不代表容器是健康的`**
+
+#### 三种探测器
+
+一个是启动前的检测
+
+* startupProbe  启动前检测如果检测失败启动则失败
+
+两个是启动后的检测
+
+* livenessProbe  运行探活，如果失败默认杀死container然后kubernetes会重新创建容器，如果未提供探活动探测，则状态为sucess
+* readinessProbe  就绪探活，如果失败删除PodIP并设置状态为Failure，如果未提供就绪探测，默认状态为sucess
+
+最开始是没有startupProbe的，只需要在启动后检测，但是有个问题就是，在启动后检测你不知道要等多久
+
+#### 三种探针(上面的三种探测器都可以使用它们)
+
+* exec：执行指定的命令，根据退出码验证，如果未0则成功
+* tcpSocket：根据container的IP对应的TCP端口检测，如果端口打开则认为是成功的
+* httpGet：对指定端口执行Http Get请求如果大于200小于400则认为是正常的
+
+#### livenessProbe & readinessProbe
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: health-pod
+spec:
+  containers:
+    - name: buybox1
+      image: busybox
+      imagePullPolicy: IfNotPresent
+      command: ["/bin/sh", "-c"]
+      args:
+        - touch /tmp/health ; sleep 20; rm -f /tmp/health ; sleep 600;
+      livenessProbe:
+        exec:
+          command:
+            - cat
+            - /tmp/health
+        initialDelaySeconds: 10    # 容器启动多久后开始检测
+        periodSeconds: 3           # 多久检测1次
+        failureThreshold: 3        # 几次失败算失败
+
+```
+
+```
+Events:
+  Type     Reason     Age                 From               Message
+  ----     ------     ----                ----               -------
+  Normal   Scheduled  112s                default-scheduler  Successfully assigned default/health-pod to cka003
+  Normal   Pulling    112s                kubelet            Pulling image "busybox"
+  Normal   Pulled     101s                kubelet            Successfully pulled image "busybox" in 11.173907804s
+  Normal   Created    43s (x2 over 101s)  kubelet            Created container buybox1
+  Normal   Started    43s (x2 over 101s)  kubelet            Started container buybox1
+  Normal   Pulled     43s                 kubelet            Container image "busybox" already present on machine
+  Warning  Unhealthy  16s (x6 over 79s)   kubelet            Liveness probe failed: cat: can't open '/tmp/health': No such file or directory
+  Normal   Killing    16s (x2 over 73s)   kubelet            Container buybox1 failed liveness probe, will be restarted
+```
+
+> 关注下: Pod的状态就会发现它已经重启过了
+
+```
+NAME         READY   STATUS    RESTARTS   AGE
+health-pod   1/1     Running   3          3m8s
+```
+
+>  它和: readinessProbe和livenessProbe 的区别就是它失败了不重启，自己选择下
+
+#### startupProbe
+
+启动前检测，这个要单独说下，我们上面定义的启动后检测，但是有个问题但是有写情况下可能启动时长是未知的。。。。。
+
+这种情况下比如我我们定义了:initialDelaySeconds 等待10秒后检测但是可能花了40秒才启动，那30秒已经提供服务了，就会对用户造成影响
+
+所以就有了一个启动前检测，检测通过后就在往后走
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: health-pod
+spec:
+  containers:
+    - name: buybox1
+      image: busybox
+      imagePullPolicy: IfNotPresent
+      command: ["/bin/sh", "-c"]
+      args:
+        - sleep 10; touch /tmp/health ; sleep 20; rm -f /tmp/health ; sleep 600;
+      startupProbe: # 启动检测
+        exec:
+          command:
+            - cat
+            - /tmp/health
+        initialDelaySeconds: 1     # 容器启动多久后开始检测
+        periodSeconds: 3           # 多久检测1次
+        failureThreshold: 10       # 几次失败算失败
+      livenessProbe:
+        exec:
+          command:
+            - cat
+            - /tmp/health
+        initialDelaySeconds: 10    # 容器启动多久后开始检测
+        periodSeconds: 3           # 多久检测1次
+        failureThreshold: 3        # 几次失败算失败
+
+```
+
+```
+Events:
+  Type     Reason     Age                From               Message
+  ----     ------     ----               ----               -------
+  Normal   Scheduled  43s                default-scheduler  Successfully assigned default/health-pod to cka002
+  Normal   Pulled     42s                kubelet            Container image "busybox" already present on machine
+  Normal   Created    42s                kubelet            Created container buybox1
+  Normal   Started    42s                kubelet            Started container buybox1
+  Warning  Unhealthy  33s (x3 over 39s)  kubelet            Startup probe failed: cat: can't open '/tmp/health': No such file or directory
+  Warning  Unhealthy  4s (x3 over 10s)   kubelet            Liveness probe failed: cat: can't open '/tmp/health': No such file or directory
+  Normal   Killing    4s                 kubelet            Container buybox1 failed liveness probe, will be restarted
+root@cka001:~/yaml/pod#
+```
+
+
+
+## Pod数据
+
+### emptyDir
+
+emptyDir在Pod分配给节点时，首先创建有一个卷，这个卷开始是空的，容器内所有的container都可以挂载这个卷把数据同时写在一个地方
+
+* emptyDir声明周期会随着Pod终结而终结
+* 如果Pod异常退出emptyDir不会被销毁
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web1
+  labels:
+    type: nginx
+  annotations:
+    description: "hello kubernetes"
+spec:
+  volumes:
+    - name: html-data
+      emptyDir:
+
+  containers:
+    - name: test-vm-1
+      image: polinux/stress
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - name: html-data
+          mountPath: /usr/share/nginx/html
+      command: ["stress"]
+      args: ["--vm", "1", "--vm-bytes", "150M", "--vm-hang", "1"]
+    - name: nginx1
+      image: nginx:1.21
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - name: html-data
+          mountPath: /usr/share/nginx/html
+      ports:
+        - name: web            # 端口映射命名
+          containerPort: 80    # 声明容器端口
+          protocol: TCP        # 声明协议
+          hostPort: 8081       # 将声明的容器端口映射到宿主机
+
+```
+
+### hostPath
+
+把宿主目录映射到容器中docker -v参数
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web1
+  labels:
+    type: nginx
+  annotations:
+    description: "hello kubernetes"
+spec:
+  volumes:
+    - name: html-data
+      hostPath:
+        path: /data/html/
+
+  containers:
+    - name: nginx1
+      image: nginx:1.21
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - name: html-data
+          mountPath: /usr/share/nginx/html
+      ports:
+        - name: web            # 端口映射命名
+          containerPort: 80    # 声明容器端口
+          protocol: TCP        # 声明协议
+          hostPort: 8081       # 将声明的容器端口映射到宿主机
+```
+
+
+
+## hostNetwork 
+
+pod直接使用宿主的网络空间
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web1
+  labels:
+    type: nginx
+  annotations:
+    description: "hello kubernetes"
+spec:
+  hostNetwork: true
+  containers:
+    - name: nginx1
+      image: nginx:1.21
+      imagePullPolicy: IfNotPresent
+      ports:
+        - name: web            # 端口映射命名
+          containerPort: 80    # 声明容器端口
+          protocol: TCP        # 声明协议
+```
+
+
+
+```
+# 这里直接使用的是宿主的网段
+root@cka001:~/yaml/pod# kubectl get pods -o wide
+NAME   READY   STATUS    RESTARTS   AGE   IP             NODE     NOMINATED NODE   READINESS GATES
+web1   1/1     Running   0          6s    172.24.238.9   cka003   <none>           <none>
+```
+
+
+
+## hostAliases
+
+切片对象，包含IP和hostnames，会写入容器的hosts文件里
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web1
+  labels:
+    type: nginx
+  annotations:
+    description: "hello kubernetes"
+spec:
+  hostAliases:
+    - ip: "172.24.238.8"
+      hostnames: "cka01"
+    - ip: "172.25.159.103"
+      hostnames: "cka02"
+  containers:
+    - name: nginx1
+      image: nginx:1.21
+      imagePullPolicy: IfNotPresent
+      ports:
+        - name: web            # 端口映射命名
+          containerPort: 80    # 声明容器端口
+          protocol: TCP        # 声明协议
+```
+
+```
+root@web1:/# cat /etc/hosts
+# Kubernetes-managed hosts file.
+127.0.0.1	localhost
+::1	localhost ip6-localhost ip6-loopback
+fe00::0	ip6-localnet
+fe00::0	ip6-mcastprefix
+fe00::1	ip6-allnodes
+fe00::2	ip6-allrouters
+192.168.102.13	web1
+
+# Entries added by HostAliases.
+172.24.238.8	cka01	master
+172.25.159.103	cka02	worker
+```
+
+
+
+
+
+
+
+# Pod删除
 
 * 如果删除了Namespaces里面的资源都会被删除
+
+```
+# 建议通过yaml删除
+kubectl delete -f 2-pod-reouce-limit.yaml
+```
 
 # 登录Pod容器
 
@@ -198,6 +576,14 @@ kubectl -n demon exec pod-mem -it bash
 
 # 如果多个容器可以选择制定容器
 kubectl -n demon exec pod-mem -it -c container-mem-1 bash
+```
+
+
+
+# 对已经创建的Pod修改-不建议使用
+
+```
+ kubectl edit pod pod-mem
 ```
 
 # 通过标签选择Pod
@@ -363,5 +749,4 @@ spec:
           containerPort: 80
           protocol: TCP
 ```
-
 
