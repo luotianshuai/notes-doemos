@@ -232,3 +232,96 @@ spec:
 ## 例子
 
 DaemonSet 部署ingress + 污点，实现专机转用
+
+# StatefulSet
+
+能够保证Pod的每个副本在整个生命周期名称是不变的，这个只有StatefulSet能保证，而其他Controller不提供这个功能
+
+其他Controller当某个Pod发生故障需要删除并重新启动时，Pod的名称会放生变化
+
+StatefulSet会保证副本按照固定的顺序启动、更新、回滚
+
+* 稳定的持久化存储，即Pod重新调度后还能访问到相同的持久化存储，基于PVC实现
+* 稳定的网络标识，即Pod重新调度后Pod的Name和HostName不变，基于（Headless就是么有ClusterIP的server实现）
+* 有序部署，有序扩展，即Pod是有顺序的，比如上一个Pod必须是Running或者Redy的才继续，且0~1，1~2，2~N
+* 有序收缩，从N~0
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pic-hb-nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      pic-hb-nginx-app: pic-hb-nginx-container
+  serviceName: pic-hb-nginx-container
+  template:
+    metadata:
+      labels:
+        pic-hb-nginx-app: pic-hb-nginx-container
+    spec:
+      containers:
+        - name: nginx1
+          image: nginx:1.21
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: web            # 端口映射命名
+              containerPort: 80    # 声明容器端口
+              protocol: TCP        # 声明协议
+          livenessProbe:
+            tcpSocket:
+              port: 80
+```
+
+# Job & cronJob
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: test-job
+spec:
+  backoffLimit: 4
+  template:
+    metadata:
+      labels:
+        app: test-job
+    spec:
+      containers:
+      - name: test-job
+        image: busybox
+        command: ["echo",  "hello world"]
+      restartPolicy: OnFailure
+
+
+```
+
+```yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+ name: hello #Cronjob的名称
+spec:
+  schedule: "* * * * *"   #job执行的周期，cron格式的字符串
+  suspend: true
+  startingDeadlineSeconds: 120
+  successfulJobsHistoryLimit: 3
+  jobTemplate:  #job模板
+    spec:
+      backoffLimit: 4
+      template:
+        metadata:
+          labels:
+            app: hello-cronjob
+        spec:
+          containers:
+          - name: hello-cronjob
+            image: busybox
+            command: ["/bin/sh","-c","date;echo  Hello from the Kubernetes cluster"] #job具体执行的任务
+          restartPolicy: OnFailure
+
+
+```
+
