@@ -135,7 +135,7 @@ webserver    ClusterIP   10.110.188.120   <none>        80/TCP    2m22s
 
 * 扩容后endpoints就会自动跟新，同样是根据selector获取pod的ip
 
-## nodePort
+### nodePort
 
 ```yaml
 apiVersion: v1

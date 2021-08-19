@@ -32,6 +32,8 @@
 ## Ubuntu安装Docker
 
 ```sh
+# 系统版本
+ubuntu1~18.04
 # 准备工作（所有节点操作）
 
 1. 配置主机名
@@ -48,7 +50,7 @@ vim /etc/hosts
 192.168.0.131 cka01
 
 
-3. 修改apt源
+3. 修改apt源(国内机器需要修改)
 
 # 清空/etc/apt/sources.list，并添加如下内容
 
@@ -74,6 +76,7 @@ apt update -y
 
 # 开启命令补全
 # enable bash completion in interactive shells
+# vim /etc/bash.bashrc
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
@@ -112,17 +115,34 @@ EOF
 for i in br_netfilter ip_vs ip_vs_rr ip_vs_wrr ip_vs_sh nf_conntrack_ipv4;do modprobe $i;done
 
 7. 安装docker
-# 允许apt使用https使用存储库
-apt -y install apt-transport-https ca-certificates curl software-properties-common
-# 添加docker官网的秘钥 # 安docker
-curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+# 国内
+  # 允许apt使用https使用存储库
+  apt -y install apt-transport-https ca-certificates curl software-properties-common
+  # 添加docker官网的秘钥 # 安docker
 
+  curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
+  sudo add-apt-repository "deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+
+# 国外
+apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  
 apt update -y
 
+# 查看docker版本
+apt-cache madison docker-ce
+# 安装
+apt-get install -y docker-ce=5:19.03.15~3-0~ubuntu-bionic containerd.io
 
-apt-get install -y docker-ce=5:19.03.15~3-0~ubuntu-xenial containerd.io
-
+# 
 mkdir -p /etc/docker
 
 cat > /etc/docker/daemon.json<<EOF
@@ -159,6 +179,7 @@ docker info
 
 8. 安装kubeadm、kubectl、kubelet
 
+# 国内
 apt-get update && apt-get install -y apt-transport-https
 curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add - 
 cat > /etc/apt/sources.list.d/kubernetes.list<<EOF 
@@ -167,6 +188,14 @@ EOF
 apt update -y 
 apt-cache madison kubelet
 
+apt install -y kubelet=1.20.5-00  kubeadm=1.20.5-00  kubectl=1.20.5-00 
+# 国外
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+apt update -y 
+apt-cache madison kubelet
 apt install -y kubelet=1.20.5-00  kubeadm=1.20.5-00  kubectl=1.20.5-00 
 
 
